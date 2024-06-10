@@ -25,10 +25,9 @@ int main() {
 	game.AddNewScene("win", new WinScene());
     game.AddNewScene("lose-scene", new LoseScene());
     game.AddNewScene("scoreboard-scene", new ScoreboardScene());
-    game.AddNewScene(("plot-scene"), new PlotScene());
+    game.AddNewScene("plot-scene", new PlotScene());
 
     // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
-//	game.Start("stage-select", 60, 1600, 832);
 	game.Start("start", 60, 1600, 832);
 	return 0;
 }

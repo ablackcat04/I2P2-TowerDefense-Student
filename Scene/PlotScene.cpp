@@ -10,11 +10,12 @@
 #include <string>
 #include <sstream>
 
-#include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "PlayScene.hpp"
 #include "Engine/LOG.hpp"
+
+std::string plot_path = "Resource/plot/test.txt";
 
 void splitLine(const std::string& line, std::vector<std::string>& words) {
     std::istringstream iss(line);
@@ -158,7 +159,7 @@ void PlotScene::Initialize() {
 
     // Read plot from file
     std::string line;
-    std::ifstream plot("Resource/plot/test.txt");
+    std::ifstream plot(plot_path);
 
     // Pre Processing
     while (std::getline(plot, line)) {

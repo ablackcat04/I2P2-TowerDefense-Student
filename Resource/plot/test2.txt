@@ -1,0 +1,5 @@
+image ABC ""
+
+Plot_Start:
+ABlackCat "This is test2.txt"
+ABlackCat "Thanks for testing!"

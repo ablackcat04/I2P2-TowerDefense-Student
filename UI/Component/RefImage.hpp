@@ -18,7 +18,7 @@ namespace Engine {
         int GetBitmapWidth() const;
         int GetBitmapHeight() const;
 
-        void ChangeImageTo(std::string, int, int);
+        void ChangeImageTo(std::string img, int x, int y);
     };
 }
 #endif // REFIMAGE_HPP
