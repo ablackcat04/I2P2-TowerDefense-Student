@@ -5,30 +5,23 @@
 #ifndef INC_2024_I2P2_TOWERDEFENSE_RHYMEGAME_H
 #define INC_2024_I2P2_TOWERDEFENSE_RHYMEGAME_H
 
-#include <iostream>
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
+#ifndef MUSICGAMESCENE_H
+#define MUSICGAMESCENE_H
+
+#include "Engine/GameEngine.hpp"
+#include "Engine/Group.hpp"
 #include <allegro5/allegro_audio.h>
-#include <list>
+#include "Engine/GameEngine.hpp"
+#include "Engine/Group.hpp"
+#include <allegro5/allegro_audio.h>
 #include <memory>
-#include <utility>
-#include <vector>
-
 #include "Engine/IScene.hpp"
-#include "Engine/Point.hpp"
-
-class rhymescene final : public Engine::IScene{
-private:
-    ALLEGRO_SAMPLE_ID bgmId;
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
-protected:
-public:
-    void Initialize() override;
-    void Terminate() override;
-    void Update(float deltaTime) override;
-    void Draw() const override;
-    // void ModifyReadMapTiles();
-};
+#include "UI/Component/Label.hpp"
+#include "UI/Component/Image.hpp"
+#include <queue>
+#include <vector>
+#include <unordered_map>
+#include "UI/Component/RefImage.hpp"
 
 class Conductor {
 public:
@@ -61,15 +54,28 @@ public:
     Note(float startX) : x(startX), y(0), size(50) {}
 
     // 更新方法，用于更新音符的位置
-    void update() {
-        y += 5; // 掉落速度
-    }
+    void update() ;
 
     // 渲染方法，用于在屏幕上绘制音符
-    void render() {
-        al_draw_filled_rectangle(x, y, x + size, y + size, al_map_rgb(255, 0, 0));
-    }
+    void render();
 };
+
+class MusicGameScene final : public Engine::IScene{
+private:
+    ALLEGRO_SAMPLE* backgroundMusic;
+    ALLEGRO_SAMPLE_INSTANCE* musicInstance;
+    Conductor conductor;
+    std::vector<Note> notes; // 存储音符的容器
+public:
+    explicit MusicGameScene(float bpm, float offset);
+    void Initialize() override;
+    void Terminate() override;
+    void Update(float deltaTime) override;
+    void Draw() const override;
+    void OnKeyDown(int keyCode) override;
+};
+
+#endif // MUSICGAMESCENE_H
 
 
 
