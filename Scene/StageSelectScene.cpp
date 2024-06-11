@@ -39,11 +39,18 @@ void StageSelectScene::Initialize() {
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW, halfH / 2 + 300, 0, 0, 0, 255, 0.5, 0.5));
 
+
+
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 500, 400, 75);
     btn->SetOnClickCallback(std::bind(&StageSelectScene::TestOnClick, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Test Plot", "pirulen.ttf", 36, halfW, halfH / 2 + 533, 0, 0, 0, 255, 0.5, 0.5));
 
+
+    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 - 150, 400, 50);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::TestMapOnClick, this));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Test Map", "pirulen.ttf", 36, halfW, halfH /2-125 , 0, 0, 0, 255, 0.5, 0.5));
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 100, 100, 200, 50);
     btn->SetOnClickCallback(std::bind(&StageSelectScene::RhythmGameOnClick, this));
     AddNewControlObject(btn);
@@ -91,6 +98,9 @@ void StageSelectScene::ScoreboardOnClick() {
 }
 void StageSelectScene::TestOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+}
+void StageSelectScene::TestMapOnClick() {
+    Engine::GameEngine::GetInstance().ChangeScene("map-scene");
 }
 
 void StageSelectScene::RhythmGameOnClick() {

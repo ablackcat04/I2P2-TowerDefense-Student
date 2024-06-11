@@ -16,6 +16,7 @@ public:
     void ScoreboardOnClick();
 	void BackOnClick(int stage);
     void TestOnClick();
+	void TestMapOnClick();
     void RhythmGameOnClick();
 };
 

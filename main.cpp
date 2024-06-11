@@ -11,6 +11,7 @@
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/PlotScene.hpp"
+#include "Scene/MapScene.hpp"
 #include "Scene/RhythmGameScene.hpp"
 #include "Scene/PlayScene.hpp"
 
@@ -28,6 +29,7 @@ int main() {
     game.AddNewScene("lose-scene", new LoseScene());
     game.AddNewScene("scoreboard-scene", new ScoreboardScene());
     game.AddNewScene("plot-scene", new PlotScene());
+	game.AddNewScene("map-scene", new MapScene());
     game.AddNewScene("rhythm-game-scene", new RhythmGameScene());
     game.AddNewScene("final-play", new PlayScene());
 

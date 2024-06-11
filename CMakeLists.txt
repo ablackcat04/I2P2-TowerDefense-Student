@@ -110,6 +110,8 @@ add_executable(TowerDefense
         Scene/PlotScene.hpp
         UI/Component/RefImage.cpp
         UI/Component/RefImage.hpp
+        Scene/MapScene.hpp
+        Scene/MapScene.cpp
         UI/Component/ToggledTextButton.cpp
         UI/Component/ToggledTextButton.hpp
         Scene/RhythmGameScene.hpp
