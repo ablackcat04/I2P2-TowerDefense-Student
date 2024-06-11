@@ -108,6 +108,8 @@ add_executable(TowerDefense
         Scene/PlotScene.hpp
         UI/Component/RefImage.cpp
         UI/Component/RefImage.hpp
+        Scene/rhymegame.h
+        Scene/rhymegame.cpp
         #        UI/Component/TextInput.cpp
 #        UI/Component/TextInput.hpp
 )

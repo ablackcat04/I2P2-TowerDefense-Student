@@ -28,7 +28,6 @@ void PlotScene::Initialize() {
     history_info.clear();
     history_ptr = 0;
 
-
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
