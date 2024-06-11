@@ -24,6 +24,107 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
     }
 }
 
+void PlotScene::OnClickCallBack() {
+    if (partial_text != text_target) {
+        partial_text = text_target;
+        partial_text1 = partial_target1;
+        partial_text2 = partial_target2;
+        partial_text3 = partial_target3;
+        partial_text4 = partial_target4;
+        return;
+    } else if (partial_middle_text != middle_text) {
+        partial_middle_text = middle_text;
+        return;
+    }
+
+    while (!queue_of_text.empty()) {
+        auto words = queue_of_text.front();
+        if (words[0] == "show") {
+            image_map[words[1]].img->ChangeImageTo(image_map[words[1]].path, atoi(words[3].c_str()), atoi(words[4].c_str()));
+        } else if (words[0] == "hide") {
+            image_map[words[1]].img->ChangeImageTo(transparent, 0, 0);
+        } else if (words[0] == "play") {
+            al_play_sample(music_map[words[1]].sample, 0.5, 0.5, 1.0, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
+        } else if (words[0] == "stop") {
+            auto temp = music_map[words[1]].id;
+            if (&temp != nullptr) {
+                al_stop_sample(&temp);
+            }
+        } else {
+            break;
+        }
+        queue_of_text.pop();
+    }
+    if (!queue_of_text.empty()) {
+        auto temp = queue_of_text.front();
+        if (temp[0] != "middle") {
+            name = temp[0];
+            text_target = temp[1];
+            middle_text = "";
+            partial_text = "";
+            partial_text1 = "";
+            partial_text2 = "";
+            partial_text3 = "";
+            partial_text4 = "";
+            partial_middle_text = "";
+
+            whole_words.clear();
+            splitLine(text_target, whole_words);
+            partial_target1 = "";
+            partial_target2 = "";
+            partial_target3 = "";
+            partial_target4 = "";
+            int count = 0;
+            for (;count < whole_words.size() && partial_target1.size() + whole_words[count].size() <= 50; ++count) {
+                partial_target1 += whole_words[count];
+                partial_target1 += ' ';
+            }
+            for (;count < whole_words.size() && partial_target2.size() + whole_words[count].size() <= 50; ++count) {
+                partial_target2 += whole_words[count];
+                partial_target2 += ' ';
+            }
+            for (;count < whole_words.size() && partial_target3.size() + whole_words[count].size() <= 50; ++count) {
+                partial_target3 += whole_words[count];
+                partial_target3 += ' ';
+            }
+            for (;count < whole_words.size() && partial_target4.size() + whole_words[count].size() <= 50; ++count) {
+                partial_target4 += whole_words[count];
+                partial_target4 += ' ';
+            }
+
+            if (count != whole_words.size()) {
+                Engine::LOG(Engine::ERROR) << "Script too long, cannot be fully presented";
+            }
+
+            history_info.push_back({name, partial_target1});
+            if (partial_target2 != "") {
+                history_info.push_back({"", partial_target2});
+                if (partial_target3 != "") {
+                    history_info.push_back({"", partial_target3});
+                    if (partial_target4 != "") {
+                        history_info.push_back({"", partial_target4});
+                    }
+                }
+            }
+        } else {
+            name = "";
+            text_target = "";
+            middle_text = temp[1];
+            partial_text = "";
+            partial_text1 = "";
+            partial_text2 = "";
+            partial_text3 = "";
+            partial_text4 = "";
+            partial_middle_text = "";
+
+            history_info.push_back({"", middle_text});
+        }
+        queue_of_text.pop();
+    } else {
+        ChangeScene();
+    }
+}
+
 void PlotScene::SetPlotPathTo(std::string path) {
     plot_path = path;
 }
@@ -52,111 +153,10 @@ void PlotScene::Initialize() {
     partial_text3 = "";
     partial_text4 = "";
 
-    auto onClickCallback = [this]{
-        if (partial_text != text_target) {
-            partial_text = text_target;
-            partial_text1 = partial_target1;
-            partial_text2 = partial_target2;
-            partial_text3 = partial_target3;
-            partial_text4 = partial_target4;
-            return;
-        } else if (partial_middle_text != middle_text) {
-            partial_middle_text = middle_text;
-            return;
-        }
-
-        while (!queue_of_text.empty()) {
-            auto words = queue_of_text.front();
-            if (words[0] == "show") {
-                image_map[words[1]].img->ChangeImageTo(image_map[words[1]].path, atoi(words[3].c_str()), atoi(words[4].c_str()));
-            } else if (words[0] == "hide") {
-                image_map[words[1]].img->ChangeImageTo(transparent, 0, 0);
-            } else if (words[0] == "play") {
-                al_play_sample(music_map[words[1]].sample, 0.5, 0.5, 1.0, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
-            } else if (words[0] == "stop") {
-                auto temp = music_map[words[1]].id;
-                if (&temp != nullptr) {
-                    al_stop_sample(&temp);
-                }
-            } else {
-                break;
-            }
-            queue_of_text.pop();
-        }
-        if (!queue_of_text.empty()) {
-            auto temp = queue_of_text.front();
-            if (temp[0] != "middle") {
-                name = temp[0];
-                text_target = temp[1];
-                middle_text = "";
-                partial_text = "";
-                partial_text1 = "";
-                partial_text2 = "";
-                partial_text3 = "";
-                partial_text4 = "";
-                partial_middle_text = "";
-
-                whole_words.clear();
-                splitLine(text_target, whole_words);
-                partial_target1 = "";
-                partial_target2 = "";
-                partial_target3 = "";
-                partial_target4 = "";
-                int count = 0;
-                for (;count < whole_words.size() && partial_target1.size() + whole_words[count].size() <= 50; ++count) {
-                    partial_target1 += whole_words[count];
-                    partial_target1 += ' ';
-                }
-                for (;count < whole_words.size() && partial_target2.size() + whole_words[count].size() <= 50; ++count) {
-                    partial_target2 += whole_words[count];
-                    partial_target2 += ' ';
-                }
-                for (;count < whole_words.size() && partial_target3.size() + whole_words[count].size() <= 50; ++count) {
-                    partial_target3 += whole_words[count];
-                    partial_target3 += ' ';
-                }
-                for (;count < whole_words.size() && partial_target4.size() + whole_words[count].size() <= 50; ++count) {
-                    partial_target4 += whole_words[count];
-                    partial_target4 += ' ';
-                }
-
-                if (count != whole_words.size()) {
-                    Engine::LOG(Engine::ERROR) << "Script too long, cannot be fully presented";
-                }
-
-                history_info.push_back({name, partial_target1});
-                if (partial_target2 != "") {
-                    history_info.push_back({"", partial_target2});
-                    if (partial_target3 != "") {
-                        history_info.push_back({"", partial_target3});
-                        if (partial_target4 != "") {
-                            history_info.push_back({"", partial_target4});
-                        }
-                    }
-                }
-            } else {
-                name = "";
-                text_target = "";
-                middle_text = temp[1];
-                partial_text = "";
-                partial_text1 = "";
-                partial_text2 = "";
-                partial_text3 = "";
-                partial_text4 = "";
-                partial_middle_text = "";
-
-                history_info.push_back({"", middle_text});
-            }
-            queue_of_text.pop();
-        } else {
-            ChangeScene();
-        }
-    };
-
     Engine::ImageButton* btn;
 
     btn = new Engine::ImageButton("plot/black.png", "plot/black.png", 0, 0, 1600, 832);
-    btn->SetOnClickCallback(onClickCallback);
+    btn->SetOnClickCallback([this]{OnClickCallBack();});
     AddNewControlObject(btn);
 
     // Read plot from file
@@ -271,7 +271,7 @@ void PlotScene::Initialize() {
         }
         queue_of_text.emplace(out);
     }
-    onClickCallback();
+    OnClickCallBack();
 
     for (auto i : image_map) {
         AddRefObject(*i.second.img);
@@ -430,6 +430,8 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
                     history_text[count] = "";
                 }
             }
+        } else {
+            OnClickCallBack();
         }
     }
 }

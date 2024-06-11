@@ -100,6 +100,8 @@ public:
     void Update(float deltaTime) override;
     void OnMouseScroll(int mx, int my, int delta);
 
+    void OnClickCallBack();
+
     void SetPlotPathTo(std::string path);
 
     bool GoToPlayNext = false;
