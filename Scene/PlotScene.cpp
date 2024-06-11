@@ -44,7 +44,7 @@ void PlotScene::OnClickCallBack() {
         } else if (words[0] == "hide") {
             image_map[words[1]].img->ChangeImageTo(transparent, 0, 0);
         } else if (words[0] == "play") {
-            al_play_sample(music_map[words[1]].sample, 0.5, 0.5, 1.0, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
+            al_play_sample(music_map[words[1]].sample, 0.5f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
         } else if (words[0] == "stop") {
             auto temp = music_map[words[1]].id;
             if (&temp != nullptr) {
