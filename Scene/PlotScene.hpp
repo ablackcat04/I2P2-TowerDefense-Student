@@ -90,6 +90,9 @@ private:
 
     std::string plot_path = "Resource/plot/test.txt";
 
+    ALLEGRO_SAMPLE* text_sfx;
+    ALLEGRO_SAMPLE_ID* text_sfx_id;
+
 public:
     explicit PlotScene() = default;
     void Initialize() override;

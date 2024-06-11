@@ -130,6 +130,9 @@ void PlotScene::SetPlotPathTo(std::string path) {
 }
 
 void PlotScene::Initialize() {
+    text_sfx = al_load_sample("Resource/audios/slide.ogg");
+    text_sfx_id = nullptr;
+
     history_info.clear();
     history_ptr = 0;
 
@@ -320,6 +323,7 @@ void PlotScene::Initialize() {
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
     //bgmInstance = AudioHelper::PlaySample("BeyondSunshine.ogg", true, AudioHelper::BGMVolume);
 }
+
 void PlotScene::Update(float deltaTime) {
     if (history != prev_history) {
         if (!history) {
@@ -335,6 +339,10 @@ void PlotScene::Update(float deltaTime) {
     if (time > 0.04) {
         time -= 0.04;
         if (text_target != partial_text) {
+            if (text_sfx_id != nullptr) {
+                al_stop_sample(text_sfx_id);
+            }
+            al_play_sample(text_sfx, 0.3f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, text_sfx_id);
             partial_text += text_target[partial_text.size()];
             while (text_target[partial_text.size()] == ' ') {
                 partial_text += ' ';
@@ -362,6 +370,10 @@ void PlotScene::Update(float deltaTime) {
                 }
             }
         } else if (middle_text != partial_middle_text) {
+            if (text_sfx_id != nullptr) {
+                al_stop_sample(text_sfx_id);
+            }
+            al_play_sample(text_sfx, 0.3f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, text_sfx_id);
             partial_middle_text += middle_text[partial_middle_text.size()];
             if (middle_text[partial_middle_text.size()] == ' ') {
                 partial_middle_text += ' ';
@@ -371,8 +383,8 @@ void PlotScene::Update(float deltaTime) {
 }
 
 void PlotScene::Terminate() {
-    //AudioHelper::StopSample(bgmInstance);
     al_stop_samples();
+    al_destroy_sample(text_sfx);
     for (auto i : music_map) {
         al_destroy_sample(i.second.sample);
     }
