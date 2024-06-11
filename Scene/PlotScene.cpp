@@ -130,6 +130,9 @@ void PlotScene::SetPlotPathTo(std::string path) {
 }
 
 void PlotScene::Initialize() {
+    while (!queue_of_text.empty()) {
+        queue_of_text.pop();
+    }
     text_sfx = al_load_sample("Resource/audios/slide.ogg");
     text_sfx_id = nullptr;
 
@@ -338,6 +341,10 @@ void PlotScene::Update(float deltaTime) {
     time += deltaTime;
     if (time > 0.04) {
         time -= 0.04;
+        if (text_target == "" && middle_text == "") {
+            OnClickCallBack();
+            return;
+        }
         if (text_target != partial_text) {
             if (text_sfx_id != nullptr) {
                 al_stop_sample(text_sfx_id);
