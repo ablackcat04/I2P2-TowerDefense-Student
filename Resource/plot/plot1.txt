@@ -1,0 +1,23 @@
+image Kuo "plot/Kuo.jpg" size 300 400
+audio gun "gun2.ogg"
+audio bs "BeyondSunshine.ogg"
+
+Plot_Start:
+
+middle "Plot 1"
+middle "at a very, very cold and lonely night......"
+ABlackCat "What should I do?"
+ABlackCat "Maybe I should write code"
+NULL "Writing Code..."
+Console "Hello I2P Final Project!!!"
+Console "Try to say a very very very very very very long sentence, please fix the system to present this properly. Test Test Test try to go to the fourth line!!!!!!!!!!!"
+show Kuo at 200 0
+System "Show Kuo at 200 0"
+hide Kuo
+play gun
+middle "(Gun Sound)"
+System "oops"
+play bs
+MP3_Player "Playing Beyond Sunshine by ABlackCat. Click to stop."
+stop bs
+MP3_Player "Audio Stopped!"

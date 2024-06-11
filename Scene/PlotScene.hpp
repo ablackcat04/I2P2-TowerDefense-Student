@@ -14,6 +14,9 @@
 #include <vector>
 #include <unordered_map>
 #include "UI/Component/RefImage.hpp"
+#include "PlayScene.hpp"
+#include "WinScene.hpp"
+#include "Engine/GameEngine.hpp"
 
 void UpdateText(std::queue<std::list<std::string>>& queue_of_text, std::string& text, std::string& name);
 
@@ -85,6 +88,8 @@ private:
     std::vector<std::pair<std::string, std::string>> history_info;
     int history_ptr;
 
+    std::string plot_path = "Resource/plot/test.txt";
+
 public:
     explicit PlotScene() = default;
     void Initialize() override;
@@ -94,6 +99,22 @@ public:
     static void BackOnClick(int stage);
     void Update(float deltaTime) override;
     void OnMouseScroll(int mx, int my, int delta);
+
+    void SetPlotPathTo(std::string path);
+
+    bool GoToPlayNext = false;
+    int stage;
+
+    void ChangeScene() {
+        if (GoToPlayNext) {
+            PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
+            scene->MapId = stage;
+            SetLastStage(stage);
+            Engine::GameEngine::GetInstance().ChangeScene("play");
+        } else {
+            Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+        }
+    }
 };
 
 

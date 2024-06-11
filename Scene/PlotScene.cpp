@@ -14,8 +14,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "PlayScene.hpp"
 #include "Engine/LOG.hpp"
-
-std::string plot_path = "Resource/plot/test.txt";
+#include "WinScene.hpp"
 
 void splitLine(const std::string& line, std::vector<std::string>& words) {
     std::istringstream iss(line);
@@ -25,10 +24,13 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
     }
 }
 
+void PlotScene::SetPlotPathTo(std::string path) {
+    plot_path = path;
+}
+
 void PlotScene::Initialize() {
     history_info.clear();
     history_ptr = 0;
-
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -147,7 +149,7 @@ void PlotScene::Initialize() {
             }
             queue_of_text.pop();
         } else {
-            Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+            ChangeScene();
         }
     };
 
@@ -179,7 +181,7 @@ void PlotScene::Initialize() {
         if (words[0] == "image" && words.size() == 6) {
             if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
                 Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 90";
-                Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+                ChangeScene();
             } else {
                 words[2].erase(0,1);
                 words[2].erase(words[2].size()-1, 1);
@@ -190,7 +192,7 @@ void PlotScene::Initialize() {
         } else if (words[0] == "audio" && words.size() == 3) {
             if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
                 Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 101";
-                Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+                ChangeScene();
             } else {
                 words[2].erase(0,1);
                 words[2].erase(words[2].size()-1, 1);
@@ -205,7 +207,7 @@ void PlotScene::Initialize() {
             music_map.emplace(words[1], a);
         } else {
             Engine::LOG(Engine::ERROR) << "Plot Pre-Processing Syntax Error 116";
-            Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+            ChangeScene();
         }
     }
     // Reading Script
@@ -291,7 +293,8 @@ void PlotScene::Initialize() {
     AddRefObject(*pMiddleText);
 
     btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1350, 20, 64, 64);
-    btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene("stage-select"); });
+
+    btn->SetOnClickCallback([this] { ChangeScene(); });
     AddNewControlObject(btn);
 
     bg_history = new Engine::RefImage(transparent, 100, 100, 1400, 632, 0.0, 0.0);

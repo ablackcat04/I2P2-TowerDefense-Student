@@ -1,6 +1,8 @@
 image ABC "plot/ABlackCat.png" size 200 200
 
 Plot_Start:
+
+middle "Plot 2!!!"
 show ABC at 100 200
 ABlackCat "This is test2.txt"
 ABlackCat "Thanks for testing!"

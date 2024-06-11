@@ -13,6 +13,7 @@
 #include "UI/Component/Slider.hpp"
 #include "StageSelectScene.hpp"
 #include "WinScene.hpp"
+#include "PlotScene.hpp"
 
 void StageSelectScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -58,12 +59,20 @@ void StageSelectScene::Terminate() {
 void StageSelectScene::BackOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("start");
 }
+
 void StageSelectScene::PlayOnClick(int stage) {
-    PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
-    scene->MapId = stage;
+//    PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
+//    scene->MapId = stage;
+//    SetLastStage(stage);
+//    Engine::GameEngine::GetInstance().ChangeScene("play");
+    PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
+    scene->stage = stage;
+    scene->GoToPlayNext = true;
     SetLastStage(stage);
-    Engine::GameEngine::GetInstance().ChangeScene("play");
+    Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
+
 void StageSelectScene::ScoreboardOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
 }

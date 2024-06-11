@@ -1,0 +1,3 @@
+Plot_Start:
+
+middle "You Won the first stage!!!"
