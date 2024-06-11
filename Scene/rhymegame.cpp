@@ -10,7 +10,6 @@
 #include <ctime>
 #include <iostream>
 #include "rhymegame.h"
-#include "Engine/AudioHelper.hpp"
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
@@ -94,7 +93,6 @@ void rhymescene::Initialize() {
     std::srand(std::time(nullptr));  // 初始化随机数种子
 
     // 播放音乐
-    bgmId = AudioHelper::PlayBGM("play.ogg");
     al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, nullptr);
     al_start_timer(timer);
 
@@ -141,12 +139,6 @@ void rhymescene::Initialize() {
     return ;
 }
 
-void rhymescene::Terminate(){
-    AudioHelper::StopBGM(bgmId);
-    AudioHelper::StopSample(deathBGMInstance);
-    deathBGMInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
-    IScene::Terminate();
-}
 
 void rhymescene::Update(float deltaTime){}
 void rhymescene::Draw() const{}
