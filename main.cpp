@@ -7,10 +7,11 @@
 #include "Scene/PlayScene.hpp"
 #include "Scene/StageSelectScene.hpp"
 #include "Scene/WinScene.hpp"
-#include "Scene/StartScene.h"
+#include "Scene/StartScene.hpp"
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/PlotScene.hpp"
+#include "Scene/RhythmGameScene.hpp"
 
 int main() {
 	Engine::LOG::SetConfig(true);
@@ -26,6 +27,7 @@ int main() {
     game.AddNewScene("lose-scene", new LoseScene());
     game.AddNewScene("scoreboard-scene", new ScoreboardScene());
     game.AddNewScene("plot-scene", new PlotScene());
+    game.AddNewScene("rhythm-game-scene", new RhythmGameScene());
 
     // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
 	game.Start("start", 60, 1600, 832);

@@ -47,6 +47,12 @@ void StageSelectScene::Initialize() {
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Test Plot", "pirulen.ttf", 36, halfW, halfH / 2 + 533, 0, 0, 0, 255, 0.5, 0.5));
 
+    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 100, 100, 200, 50);
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::RhythmGameOnClick, this));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Rhythm Game", "pirulen.ttf", 20, 100, 100, 0, 0, 0, 255, 0.5, 0.5));
+
+
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
 	bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
 }
@@ -69,4 +75,8 @@ void StageSelectScene::ScoreboardOnClick() {
 }
 void StageSelectScene::TestOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+}
+
+void StageSelectScene::RhythmGameOnClick() {
+    Engine::GameEngine::GetInstance().ChangeScene("rhythm-game-scene");
 }

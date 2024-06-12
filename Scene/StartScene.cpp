@@ -2,7 +2,7 @@
 // Created by Hsuan on 2024/4/10.
 //
 
-#include "StartScene.h"
+#include "StartScene.hpp"
 #include <allegro5/allegro_audio.h>
 #include <functional>
 #include <memory>
@@ -16,7 +16,7 @@
 #include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
 #include "UI/Component/Slider.hpp"
-#include "Scene/StartScene.h"
+#include "Scene/StartScene.hpp"
 
 void StartScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;

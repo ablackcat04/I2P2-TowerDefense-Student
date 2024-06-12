@@ -89,7 +89,7 @@ add_executable(TowerDefense
 
         # ODO: [HACKATHON-1-SCENE] (2/4) Add the new scene source files here
         Scene/StartScene.cpp
-        Scene/StartScene.h
+        Scene/StartScene.hpp
         Scene/SettingsScene.cpp
         Scene/SettingsScene.hpp
         Scene/ScoreboardScene.cpp
@@ -108,8 +108,10 @@ add_executable(TowerDefense
         Scene/PlotScene.hpp
         UI/Component/RefImage.cpp
         UI/Component/RefImage.hpp
-        Scene/rhymegame.h
-        Scene/rhymegame.cpp
+        Scene/RhythmGameScene.hpp
+        Scene/RhythmGameScene.cpp
+        Utility/Conductor.cpp
+        Utility/Conductor.hpp
         #        UI/Component/TextInput.cpp
 #        UI/Component/TextInput.hpp
 )
