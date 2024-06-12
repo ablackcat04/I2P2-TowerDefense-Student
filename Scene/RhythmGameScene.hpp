@@ -21,28 +21,6 @@
 #include "UI/Component/RefImage.hpp"
 #include "Utility/Conductor.hpp"
 
-//class Conductor {
-//public:
-//    float bpm;
-//    float crotchet;   // length per beat, in seconds
-//    float offset;     // 歌曲的起始偏移量，用于补偿音频文件的开头空白
-//    float songPosition;
-//    double startTime; // 歌曲开始的时间
-//
-//    // 构造函数初始化 bpm 和 offset，并计算 crotchet
-//    Conductor(float bpm, float offset) : bpm(bpm), offset(offset) {
-//        crotchet = 60.0f / bpm;
-//        songPosition = 0.0f;
-//        startTime = al_get_time();
-//    }
-//
-//    // 更新方法，根据当前时间计算歌曲的位置
-//    void update() {
-//        double currentTime = al_get_time();
-//        songPosition = (currentTime - startTime) - offset;
-//    }
-//};
-//
 //class Note {
 //public:
 //    float x, y;    // 音符的 x 和 y 位置
@@ -61,12 +39,13 @@
 class RhythmGameScene final : public Engine::IScene{
 private:
     ALLEGRO_SAMPLE* backgroundMusic;
-    ALLEGRO_SAMPLE_INSTANCE* musicInstance;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     Conductor conductor;
     //std::vector<Note> notes; // 存储音符的容器
 
     Engine::Label* test_pos_label;
     std::string test_text;
+    std::string beattext;
 
 public:
     explicit RhythmGameScene();

@@ -14,7 +14,7 @@
 #include "Engine/Group.hpp"
 #include "Engine/AudioHelper.hpp"
 
-RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), musicInstance(nullptr) , conductor(){
+RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor(){
 
 };
 
@@ -37,15 +37,23 @@ void RhythmGameScene::Initialize() {
 //    // Play the music looped
 //    al_set_sample_instance_playmode(musicInstance, ALLEGRO_PLAYMODE_ONCE);
 //    al_play_sample_instance(musicInstance);
-
-
-
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
+    int halfH = h / 2;
     test_pos_label = new Engine::Label(&test_text, "BoutiqueBitmap7x7_1.7.ttf", 48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
     AddRefObject(*test_pos_label);
-
+    bgmInstance = AudioHelper::PlaySample("rhythm_game_test_audio_bpm_160.ogg", true, AudioHelper::BGMVolume);
     conductor.init(100, 0);
+    test_pos_label = new Engine::Label(&beattext, "BoutiqueBitmap7x7_1.7.ttf", 48, 120, 180, 255, 255, 255, 255, 0.0, 0.0);
+    int beat1=conductor.songPosition/conductor.crotchet;
+    double beat2=conductor.songPosition/conductor.crotchet;
+    if(beat1==beat2) AddRefObject(*test_pos_label);
+    AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH+300, 1608, 15, 0.5, 0.5));
 }
 void RhythmGameScene::Terminate() {
+    AudioHelper::StopSample(bgmInstance);
+    bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     // Stop and destroy the music instance
 //    if (musicInstance) {
 //        al_stop_sample_instance(musicInstance);
@@ -63,6 +71,8 @@ void RhythmGameScene::Terminate() {
 void RhythmGameScene::Update(float deltaTime){
     conductor.update();
     test_text = std::to_string(conductor.songPosition);
+    beattext = std::to_string(conductor.songPosition/conductor.crotchet);
+
 //    for (auto& note : notes) {
 //        note.update();
 //    }
