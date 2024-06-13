@@ -28,9 +28,11 @@ public:
 	void Initialize() override;
 	void Terminate() override;
 	void Update(float deltaTime) override;
-	void BackOnClick(int stage);
+	void ProceedOnClick(int stage);
     void OnKeyDown(int keyCode) final override;
     void OnKeyUp(int keyCode) final override;
+
+    int MapId;
 };
 
 #endif // WINSCENE_HPP

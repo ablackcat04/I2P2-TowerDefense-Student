@@ -12,6 +12,7 @@
 #include "Engine/LOG.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Scoreboard.hpp"
+#include "Scene/PlotScene.hpp"
 
 Engine::Label *Lwin;
 
@@ -36,9 +37,9 @@ void WinScene::Initialize() {
 	AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 4 -10, 255, 255, 255, 255, 0.5, 0.5));
 	Engine::ImageButton* btn;
 	btn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH * 7 / 4 - 50, 400, 100);
-	btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
+	btn->SetOnClickCallback(std::bind(&WinScene::ProceedOnClick, this, 2));
 	AddNewControlObject(btn);
-	AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
+	AddNewObject(new Engine::Label("Proceed", "pirulen.ttf", 48, halfW, halfH * 7 / 4, 0, 0, 0, 255, 0.5, 0.5));
 	bgmId = AudioHelper::PlayAudio("win.wav");
 
     Lwin = new Engine::Label(&username, "pirulen.ttf", 32, halfW-200, 150, 255, 255, 255, 255, 0.5, 0.5, true);
@@ -72,14 +73,20 @@ void WinScene::Update(float deltaTime) {
 		bgmId = AudioHelper::PlayBGM("happy.ogg");
 	}
 }
-void WinScene::BackOnClick(int stage) {
+void WinScene::ProceedOnClick(int stage) {
 	// Change to select scene.
-	Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+	//Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+
+    PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
+    scene->stage = MapId;
+    scene->GoToPlayNext = false;
+    Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
 void WinScene::OnKeyDown(int keyCode) {
     switch (keyCode) {
         case ALLEGRO_KEY_ENTER:
-            Engine::GameEngine::GetInstance().ChangeScene("start");
+            ProceedOnClick(MapId);
             break;
 
         case ALLEGRO_KEY_LSHIFT:

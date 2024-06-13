@@ -149,12 +149,15 @@ void PlayScene::Update(float deltaTime) {
 				delete EffectGroup;
 				delete UIGroup;
 				delete imgTarget;*/
-				//Engine::GameEngine::GetInstance().ChangeScene("win");
-                PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
-                scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
-                scene->stage = MapId;
-                scene->GoToPlayNext = false;
-                Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+                WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
+                scene->MapId = MapId;
+				Engine::GameEngine::GetInstance().ChangeScene("win");
+
+//                PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+//                scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
+//                scene->stage = MapId;
+//                scene->GoToPlayNext = false;
+//                Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 			}
 			continue;
 		}
