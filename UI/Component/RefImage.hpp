@@ -12,8 +12,10 @@ namespace Engine {
     class RefImage : public IObject {
     public:
         // Smart pointer to bitmap.
+        float* ypos;
         std::shared_ptr<ALLEGRO_BITMAP> bmp;
         explicit RefImage(std::string img, float x, float y, float w, float h, float anchorX, float anchorY);
+        explicit RefImage(std::string img, float x, float* y, float w, float h, float anchorX, float anchorY);
         void Draw() const override;
         int GetBitmapWidth() const;
         int GetBitmapHeight() const;

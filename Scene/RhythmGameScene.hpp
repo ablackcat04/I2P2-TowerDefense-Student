@@ -21,23 +21,20 @@
 #include "UI/Component/RefImage.hpp"
 #include "Utility/Conductor.hpp"
 
-//class Note {
-//public:
-//    float x, y;    // 音符的 x 和 y 位置
-//    float size;    // 音符的大小
-//
-//    // 构造函数初始化音符的起始位置
-//    Note(float startX) : x(startX), y(0), size(50) {}
-//
-//    // 更新方法，用于更新音符的位置
-//    void update() ;
-//
-//    // 渲染方法，用于在屏幕上绘制音符
-//    void render();
-//};
+class Note {
+public:
+    float y;    // 音符的 x 和 y 位置
+    int x;// 音符的賽道
+    float size;    // 音符的大小
+    Note(int startX) : x(startX), y(0), size(200){}// 构造函数初始化音符的起始位置
+    void update() ;// 更新方法，用于更新音符的位置
+    void render();// 渲染方法，用于在屏幕上绘制音符
+};
 
 class RhythmGameScene final : public Engine::IScene{
 private:
+    int notesnum;
+    Note notes;
     ALLEGRO_SAMPLE* backgroundMusic;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     Conductor conductor;
@@ -46,6 +43,7 @@ private:
     Engine::Label* test_pos_label;
     std::string test_text;
     std::string beattext;
+    float* ypos;
 
 public:
     explicit RhythmGameScene();
