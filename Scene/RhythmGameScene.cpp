@@ -50,6 +50,9 @@ void RhythmGameScene::Initialize() {
     double beat2=conductor.songPosition/conductor.crotchet;
     if(beat1==beat2) AddRefObject(*test_pos_label);
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH+300, 1608, 15, 0.5, 0.5));
+    AddNewObject(new Engine::Image("stage-select/defineline.png", halfW/2, halfH, 15, 802, 0.5, 0.5));
+    AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH, 15, 802, 0.5, 0.5));
+    AddNewObject(new Engine::Image("stage-select/defineline.png", halfW*1.5, halfH, 15, 802, 0.5, 0.5));
 }
 void RhythmGameScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
