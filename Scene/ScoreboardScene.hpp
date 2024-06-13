@@ -14,6 +14,8 @@ private:
     Engine::Label *Lscb = nullptr;
     std::string title_name = "Scoreboard - stage1";
 
+    bool online_avaliable[2][2];
+
 public:
     explicit ScoreboardScene() = default;
     void Initialize() override;

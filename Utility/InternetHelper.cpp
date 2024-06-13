@@ -11,7 +11,7 @@ size_t InternetHelper::write_data(void *ptr, size_t size, size_t nmemb, FILE *st
 }
 
 bool InternetHelper::downloadFile(const std::string &url, const std::string &localPath) {
-    Engine::LOG(Engine::INFO) << "Try to download file from" << url << " to " << localPath;
+    Engine::LOG(Engine::INFO) << "Try to download file from " << url << " to " << localPath;
     CURL *curl;
     FILE *fp;
     CURLcode res;

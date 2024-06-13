@@ -11,14 +11,10 @@
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/PlotScene.hpp"
-#include "Utility/InternetHelper.hpp"
-#include "curl/curl.h"
 
 int main() {
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine& game = Engine::GameEngine::GetInstance();
-
-    InternetHelper::downloadFile("http://192.168.56.1/I2P_project/hello_server.txt", "Resource/scoreboard/online/hello_server.txt");
 
     // ODO: [HACKATHON-1-SCENE] (3/4): Register Scenes here
     game.AddNewScene("start", new StartScene());

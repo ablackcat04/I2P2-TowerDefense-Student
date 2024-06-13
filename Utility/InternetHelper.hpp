@@ -5,11 +5,11 @@
 #ifndef INC_2024_I2P2_TOWERDEFENSE_INTERNETHELPER_HPP
 #define INC_2024_I2P2_TOWERDEFENSE_INTERNETHELPER_HPP
 
-
 #include <iostream>
 #include <fstream>
 
 namespace InternetHelper {
+    const std::string server_ip = "http://192.168.56.1";
 
     size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream);
 
