@@ -108,6 +108,8 @@ add_executable(TowerDefense
         Scene/PlotScene.hpp
         UI/Component/RefImage.cpp
         UI/Component/RefImage.hpp
+        UI/Component/ToggledTextButton.cpp
+        UI/Component/ToggledTextButton.hpp
         #        UI/Component/TextInput.cpp
 #        UI/Component/TextInput.hpp
 )

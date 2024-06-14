@@ -15,6 +15,7 @@
 #include "PlayScene.hpp"
 #include "Engine/LOG.hpp"
 #include "WinScene.hpp"
+#include "UI/Component/ToggledTextButton.hpp"
 
 void splitLine(const std::string& line, std::vector<std::string>& words) {
     std::istringstream iss(line);
@@ -318,6 +319,11 @@ void PlotScene::Initialize() {
         AddRefObject(*history_name_label[i]);
         AddRefObject(*history_text_label[i]);
     }
+
+    bool* c = new bool(false);
+    auto* t = new Engine::ToggledTextButton("test", c, 100, 100, al_map_rgb(255,255,255), al_map_rgb(200,200,200),
+                                            al_map_rgb(220,220,220));
+    AddRefControlObject(*t);
 
     plot.close();
 
