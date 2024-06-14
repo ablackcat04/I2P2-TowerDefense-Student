@@ -27,8 +27,10 @@ public:
     float y;    // 音符的 y 位置
     int x;// 音符的賽道1-4
     float size;    // 音符的大小
-    Note(int startX) : x(startX), y(0), size(200){}// 构造函数初始化音符的起始位置
-    void update() ;// 更新方法，用于更新音符的位置
+    float starttime;
+    bool active;
+    Note(int startX,float start) : x(startX), y(0), size(200),starttime(start),active(false){}// 构造函数初始化音符的起始位置
+    void update(Conductor conduc) ;// 更新方法，用于更新音符的位置
     void render();// 渲染方法，用于在屏幕上绘制音符
 };
 
@@ -51,7 +53,7 @@ public:
     void Terminate() override;
     void Update(float deltaTime) override;
     void readnotes(int songID);//讀譜面
-    //void Draw() const override;
+    void Draw() const override;
     //void OnKeyDown(int keyCode) override;
 };
 
