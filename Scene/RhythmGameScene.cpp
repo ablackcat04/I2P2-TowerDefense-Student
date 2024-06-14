@@ -150,6 +150,6 @@ void Note::render() {
     int halfW = w / 2;
     int halfH = h / 2;
     if (active) {
-        al_draw_filled_rectangle(402*x, y, 402*x + size, y + size, al_map_rgb(255, 0, 0));
+        al_draw_filled_rectangle(402*x, y, 402*x + size, y + 150, al_map_rgb(255, 0, 0));
     }
 }
