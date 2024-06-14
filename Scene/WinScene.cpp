@@ -13,6 +13,7 @@
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Scoreboard.hpp"
 #include "Scene/PlotScene.hpp"
+#include "Utility/InternetHelper.hpp"
 
 Engine::Label *Lwin;
 
@@ -52,13 +53,39 @@ void WinScene::Terminate() {
         username = "???";
     }
 
-    std::string path = (std::string)"Resource/stage" + (char)(win_scene_info.last_stage + '0') + "_moneyLeft_scoreboard.txt";
+    std::string path;
+    if (InternetHelper::downloadFile(InternetHelper::server_ip + "/I2P_project/scoreboard/stage" + std::to_string(win_scene_info.last_stage) + "_moneyLeft_scoreboard.txt",
+                                     "Resource/scoreboard/online/stage" + std::to_string(win_scene_info.last_stage) + "_moneyLeft_scoreboard.txt")) {
+        path = "Resource/scoreboard/online/stage" + std::to_string(win_scene_info.last_stage) + "_moneyLeft_scoreboard.txt";
+        Engine::Scoreboard money_scoreboard(path, 0, 0);
+        money_scoreboard.AddNew(username, win_scene_info.money_left);
+        if (InternetHelper::uploadFile(InternetHelper::upload_php_position, path)) {
+            Engine::LOG(Engine::INFO) << "successfully upload the modified money scoreboard";
+        } else {
+            Engine::LOG(Engine::INFO) << "failed to upload the modified money scoreboard";
+        }
+    }
+    path = "Resource/scoreboard/stage" + std::to_string(win_scene_info.last_stage) + "_moneyLeft_scoreboard.txt";
     Engine::Scoreboard money_scoreboard(path, 0, 0);
     money_scoreboard.AddNew(username, win_scene_info.money_left);
 
-    path = (std::string)"Resource/stage" + (char)(win_scene_info.last_stage + '0') + "_lifeLeft_scoreboard.txt";
+
+
+    if (InternetHelper::downloadFile(InternetHelper::server_ip + "/I2P_project/scoreboard/stage" + std::to_string(win_scene_info.last_stage) + "_lifeLeft_scoreboard.txt",
+                                     "Resource/scoreboard/online/stage" + std::to_string(win_scene_info.last_stage) + "_lifeLeft_scoreboard.txt")) {
+        path = "Resource/scoreboard/online/stage" + std::to_string(win_scene_info.last_stage) + "_lifeLeft_scoreboard.txt";
+        Engine::Scoreboard life_scoreboard(path, 0, 0);
+        life_scoreboard.AddNew(username, win_scene_info.life_left);
+        if (InternetHelper::uploadFile(InternetHelper::upload_php_position, path)) {
+            Engine::LOG(Engine::INFO) << "successfully upload the modified life scoreboard";
+        } else {
+            Engine::LOG(Engine::INFO) << "failed to upload the modified life scoreboard";
+        }
+    }
+    path = "Resource/scoreboard/stage" + std::to_string(win_scene_info.last_stage) + "_lifeLeft_scoreboard.txt";
     Engine::Scoreboard life_scoreboard(path, 0, 0);
     life_scoreboard.AddNew(username, win_scene_info.life_left);
+
 
 	IScene::Terminate();
 	AudioHelper::StopBGM(bgmId);
@@ -74,9 +101,6 @@ void WinScene::Update(float deltaTime) {
 	}
 }
 void WinScene::ProceedOnClick(int stage) {
-	// Change to select scene.
-	//Engine::GameEngine::GetInstance().ChangeScene("stage-select");
-
     PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
     scene->stage = MapId;
