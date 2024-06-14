@@ -104,6 +104,7 @@ public:
     static void BackOnClick(int stage);
     void Update(float deltaTime) override;
     void OnMouseScroll(int mx, int my, int delta);
+    void OnKeyDown(int keyCode) override;
 
     void OnClickCallBack();
 

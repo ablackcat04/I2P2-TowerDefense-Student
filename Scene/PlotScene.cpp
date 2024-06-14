@@ -25,7 +25,17 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
     }
 }
 
+void PlotScene::OnKeyDown(int keyCode) {
+    if (keyCode == ALLEGRO_KEY_ENTER) {
+        OnClickCallBack();
+    }
+}
+
 void PlotScene::OnClickCallBack() {
+    if (history) {
+        return;
+    }
+
     if (partial_text != text_target) {
         partial_text = text_target;
         partial_text1 = partial_target1;
@@ -347,9 +357,6 @@ void PlotScene::Update(float deltaTime) {
     time += deltaTime;
     if (time > 0.04) {
         time -= 0.04;
-        if (history) {
-            return;
-        }
         if (text_target == "" && middle_text == "") {
             OnClickCallBack();
             return;
