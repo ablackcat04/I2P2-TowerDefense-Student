@@ -20,11 +20,12 @@
 #include <unordered_map>
 #include "UI/Component/RefImage.hpp"
 #include "Utility/Conductor.hpp"
+using namespace std;
 
 class Note {
 public:
-    float y;    // 音符的 x 和 y 位置
-    int x;// 音符的賽道
+    float y;    // 音符的 y 位置
+    int x;// 音符的賽道1-4
     float size;    // 音符的大小
     Note(int startX) : x(startX), y(0), size(200){}// 构造函数初始化音符的起始位置
     void update() ;// 更新方法，用于更新音符的位置
@@ -34,22 +35,22 @@ public:
 class RhythmGameScene final : public Engine::IScene{
 private:
     int notesnum;
-    Note notes;
+    vector<Note> notes; // 存储音符的容器
     ALLEGRO_SAMPLE* backgroundMusic;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     Conductor conductor;
-    //std::vector<Note> notes; // 存储音符的容器
 
     Engine::Label* test_pos_label;
     std::string test_text;
     std::string beattext;
-    float* ypos;
+    float** ypos;//存儲音符y位置的指標的容器
 
 public:
     explicit RhythmGameScene();
     void Initialize() override;
     void Terminate() override;
     void Update(float deltaTime) override;
+    void readnotes(int songID);//讀譜面
     //void Draw() const override;
     //void OnKeyDown(int keyCode) override;
 };

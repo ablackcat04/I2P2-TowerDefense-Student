@@ -9,13 +9,14 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <fstream>
 #include "RhythmGameScene.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/AudioHelper.hpp"
 using namespace std;
 
-RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor(), notesnum(0),notes(1){
+RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor(), notesnum(0){
 }
 
 void RhythmGameScene::Initialize() {
@@ -41,27 +42,31 @@ void RhythmGameScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    //test_pos_label = new Engine::Label(&test_text, "BoutiqueBitmap7x7_1.7.ttf", 48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
-    //AddRefObject(*test_pos_label);
     bgmInstance = AudioHelper::PlaySample("rhythm_game_test_audio_bpm_160.ogg", true, AudioHelper::BGMVolume);
     conductor.init(100, 0);
-    //test_pos_label = new Engine::Label(&beattext, "BoutiqueBitmap7x7_1.7.ttf", 48, 120, 180, 255, 255, 255, 255, 0.0, 0.0);
-    //AddRefObject(*test_pos_label);
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH+300, 1608, 15, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW/2, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW*1.5, halfH, 15, 802, 0.5, 0.5));
-    /*for (auto& note : notes) {
-        AddNewObject(new Engine::Image("stage-select/Note.png", w/note.x, 0+note.y, note.size, note.size, 0.5, 0.5));
-    }*/
+    readnotes(1);
+    ypos = new float*[notes.size()];
     Engine::RefImage* testimage;
-    ypos=&notes.y;
-    testimage=new Engine::RefImage("stage-select/Note.png", w/notes.x,ypos , notes.size, notes.size, 0.5, 0.5);
-    AddRefObject(*testimage);
+    int k=0;
+    for (auto& note : notes) {
+        ypos[k]=&note.y;
+        k++;
+    }
+    k=0;
+    for (auto& note : notes){
+        testimage=new Engine::RefImage("stage-select/Note.png", w/notes[k].x,ypos[k] , 200, 200, 0.5, 0.5);
+        AddRefObject(*testimage);
+        k++;
+    }
 }
 void RhythmGameScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+    delete[] ypos;
     // Stop and destroy the music instance
 //    if (musicInstance) {
 //        al_stop_sample_instance(musicInstance);
@@ -76,14 +81,24 @@ void RhythmGameScene::Terminate() {
 //    }
 }
 
+void RhythmGameScene::readnotes(int songID){
+    std::string filename = std::string("Resource/song") + std::to_string(songID) ;
+    bool hasnote[4];
+    std::ifstream fin(filename);
+    while(fin >> hasnote[0] >> hasnote[1] >> hasnote[2] >> hasnote[3]){
+        for(int i=0;i<4;i++){
+            if(hasnote[i]) notes.emplace_back(Note(i+1));
+        }
+    }
+}
+
 void RhythmGameScene::Update(float deltaTime){
     conductor.update();
     test_text = std::to_string(conductor.songPosition);
     beattext = std::to_string(conductor.songPosition/conductor.crotchet);
-    notes.update();
-    /*for (auto& note : notes) {
+    for (auto& note : notes) {
         note.update();
-    }*/
+    }
 }
 
 
