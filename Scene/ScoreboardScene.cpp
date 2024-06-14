@@ -55,8 +55,14 @@ void ScoreboardScene::Initialize() {
     int halfW = w / 2;
     int halfH = h / 2;
 
+    if (InternetHelper::uploadFile(InternetHelper::upload_php_position, "Resource/scoreboard/local_test.txt")) {
+        Engine::LOG(Engine::INFO) << "Upload Test Success!";
+    } else {
+        Engine::LOG(Engine::ERROR) << "Upload Test Failed!";
+    }
+
     for (int i = 1; i <=2; ++i) {
-        if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt",
+        if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt",
                                          "Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt")) {
             Engine::LOG(Engine::INFO) << "Load Successfully";
             online_avaliable[i-1][0] = true;
@@ -65,7 +71,7 @@ void ScoreboardScene::Initialize() {
             online_avaliable[i-1][0] = false;
         }
 
-        if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt",
+        if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt",
                                          "Resource/scoreboard/online/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt")) {
             Engine::LOG(Engine::INFO) << "Load Successfully";
             online_avaliable[i-1][1] = true;
