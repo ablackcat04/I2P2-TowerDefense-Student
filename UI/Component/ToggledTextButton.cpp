@@ -18,9 +18,9 @@ namespace Engine {
     ToggledTextButton::ToggledTextButton(const std::string &text_input, bool *control, const float &x, const float &y,
                                          ALLEGRO_COLOR default_color, ALLEGRO_COLOR hovered_color, ALLEGRO_COLOR pressed_color)
         :text(text_input), ctrl(control), x(x), y(y), dft_color(default_color), hvd_color(hovered_color), psd_color(pressed_color) {
-        font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 20, 0);
+        font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 32, 0);
         w = al_get_text_width(font, text_input.c_str());
-        h = 20;
+        h = 32;
     }
 
     ToggledTextButton::~ToggledTextButton() {

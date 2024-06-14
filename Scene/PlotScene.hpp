@@ -75,6 +75,8 @@ private:
 
     bool history;
     bool prev_history;
+    bool auto_mode = false;
+    float auto_timer;
 
     std::string history_title;
 

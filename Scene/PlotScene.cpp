@@ -162,7 +162,7 @@ void PlotScene::Initialize() {
 
     Engine::ImageButton* btn;
 
-    btn = new Engine::ImageButton("plot/black.png", "plot/black.png", 0, 0, 1600, 832);
+    btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
     btn->SetOnClickCallback([this]{OnClickCallBack();});
     AddNewControlObject(btn);
 
@@ -299,7 +299,7 @@ void PlotScene::Initialize() {
     pMiddleText = new Engine::Label(&partial_middle_text, "BoutiqueBitmap7x7_1.7.ttf", 56, 150, 200, 255, 255, 255, 255, 0.5, 0.5);
     AddRefObject(*pMiddleText);
 
-    btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1350, 20, 64, 64);
+    btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1500, 9, 32, 32);
 
     btn->SetOnClickCallback([this] { ChangeScene(); });
     AddNewControlObject(btn);
@@ -320,14 +320,14 @@ void PlotScene::Initialize() {
         AddRefObject(*history_text_label[i]);
     }
 
-    bool* c = new bool(false);
-    auto* t = new Engine::ToggledTextButton("test", c, 100, 100, al_map_rgb(255,255,255), al_map_rgb(200,200,200),
-                                            al_map_rgb(220,220,220));
+    auto* t = new Engine::ToggledTextButton("auto", &auto_mode, 1400, 9, al_map_rgb(255,255,255), al_map_rgb(180,180,220),
+                                            al_map_rgb(200,200,255));
     AddRefControlObject(*t);
 
     plot.close();
 
     time = 0.0f;
+    auto_timer = 0.0f;
 
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
     //bgmInstance = AudioHelper::PlaySample("BeyondSunshine.ogg", true, AudioHelper::BGMVolume);
@@ -347,6 +347,9 @@ void PlotScene::Update(float deltaTime) {
     time += deltaTime;
     if (time > 0.04) {
         time -= 0.04;
+        if (history) {
+            return;
+        }
         if (text_target == "" && middle_text == "") {
             OnClickCallBack();
             return;
@@ -390,6 +393,14 @@ void PlotScene::Update(float deltaTime) {
             partial_middle_text += middle_text[partial_middle_text.size()];
             if (middle_text[partial_middle_text.size()] == ' ') {
                 partial_middle_text += ' ';
+            }
+        } else {
+            if (auto_mode) {
+                auto_timer += deltaTime;
+                if (auto_timer >= 1.0f) {
+                    OnClickCallBack();
+                    auto_timer = 0.0f;
+                }
             }
         }
     }
