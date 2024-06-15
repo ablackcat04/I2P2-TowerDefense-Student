@@ -20,9 +20,16 @@
 using namespace std;
 
 RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor(), notesnum(0){
+    white = al_map_rgb(255,255,255);
+    cyan = al_map_rgb(0, 220, 220);
+    yellow = al_map_rgb(220, 220, 0);
 }
 
 void RhythmGameScene::Initialize() {
+    for (int i = 0; i < 4; ++i) {
+        last_hit_time[i] = -1000;
+        last_judgement[i] = Judgement::missed;
+    }
     combo = 0;
     current_judgement = "";
     notes.clear();
@@ -33,26 +40,8 @@ void RhythmGameScene::Initialize() {
     frame_rate = 0.f;
     score = 0;
     font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 40, 0);
-    white = al_map_rgb(255,255,255);
 
-    // Load background music
-//    backgroundMusic = al_load_sample("resources/music/background.ogg");
-//    if (!backgroundMusic) {
-//        throw std::runtime_error("Failed to load background music.");
-//    }
-//
-//    // Create a music instance
-//    musicInstance = al_create_sample_instance(backgroundMusic);
-//    if (!musicInstance) {
-//        throw std::runtime_error("Failed to create music instance.");
-//    }
-//
-//    // Attach the instance to the default mixer
-//    al_attach_sample_instance_to_mixer(musicInstance, al_get_default_mixer());
-//
-//    // Play the music looped
-//    al_set_sample_instance_playmode(musicInstance, ALLEGRO_PLAYMODE_ONCE);
-//    al_play_sample_instance(musicInstance);
+
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
@@ -64,23 +53,6 @@ void RhythmGameScene::Initialize() {
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW*1.5, halfH, 15, 802, 0.5, 0.5));
     readnotes(1);
-    /*ypos = new float*[notes.size()];
-    Engine::RefImage* testimage;
-    int k=0;
-    for (auto& note : notes) {
-        ypos[k]=&note.y;
-        k++;
-    }
-    k=0;
-    /*for (auto& note : notes){
-        if(note.starttime<=conductor.songPosition){
-            testimage=new Engine::RefImage("stage-select/Note.png", w/note.x,ypos[k] , 200, 200, 0.5, 0.5);
-            AddRefObject(*testimage);
-        }
-        testimage=new Engine::RefImage("stage-select/Note.png", w/notes[k].x,ypos[k] , 200, 200, 0.5, 0.5);
-        AddRefObject(*testimage);
-        k++;
-    }*/
 
     auto* a = new Engine::Label(&test_text, "BoutiqueBitmap7x7_1.7.ttf", 40, 0, 0, 255, 255, 255, 255);
     AddRefObject(*a);
@@ -101,18 +73,6 @@ void RhythmGameScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     delete[] ypos;
-    // Stop and destroy the music instance
-//    if (musicInstance) {
-//        al_stop_sample_instance(musicInstance);
-//        al_destroy_sample_instance(musicInstance);
-//        musicInstance = nullptr;
-//    }
-//
-//    // Destroy the background music sample
-//    if (backgroundMusic) {
-//        al_destroy_sample(backgroundMusic);
-//        backgroundMusic = nullptr;
-//    }
 }
 
 void RhythmGameScene::readnotes(int songID){
@@ -150,13 +110,6 @@ void RhythmGameScene::Update(float deltaTime){
             combo = 0;
         }
     }
-
-//    for (auto& note : notes) {
-//        note.update(conductor);
-//        if (note.active && conductor.songPosition - note.starttime * conductor.crotchet-1 > 0.1) {
-//            note.destroy = true;
-//        }
-//    }
 }
 
 void RhythmGameScene::Draw() const {
@@ -174,6 +127,13 @@ void RhythmGameScene::Draw() const {
         frame_time.pop();
     }
     fps = std::to_string(frame_time.size());
+
+    for (int i = 0; i < 4; ++i) {
+        float t = conductor.songPosition - last_hit_time[i];
+        if (t < 0.1) {
+            al_draw_rectangle(402 * i + 100 - (100)*(t*10), 675, 402 * (i + 1) - 100 + (100)*(t*10), 725, (last_judgement[i] == Judgement::perfect ? cyan : yellow), 100*(t+0.05));
+        }
+    }
 }
 
 
@@ -206,11 +166,14 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
                     current_judgement = "Perfect";
+                    last_judgement[0] = Judgement::perfect;
                 } else {
                     score += 50;
                     current_judgement = " Good";
+                    last_judgement[0] = Judgement::good;
                 }
                 ++combo;
+                last_hit_time[0] = conductor.songPosition;
                 break;
             }
         }
@@ -223,11 +186,14 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
                     current_judgement = "Perfect";
+                    last_judgement[1] = Judgement::perfect;
                 } else {
                     score += 50;
                     current_judgement = " Good";
+                    last_judgement[1] = Judgement::good;
                 }
                 ++combo;
+                last_hit_time[1] = conductor.songPosition;
                 break;
             }
         }
@@ -240,11 +206,14 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
                     current_judgement = "Perfect";
+                    last_judgement[2] = Judgement::perfect;
                 } else {
                     score += 50;
                     current_judgement = " Good";
+                    last_judgement[3] = Judgement::good;
                 }
                 ++combo;
+                last_hit_time[2] = conductor.songPosition;
                 break;
             }
         }
@@ -257,11 +226,14 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
                     current_judgement = "Perfect";
+                    last_judgement[3] = Judgement::perfect;
                 } else {
                     score += 50;
                     current_judgement = " Good";
+                    last_judgement[3] = Judgement::good;
                 }
                 ++combo;
+                last_hit_time[3] = conductor.songPosition;
                 break;
             }
         }

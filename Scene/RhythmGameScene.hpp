@@ -54,6 +54,8 @@ private:
 
     ALLEGRO_FONT* font;
     ALLEGRO_COLOR white;
+    ALLEGRO_COLOR cyan;
+    ALLEGRO_COLOR yellow;
 
     int score;
     int combo;
@@ -62,6 +64,12 @@ private:
 
     float frame_rate;
     mutable std::queue<float> frame_time;
+
+    float last_hit_time[4];
+    enum class Judgement {
+        perfect, good, missed
+    };
+    Judgement last_judgement[4];
 
 public:
     explicit RhythmGameScene();
