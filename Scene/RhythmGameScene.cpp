@@ -1,6 +1,7 @@
 //
 // Created by yuwei on 2024/6/11.
 //
+#include <queue>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
@@ -20,6 +21,11 @@ RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullp
 }
 
 void RhythmGameScene::Initialize() {
+    frame_rate = 0.f;
+    score = 0;
+    font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 40, 0);
+    white = al_map_rgb(255,255,255);
+
     // Load background music
 //    backgroundMusic = al_load_sample("resources/music/background.ogg");
 //    if (!backgroundMusic) {
@@ -44,7 +50,7 @@ void RhythmGameScene::Initialize() {
     int halfH = h / 2;
     bgmInstance = AudioHelper::PlaySample("rhythm_game_test_audio_bpm_160.ogg", true, AudioHelper::BGMVolume);
     conductor.init(100, 0);
-    AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH+300, 1608, 15, 0.5, 0.5));
+    AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, 700, 1608, 15, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW/2, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW*1.5, halfH, 15, 802, 0.5, 0.5));
@@ -66,6 +72,11 @@ void RhythmGameScene::Initialize() {
         AddRefObject(*testimage);
         k++;
     }*/
+
+    auto* a = new Engine::Label(&test_text, "BoutiqueBitmap7x7_1.7.ttf", 40, 0, 0, 255, 255, 255, 255, 0);
+    AddRefObject(*a);
+    auto* b = new Engine::Label(&fps, "BoutiqueBitmap7x7_1.7.ttf", 40, 1400, 0, 255, 255, 255, 255, 0);
+    AddRefObject(*b);
 }
 void RhythmGameScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
@@ -99,48 +110,52 @@ void RhythmGameScene::readnotes(int songID){
 
 void RhythmGameScene::Update(float deltaTime){
     conductor.update();
-    test_text = std::to_string(conductor.songPosition);
-    beattext = std::to_string(conductor.songPosition/conductor.crotchet);
+    test_text = std::to_string(score);
+
+    auto ite = notes.begin();
+    while (ite != notes.end()) {
+        if (ite->destroy) {
+            ite = notes.erase(ite);
+        } else {
+            ++ite;
+        }
+    }
+
     for (auto& note : notes) {
         note.update(conductor);
+        if (note.y > 800) {
+            note.destroy = true;
+        }
     }
 }
 
 void RhythmGameScene::Draw() const {
     IScene::Draw();
     for (auto note : notes) {
-        note.render();
+        if (note.active) {
+            note.render();
+        } else {
+            break;
+        }
     }
+
+    frame_time.emplace(conductor.songPosition);
+    while (frame_time.front() <= conductor.songPosition-1) {
+        frame_time.pop();
+    }
+    fps = std::to_string(frame_time.size());
 }
 
 
-//void RhythmGameScene::Draw() const{
-//    IScene::Draw();
-//    for (auto note1 : notes) {
-//        note1.render();
-//    }
-//}
-//void RhythmGameScene::OnKeyDown(int keyCode) {
-//    Engine::IScene::OnKeyDown(keyCode);
-//    if (keyCode == ALLEGRO_KEY_M) {
-//        if (al_get_sample_instance_playing(musicInstance)) {
-//            al_stop_sample_instance(musicInstance);
-//        } else {
-//            al_play_sample_instance(musicInstance);
-//        }
-//    }
-//}
-//
-//void Note::render() {
-//    al_draw_filled_rectangle(x, y, x + size, y + size, al_map_rgb(255, 0, 0));
-//}
-//
 void Note::update(Conductor conduc) {
-    if (conduc.songPosition >= starttime) {
+    if (!active && conduc.songPosition >= starttime * conduc.crotchet) {
         active = true;
     }
     if (active) {
-        y += 5; // 位置改变
+        y = 700*(conduc.songPosition - starttime * conduc.crotchet); // 位置改变
+        if (y > 800) {
+            destroy = false;
+        }
     }
 }
 
@@ -150,6 +165,46 @@ void Note::render() {
     int halfW = w / 2;
     int halfH = h / 2;
     if (active) {
-        al_draw_filled_rectangle(402*x, y, 402*x + size, y + 150, al_map_rgb(255, 0, 0));
+        al_draw_filled_rectangle(402*x, y, 402*x + size, y + 10, al_map_rgb(255, 0, 0));
+    }
+}
+
+void RhythmGameScene::OnKeyDown(int keyCode) {
+    if (keyCode == ALLEGRO_KEY_D) {
+        for (auto n = notes.begin(); n != notes.end(); ++n) {
+            float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
+            if (n->x == 0 && !n->destroy && (t > -0.1 && t < 0.1)) {
+                n->destroy = true;
+                score += 100;
+                break;
+            }
+        }
+    } else if (keyCode == ALLEGRO_KEY_F) {
+        for (auto n = notes.begin(); n != notes.end(); ++n) {
+            float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
+            if (n->x == 1 && !n->destroy && (t > -0.1 && t < 0.1)) {
+                n->destroy = true;
+                score += 100;
+                break;
+            }
+        }
+    } else if (keyCode == ALLEGRO_KEY_J) {
+        for (auto n = notes.begin(); n != notes.end(); ++n) {
+            float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
+            if (n->x == 2 && !n->destroy && (t > -0.1 && t < 0.1)) {
+                n->destroy = true;
+                score += 100;
+                break;
+            }
+        }
+    } else if (keyCode == ALLEGRO_KEY_K) {
+        for (auto n = notes.begin(); n != notes.end(); ++n) {
+            float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
+            if (n->x == 3 && !n->destroy && (t > -0.1 && t < 0.1)) {
+                n->destroy = true;
+                score += 100;
+                break;
+            }
+        }
     }
 }
