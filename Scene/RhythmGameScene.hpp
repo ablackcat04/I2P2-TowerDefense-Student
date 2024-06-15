@@ -49,12 +49,16 @@ private:
     Engine::Label* test_pos_label;
     std::string test_text;
     mutable std::string fps;
+    std::string current_judgement;
     float** ypos;//存儲音符y位置的指標的容器
 
     ALLEGRO_FONT* font;
     ALLEGRO_COLOR white;
 
     int score;
+    int combo;
+
+    std::string combo_text;
 
     float frame_rate;
     mutable std::queue<float> frame_time;

@@ -15,12 +15,21 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/AudioHelper.hpp"
+#include "UI/Component/ImageButton.hpp"
+
 using namespace std;
 
 RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor(), notesnum(0){
 }
 
 void RhythmGameScene::Initialize() {
+    combo = 0;
+    current_judgement = "";
+    notes.clear();
+    while (!frame_time.empty()) {
+        frame_time.pop();
+    }
+
     frame_rate = 0.f;
     score = 0;
     font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 40, 0);
@@ -73,10 +82,20 @@ void RhythmGameScene::Initialize() {
         k++;
     }*/
 
-    auto* a = new Engine::Label(&test_text, "BoutiqueBitmap7x7_1.7.ttf", 40, 0, 0, 255, 255, 255, 255, 0);
+    auto* a = new Engine::Label(&test_text, "BoutiqueBitmap7x7_1.7.ttf", 40, 0, 0, 255, 255, 255, 255);
     AddRefObject(*a);
-    auto* b = new Engine::Label(&fps, "BoutiqueBitmap7x7_1.7.ttf", 40, 1400, 0, 255, 255, 255, 255, 0);
+    auto* b = new Engine::Label(&fps, "BoutiqueBitmap7x7_1.7.ttf", 40, 1400, 0, 255, 255, 255, 255);
     AddRefObject(*b);
+    auto* c = new Engine::Label(&current_judgement, "BoutiqueBitmap7x7_1.7.ttf", 64, 700, 490, 255, 255, 255, 255, 1, 1);
+    AddRefObject(*c);
+    auto* d = new Engine::Label(&combo_text, "BoutiqueBitmap7x7_1.7.ttf", 64, 730, 400, 255, 255, 255, 255, 1, 1);
+    AddRefObject(*d);
+
+    Engine::ImageButton* btn;
+    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 1400, 50, 400, 50);
+    btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene("stage-select");});
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, 1500, 75, 0, 0, 0, 255, 0.5, 0.5));
 }
 void RhythmGameScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
@@ -109,6 +128,7 @@ void RhythmGameScene::readnotes(int songID){
 }
 
 void RhythmGameScene::Update(float deltaTime){
+    combo_text = std::to_string(combo);
     conductor.update();
     test_text = std::to_string(score);
 
@@ -116,17 +136,27 @@ void RhythmGameScene::Update(float deltaTime){
     while (ite != notes.end()) {
         if (ite->destroy) {
             ite = notes.erase(ite);
+            current_judgement = "Missed";
         } else {
             ++ite;
         }
     }
 
-    for (auto& note : notes) {
-        note.update(conductor);
-        if (note.y > 800) {
-            note.destroy = true;
+    for (auto n = notes.begin(); n != notes.end(); ++n) {
+        n->update(conductor);
+        if (n->active && conductor.songPosition - n->starttime * conductor.crotchet-1 > 0.1) {
+            n = notes.erase(n);
+            --n;
+            combo = 0;
         }
     }
+
+//    for (auto& note : notes) {
+//        note.update(conductor);
+//        if (note.active && conductor.songPosition - note.starttime * conductor.crotchet-1 > 0.1) {
+//            note.destroy = true;
+//        }
+//    }
 }
 
 void RhythmGameScene::Draw() const {
@@ -153,9 +183,6 @@ void Note::update(Conductor conduc) {
     }
     if (active) {
         y = 700*(conduc.songPosition - starttime * conduc.crotchet); // 位置改变
-        if (y > 800) {
-            destroy = false;
-        }
     }
 }
 
@@ -173,36 +200,68 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
     if (keyCode == ALLEGRO_KEY_D) {
         for (auto n = notes.begin(); n != notes.end(); ++n) {
             float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
-            if (n->x == 0 && !n->destroy && (t > -0.1 && t < 0.1)) {
-                n->destroy = true;
-                score += 100;
+            if (n->x == 0 && (t > -0.1 && t < 0.1)) {
+                n = notes.erase(n);
+                --n;
+                if (t > -0.05 && t < 0.05) {
+                    score += 100;
+                    current_judgement = "Perfect";
+                } else {
+                    score += 50;
+                    current_judgement = " Good";
+                }
+                ++combo;
                 break;
             }
         }
     } else if (keyCode == ALLEGRO_KEY_F) {
         for (auto n = notes.begin(); n != notes.end(); ++n) {
             float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
-            if (n->x == 1 && !n->destroy && (t > -0.1 && t < 0.1)) {
-                n->destroy = true;
-                score += 100;
+            if (n->x == 1 && (t > -0.1 && t < 0.1)) {
+                n = notes.erase(n);
+                --n;
+                if (t > -0.05 && t < 0.05) {
+                    score += 100;
+                    current_judgement = "Perfect";
+                } else {
+                    score += 50;
+                    current_judgement = " Good";
+                }
+                ++combo;
                 break;
             }
         }
     } else if (keyCode == ALLEGRO_KEY_J) {
         for (auto n = notes.begin(); n != notes.end(); ++n) {
             float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
-            if (n->x == 2 && !n->destroy && (t > -0.1 && t < 0.1)) {
-                n->destroy = true;
-                score += 100;
+            if (n->x == 2 && (t > -0.1 && t < 0.1)) {
+                n = notes.erase(n);
+                --n;
+                if (t > -0.05 && t < 0.05) {
+                    score += 100;
+                    current_judgement = "Perfect";
+                } else {
+                    score += 50;
+                    current_judgement = " Good";
+                }
+                ++combo;
                 break;
             }
         }
     } else if (keyCode == ALLEGRO_KEY_K) {
         for (auto n = notes.begin(); n != notes.end(); ++n) {
             float t = conductor.songPosition - n->starttime * conductor.crotchet-1;
-            if (n->x == 3 && !n->destroy && (t > -0.1 && t < 0.1)) {
-                n->destroy = true;
-                score += 100;
+            if (n->x == 3 && (t > -0.1 && t < 0.1)) {
+                n = notes.erase(n);
+                --n;
+                if (t > -0.05 && t < 0.05) {
+                    score += 100;
+                    current_judgement = "Perfect";
+                } else {
+                    score += 50;
+                    current_judgement = " Good";
+                }
+                ++combo;
                 break;
             }
         }
