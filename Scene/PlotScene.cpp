@@ -10,11 +10,9 @@
 #include <string>
 #include <sstream>
 
-#include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "PlayScene.hpp"
 #include "Engine/LOG.hpp"
-#include "WinScene.hpp"
 #include "UI/Component/ToggledTextButton.hpp"
 
 void splitLine(const std::string& line, std::vector<std::string>& words) {
@@ -25,122 +23,12 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
     }
 }
 
-void PlotScene::OnKeyDown(int keyCode) {
-    if (keyCode == ALLEGRO_KEY_ENTER) {
-        OnClickCallBack();
-    }
-}
-
-void PlotScene::OnClickCallBack() {
-    if (history) {
-        return;
-    }
-
-    if (partial_text != text_target) {
-        partial_text = text_target;
-        partial_text1 = partial_target1;
-        partial_text2 = partial_target2;
-        partial_text3 = partial_target3;
-        partial_text4 = partial_target4;
-        return;
-    } else if (partial_middle_text != middle_text) {
-        partial_middle_text = middle_text;
-        return;
-    }
-
-    while (!queue_of_text.empty()) {
-        auto words = queue_of_text.front();
-        if (words[0] == "show") {
-            image_map[words[1]].img->ChangeImageTo(image_map[words[1]].path, atoi(words[3].c_str()), atoi(words[4].c_str()));
-        } else if (words[0] == "hide") {
-            image_map[words[1]].img->ChangeImageTo(transparent, 0, 0);
-        } else if (words[0] == "play") {
-            al_play_sample(music_map[words[1]].sample, 0.5f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
-        } else if (words[0] == "stop") {
-            auto temp = music_map[words[1]].id;
-            if (&temp != nullptr) {
-                al_stop_sample(&temp);
-            }
-        } else {
-            break;
-        }
-        queue_of_text.pop();
-    }
-    if (!queue_of_text.empty()) {
-        auto temp = queue_of_text.front();
-        if (temp[0] != "middle") {
-            name = temp[0];
-            text_target = temp[1];
-            middle_text = "";
-            partial_text = "";
-            partial_text1 = "";
-            partial_text2 = "";
-            partial_text3 = "";
-            partial_text4 = "";
-            partial_middle_text = "";
-
-            whole_words.clear();
-            splitLine(text_target, whole_words);
-            partial_target1 = "";
-            partial_target2 = "";
-            partial_target3 = "";
-            partial_target4 = "";
-            int count = 0;
-            for (;count < whole_words.size() && partial_target1.size() + whole_words[count].size() <= 50; ++count) {
-                partial_target1 += whole_words[count];
-                partial_target1 += ' ';
-            }
-            for (;count < whole_words.size() && partial_target2.size() + whole_words[count].size() <= 50; ++count) {
-                partial_target2 += whole_words[count];
-                partial_target2 += ' ';
-            }
-            for (;count < whole_words.size() && partial_target3.size() + whole_words[count].size() <= 50; ++count) {
-                partial_target3 += whole_words[count];
-                partial_target3 += ' ';
-            }
-            for (;count < whole_words.size() && partial_target4.size() + whole_words[count].size() <= 50; ++count) {
-                partial_target4 += whole_words[count];
-                partial_target4 += ' ';
-            }
-
-            if (count != whole_words.size()) {
-                Engine::LOG(Engine::ERROR) << "Script too long, cannot be fully presented";
-            }
-
-            history_info.push_back({name, partial_target1});
-            if (partial_target2 != "") {
-                history_info.push_back({"", partial_target2});
-                if (partial_target3 != "") {
-                    history_info.push_back({"", partial_target3});
-                    if (partial_target4 != "") {
-                        history_info.push_back({"", partial_target4});
-                    }
-                }
-            }
-        } else {
-            name = "";
-            text_target = "";
-            middle_text = temp[1];
-            partial_text = "";
-            partial_text1 = "";
-            partial_text2 = "";
-            partial_text3 = "";
-            partial_text4 = "";
-            partial_middle_text = "";
-
-            history_info.push_back({"", middle_text});
-        }
-        queue_of_text.pop();
-    } else {
-        ChangeScene();
-    }
-}
-
-void PlotScene::SetPlotPathTo(std::string path) {
-    plot_path = path;
-}
 
 void PlotScene::Initialize() {
+    big_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 56, 0);
+    font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
+    current_text_color = new ALLEGRO_COLOR (al_map_rgb(255,255,255));
+
     while (!queue_of_text.empty()) {
         queue_of_text.pop();
     }
@@ -165,10 +53,7 @@ void PlotScene::Initialize() {
     name = "";
     middle_text = "";
     partial_text = "";
-    partial_text1 = "";
-    partial_text2 = "";
-    partial_text3 = "";
-    partial_text4 = "";
+    partial_middle_text = "";
 
     Engine::ImageButton* btn;
 
@@ -294,20 +179,8 @@ void PlotScene::Initialize() {
         AddRefObject(*i.second.img);
     }
 
-    pText1 = new Engine::Label(&partial_text1, "BoutiqueBitmap7x7_1.7.ttf", 48, 250, 635, 255, 255, 255, 220, 0.5, 0.5);
-    AddRefObject(*pText1);
-    pText2 = new Engine::Label(&partial_text2, "BoutiqueBitmap7x7_1.7.ttf", 48, 250, 685, 255, 255, 255, 220, 0.5, 0.5);
-    AddRefObject(*pText2);
-    pText3 = new Engine::Label(&partial_text3, "BoutiqueBitmap7x7_1.7.ttf", 48, 250, 735, 255, 255, 255, 220, 0.5, 0.5);
-    AddRefObject(*pText3);
-    pText4 = new Engine::Label(&partial_text4, "BoutiqueBitmap7x7_1.7.ttf", 48, 250, 785, 255, 255, 255, 220, 0.5, 0.5);
-    AddRefObject(*pText4);
-
     pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
     AddRefObject(*pName);
-
-    pMiddleText = new Engine::Label(&partial_middle_text, "BoutiqueBitmap7x7_1.7.ttf", 56, 150, 200, 255, 255, 255, 255, 0.5, 0.5);
-    AddRefObject(*pMiddleText);
 
     btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1500, 9, 32, 32);
 
@@ -338,10 +211,125 @@ void PlotScene::Initialize() {
 
     time = 0.0f;
     auto_timer = 0.0f;
-
-    // Not safe if release resource while playing, however we only free while change scene, so it's fine.
-    //bgmInstance = AudioHelper::PlaySample("BeyondSunshine.ogg", true, AudioHelper::BGMVolume);
 }
+
+void PlotScene::OnKeyDown(int keyCode) {
+    if (keyCode == ALLEGRO_KEY_ENTER) {
+        OnClickCallBack();
+    }
+}
+
+
+void PlotScene::Draw() const {
+    IScene::Draw();
+    if (!history) {
+        al_draw_multiline_text(big_font, *current_text_color, 150, 200, 1300, 60, 0, partial_middle_text.c_str());
+        al_draw_multiline_text(font, *current_text_color, 250, 635, 1100, 50, 0, partial_text.c_str());
+    }
+}
+
+void PlotScene::OnClickCallBack() {
+    if (history) {
+        return;
+    }
+
+    if (partial_text != text_target) {
+        partial_text = text_target;
+        return;
+    } else if (partial_middle_text != middle_text) {
+        partial_middle_text = middle_text;
+        return;
+    }
+
+    while (!queue_of_text.empty()) {
+        auto words = queue_of_text.front();
+        if (words[0] == "show") {
+            image_map[words[1]].img->ChangeImageTo(image_map[words[1]].path, atoi(words[3].c_str()), atoi(words[4].c_str()));
+        } else if (words[0] == "hide") {
+            image_map[words[1]].img->ChangeImageTo(transparent, 0, 0);
+        } else if (words[0] == "play") {
+            al_play_sample(music_map[words[1]].sample, 0.5f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
+        } else if (words[0] == "stop") {
+            auto temp = music_map[words[1]].id;
+            if (&temp != nullptr) {
+                al_stop_sample(&temp);
+            }
+        } else {
+            break;
+        }
+        queue_of_text.pop();
+    }
+    if (!queue_of_text.empty()) {
+        auto temp = queue_of_text.front();
+        if (temp[0] != "middle") {
+            name = temp[0];
+            text_target = temp[1];
+            middle_text = "";
+            partial_text = "";
+            partial_middle_text = "";
+            partial_target = "";
+
+            int ptr = 0;
+
+            while (ptr < text_target.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
+                partial_target += text_target[ptr++];
+            }
+            history_info.push_back({name, partial_target});
+
+            int lines = 1;
+
+            while (ptr < text_target.size()) {
+                partial_target = "";
+                ++lines;
+                while (ptr < text_target.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
+                    partial_target += text_target[ptr++];
+                }
+                history_info.push_back({"", partial_target});
+                if (lines == 4) {
+                    Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
+                }
+            }
+        } else {
+            name = "";
+            text_target = "";
+            middle_text = temp[1];
+            partial_text = "";
+            partial_middle_text = "";
+            partial_target = "";
+
+            int ptr = 0;
+
+            while (ptr < middle_text.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
+                partial_target += middle_text[ptr++];
+            }
+            history_info.push_back({"", partial_target});
+
+            int lines = 1;
+
+            while (ptr < middle_text.size()) {
+                partial_target = "";
+                ++lines;
+                while (ptr < middle_text.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
+                    partial_target += middle_text[ptr++];
+                }
+                history_info.push_back({"", partial_target});
+                if (lines == 8) {
+                    Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
+                }
+            }
+
+            //history_info.push_back({"", middle_text});
+        }
+        queue_of_text.pop();
+    } else {
+        ChangeScene();
+    }
+}
+
+void PlotScene::SetPlotPathTo(std::string path) {
+    plot_path = path;
+}
+
 
 void PlotScene::Update(float deltaTime) {
     if (history != prev_history) {
@@ -369,28 +357,6 @@ void PlotScene::Update(float deltaTime) {
             partial_text += text_target[partial_text.size()];
             while (text_target[partial_text.size()] == ' ') {
                 partial_text += ' ';
-            }
-
-            if (partial_text1 != partial_target1) {
-                partial_text1 += partial_target1[partial_text1.size()];
-                while (partial_target1[partial_text1.size()] == ' ') {
-                    partial_text1 += ' ';
-                }
-            } else if (partial_text2 != partial_target2) {
-                partial_text2 += partial_target2[partial_text2.size()];
-                while (partial_target2[partial_text2.size()] == ' ') {
-                    partial_text2 += ' ';
-                }
-            } else if (partial_text3 != partial_target3) {
-                partial_text3 += partial_target3[partial_text3.size()];
-                while (partial_target3[partial_text3.size()] == ' ') {
-                    partial_text3 += ' ';
-                }
-            } else {
-                partial_text4 += partial_target4[partial_text4.size()];
-                while (partial_target4[partial_text4.size()] == ' ') {
-                    partial_text4 += ' ';
-                }
             }
         } else if (middle_text != partial_middle_text) {
             if (text_sfx_id != nullptr) {

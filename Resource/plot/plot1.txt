@@ -6,6 +6,10 @@ Plot_Start:
 
 middle "Plot 1"
 middle "at a very, very cold and lonely night......"
+middle "中文測試"
+middle "middle long test! hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey"
+中文名字 "哈囉哈囉~~"
+系統 "現在可以支援中文的長句了歐耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶"
 ABlackCat "What should I do?"
 ABlackCat "Maybe I should write code"
 NULL "Writing Code..."

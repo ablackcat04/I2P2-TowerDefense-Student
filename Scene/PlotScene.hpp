@@ -39,26 +39,15 @@ private:
     };
 
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
-    Engine::Label *pText1 = nullptr;
-    Engine::Label *pText2 = nullptr;
-    Engine::Label *pText3 = nullptr;
-    Engine::Label *pText4 = nullptr;
-    Engine::Label *pMiddleText = nullptr;
+    //Engine::Label *pMiddleText = nullptr;
     Engine::Label *pName = nullptr;
     std::string text_target;
-    std::string partial_target1;
-    std::string partial_target2;
-    std::string partial_target3;
-    std::string partial_target4;
+    std::string partial_target;
     std::string text1;
     std::string middle_text;
     std::string name;
 
     std::string partial_text;
-    std::string partial_text1;
-    std::string partial_text2;
-    std::string partial_text3;
-    std::string partial_text4;
     std::string partial_middle_text;
 
     std::vector<std::string> whole_words;
@@ -95,6 +84,10 @@ private:
     ALLEGRO_SAMPLE* text_sfx;
     ALLEGRO_SAMPLE_ID* text_sfx_id;
 
+    ALLEGRO_FONT* font;
+    ALLEGRO_FONT* big_font;
+    ALLEGRO_COLOR* current_text_color;
+
 public:
     explicit PlotScene() = default;
     void Initialize() override;
@@ -105,6 +98,7 @@ public:
     void Update(float deltaTime) override;
     void OnMouseScroll(int mx, int my, int delta);
     void OnKeyDown(int keyCode) override;
+    void Draw() const override;
 
     void OnClickCallBack();
 
