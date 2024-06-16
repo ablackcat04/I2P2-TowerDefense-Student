@@ -210,7 +210,7 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
                 } else {
                     score += 50;
                     current_judgement = " Good";
-                    last_judgement[3] = Judgement::good;
+                    last_judgement[2] = Judgement::good;
                 }
                 ++combo;
                 last_hit_time[2] = conductor.songPosition;
