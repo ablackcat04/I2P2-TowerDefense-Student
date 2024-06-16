@@ -16,7 +16,7 @@ public:
     double bpm;
     double crotchet;   // length per beat, in seconds
     double offset;     // 歌曲的起始偏移量，用于补偿音频文件的开头空白
-    double songPosition;
+    double song_position;
     double startTime; // 歌曲开始的时间
 
     // 构造函数初始化 bpm 和 offset，并计算 crotchet

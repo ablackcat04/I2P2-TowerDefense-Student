@@ -21,8 +21,9 @@ RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullp
 
 void RhythmGameScene::Initialize() {
     for (int i = 0; i < lanes; ++i) {
-        last_hit_time[i] = -1000;
+        last_hit_time[i] = -10000;
         last_judgement[i] = Judgement::missed;
+        last_pressed_time[i] = -10000;
     }
     combo = 0;
     current_judgement = "";
@@ -92,7 +93,7 @@ void RhythmGameScene::Update(float deltaTime){
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         n->update(conductor);
-        if (n->active && conductor.songPosition - n->start_time * conductor.crotchet - 1 > 0.1) {
+        if (n->active && conductor.song_position - n->start_time * conductor.crotchet - 1 > 0.1) {
             n = notes.erase(n);
             current_judgement = "Missed";
             --n;
@@ -102,12 +103,26 @@ void RhythmGameScene::Update(float deltaTime){
 }
 
 void RhythmGameScene::Draw() const {
-    frame_time.emplace(conductor.songPosition);
-    while (frame_time.front() <= conductor.songPosition-1) {
+    frame_time.emplace(conductor.song_position);
+    while (frame_time.front() <= conductor.song_position - 1) {
         frame_time.pop();
     }
     fps = std::to_string(frame_time.size());
+
     IScene::Draw();
+
+    for (int i = 0; i < lanes; ++i) {   // draw the pressed visual feed-back
+        float t = conductor.song_position - last_pressed_time[i];
+        if (t < 0) {
+            continue;
+        }
+        if (t <= pressed_fx_attack) {
+            al_draw_filled_rectangle(402 * i, 0, 402*(i+1), 700, al_map_rgba(255, 255, 255, pressed_fx_max_brightness*(t/pressed_fx_attack)));
+        } else if (t <= pressed_fx_decay + pressed_fx_attack) {
+            al_draw_filled_rectangle(402 * i, 0, 402*(i+1), 700, al_map_rgba(255, 255, 255, pressed_fx_max_brightness*(1 - (t-pressed_fx_attack)/pressed_fx_decay)));
+        }
+    }
+
     for (auto note : notes) {
         if (note.active) {
             note.render();
@@ -116,8 +131,8 @@ void RhythmGameScene::Draw() const {
         }
     }
 
-    for (int i = 0; i < lanes; ++i) {
-        float t = conductor.songPosition - last_hit_time[i];
+    for (int i = 0; i < lanes; ++i) {   // draw the hit visual feed-back
+        float t = conductor.song_position - last_hit_time[i];
         if (t < 0.1) {
             al_draw_rectangle(402 * i + 100 - (100)*(t*10), 675, 402 * (i + 1) - 100 + (100)*(t*10), 725, (last_judgement[i] == Judgement::perfect ? cyan : yellow), 100*(t+0.05));
         }
@@ -126,11 +141,11 @@ void RhythmGameScene::Draw() const {
 
 
 void Note::update(Conductor conductor) {
-    if (!active && conductor.songPosition >= start_time * conductor.crotchet) {
+    if (!active && conductor.song_position >= start_time * conductor.crotchet) {
         active = true;
     }
     if (active) {
-        y = 700*(conductor.songPosition - start_time * conductor.crotchet); // 位置改变
+        y = 700*(conductor.song_position - start_time * conductor.crotchet);    // change the y position of the note
     }
 }
 
@@ -145,6 +160,7 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
     for (int i = 0; i < lanes; ++i) {
         if (lane_key[i] == keyCode) {
             lane = i;
+            last_pressed_time[lane] = conductor.song_position;
         }
     }
     if (lane == -1) {
@@ -152,22 +168,24 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
     }
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
-        float t = conductor.songPosition - n->start_time * conductor.crotchet - 1;
-        if (n->x == lane && (t > -0.1 && t < 0.1)) {
-            n = notes.erase(n);
-            --n;
-            if (t > -0.05 && t < 0.05) {
-                score += 100;
-                current_judgement = "Perfect";
-                last_judgement[lane] = Judgement::perfect;
-            } else {
-                score += 50;
-                current_judgement = " Good";
-                last_judgement[lane] = Judgement::good;
+        float t = conductor.song_position - n->start_time * conductor.crotchet - 1;
+        if (n->x == lane) {
+            if (t > -0.1 && t < 0.1) {
+                n = notes.erase(n);
+                --n;
+                if (t > -0.05 && t < 0.05) {
+                    score += 100;
+                    current_judgement = "Perfect";
+                    last_judgement[lane] = Judgement::perfect;
+                } else {
+                    score += 50;
+                    current_judgement = " Good";
+                    last_judgement[lane] = Judgement::good;
+                }
+                ++combo;
+                last_hit_time[lane] = conductor.song_position;
+                break;
             }
-            ++combo;
-            last_hit_time[lane] = conductor.songPosition;
-            break;
         }
     }
 }

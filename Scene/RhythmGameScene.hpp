@@ -75,6 +75,10 @@ private:
 
     int lane_key[lanes] = {ALLEGRO_KEY_D, ALLEGRO_KEY_F, ALLEGRO_KEY_J, ALLEGRO_KEY_K};
 
+    static const int pressed_fx_max_brightness = 16;
+    constexpr static const float pressed_fx_attack = 0.02;  // in sec
+    constexpr static const float pressed_fx_decay = 0.4;    // in sec
+
 public:
     explicit RhythmGameScene();
     void Initialize() override;

@@ -7,7 +7,7 @@
 
 void Conductor::update() {
     double currentTime = al_get_time();
-    songPosition = (currentTime - startTime) - offset;
+    song_position = (currentTime - startTime) - offset;
 }
 
 Conductor::Conductor() {
@@ -19,6 +19,6 @@ Conductor::Conductor() {
 void Conductor::init(double bpm, double offset) {
     Engine::LOG(Engine::INFO) << "Conductor Initialized";
     crotchet = (double)60.0 / this->bpm;
-    songPosition = 0.0f;
+    song_position = 0.0f;
     startTime = al_get_time();
 }
