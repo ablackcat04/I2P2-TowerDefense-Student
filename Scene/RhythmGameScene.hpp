@@ -24,59 +24,63 @@ using namespace std;
 
 class Note {
 public:
-    float y;    // 音符的 y 位置
-    int x;// 音符的賽道1-4
-    float size;    // 音符的大小
-    float starttime;
+    int x;      // lane of the note (0 ~ 3)
+    float y;    // the y position of the note
+    float size;    // size of the note(x)
+    float start_time;
     bool active;
-    bool destroy;
+    ALLEGRO_COLOR* note_color;
 
-    Note(int startX,float start) : x(startX), y(0), size(390),starttime(start),active(false), destroy(false) {}// 构造函数初始化音符的起始位置
-    void update(Conductor conduc) ;// 更新方法，用于更新音符的位置
-    void render();// 渲染方法，用于在屏幕上绘制音符
-
-
+    Note(int startX,float start, ALLEGRO_COLOR* color) : x(startX), y(0), size(390), start_time(start), active(false), note_color(color) {}
+    void update(Conductor conductor);
+    void render();
 };
 
 class RhythmGameScene final : public Engine::IScene{
 private:
-    int notesnum;
-    vector<Note> notes; // 存储音符的容器
+    static const int lanes = 4;
+    vector<Note> notes;
     ALLEGRO_SAMPLE* backgroundMusic;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     Conductor conductor;
 
-    Engine::Label* test_pos_label;
-    std::string test_text;
-    mutable std::string fps;
-    std::string current_judgement;
-    float** ypos;//存儲音符y位置的指標的容器
-
-    ALLEGRO_FONT* font;
-    ALLEGRO_COLOR white;
-    ALLEGRO_COLOR cyan;
-    ALLEGRO_COLOR yellow;
-
     int score;
-    int combo;
+    Engine::Label* score_label;
+    std::string score_text;
 
+    Engine::Label* fps_label;
+    mutable std::string fps;
+
+    Engine::Label* judgement_label;
+    std::string current_judgement;
+
+
+    int combo;
+    Engine::Label* combo_label;
     std::string combo_text;
 
-    float frame_rate;
+    ALLEGRO_FONT* font;
+    ALLEGRO_COLOR cyan;
+    ALLEGRO_COLOR yellow;
+    ALLEGRO_COLOR red;
+
     mutable std::queue<float> frame_time;
 
-    float last_hit_time[4];
+    float last_hit_time[lanes];
+    float last_pressed_time[lanes];
     enum class Judgement {
         perfect, good, missed
     };
-    Judgement last_judgement[4];
+    Judgement last_judgement[lanes];
+
+    int lane_key[lanes] = {ALLEGRO_KEY_D, ALLEGRO_KEY_F, ALLEGRO_KEY_J, ALLEGRO_KEY_K};
 
 public:
     explicit RhythmGameScene();
     void Initialize() override;
     void Terminate() override;
     void Update(float deltaTime) override;
-    void readnotes(int songID);//讀譜面
+    void ReadNotes(int songID);
     void Draw() const override;
     void OnKeyDown(int keyCode) override;
 };
