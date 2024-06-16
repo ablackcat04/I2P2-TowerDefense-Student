@@ -29,9 +29,11 @@ public:
     float size;    // size of the note(x)
     float start_time;
     bool active;
+    bool ishold;//484長條
+    int length;
     ALLEGRO_COLOR* note_color;
 
-    Note(int startX,float start, ALLEGRO_COLOR* color) : x(startX), y(0), size(390), start_time(start), active(false), note_color(color) {}
+    Note(int startX,float start, ALLEGRO_COLOR* color,bool longa,int leng) : x(startX), y(0), size(390), start_time(start), active(false), note_color(color) ,ishold(longa),length(leng) {}
     void update(Conductor conductor);
     void render();
 };
@@ -68,10 +70,14 @@ private:
 
     float last_hit_time[lanes];
     float last_pressed_time[lanes];
+    float last_up_time[lanes];
     enum class Judgement {
         perfect, good, missed
     };
     Judgement last_judgement[lanes];
+    bool allperfect;
+    bool fullcombo;
+    float endtime;
 
     int lane_key[lanes] = {ALLEGRO_KEY_D, ALLEGRO_KEY_F, ALLEGRO_KEY_J, ALLEGRO_KEY_K};
 
@@ -87,6 +93,7 @@ public:
     void ReadNotes(int songID);
     void Draw() const override;
     void OnKeyDown(int keyCode) override;
+    void OnKeyUp(int keyCode) override;
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_RHYTHMGAMESCENE_HPP
