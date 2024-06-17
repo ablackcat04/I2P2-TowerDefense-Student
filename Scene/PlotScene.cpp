@@ -223,8 +223,47 @@ void PlotScene::OnKeyDown(int keyCode) {
 void PlotScene::Draw() const {
     IScene::Draw();
     if (!history) {
-        al_draw_multiline_text(big_font, *current_text_color, 150, 200, 1300, 60, 0, partial_middle_text.c_str());
-        al_draw_multiline_text(font, *current_text_color, 250, 635, 1100, 50, 0, partial_text.c_str());
+        if (partial_middle_text != "") {
+            //al_draw_multiline_text(big_font, *current_text_color, 150, 200, 1300, 60, 0, partial_middle_text.c_str());
+
+            int ptr = 0;
+            std::string str = "";
+
+            while (ptr < partial_middle_text.size() && al_get_text_width(big_font, str.c_str()) <= 1250) {
+                str += partial_middle_text[ptr++];
+            }
+            al_draw_text(big_font, *current_text_color, 150, 200, 0, str.c_str());
+
+            int lines = 0;
+
+            while (ptr < partial_middle_text.size()) {
+                str = "";
+                ++lines;
+                while (ptr < partial_middle_text.size() && al_get_text_width(big_font, str.c_str()) <= 1250) {
+                    str += partial_middle_text[ptr++];
+                }
+                al_draw_text(big_font, *current_text_color, 150, 200+60*lines, 0, str.c_str());
+            }
+        } else {
+            int ptr = 0;
+            std::string str = "";
+
+            while (ptr < partial_text.size() && al_get_text_width(font, str.c_str()) <= 1100) {
+                str += partial_text[ptr++];
+            }
+            al_draw_text(font, *current_text_color, 250, 635, 0, str.c_str());
+
+            int lines = 0;
+
+            while (ptr < partial_text.size()) {
+                str = "";
+                ++lines;
+                while (ptr < partial_text.size() && al_get_text_width(font, str.c_str()) <= 1100) {
+                    str += partial_text[ptr++];
+                }
+                al_draw_text(font, *current_text_color, 250, 635+50*lines, 0, str.c_str());
+            }
+        }
     }
 }
 
