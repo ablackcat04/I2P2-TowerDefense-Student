@@ -87,7 +87,7 @@ namespace Engine {
             {
                 if (fscanf_s(score, "%s%d%s", scb[num_of_mem].name, sizeof(char) * 100, &scb[num_of_mem].score, scb[num_of_mem].time, sizeof(char) * 30) == 3)
                 {
-                    Engine::LOG(Engine::INFO) << "scoreboard read:" << scb[num_of_mem].name << " " << scb[num_of_mem].score << " " << scb[num_of_mem].time;
+                    //Engine::LOG(Engine::INFO) << "scoreboard read:" << scb[num_of_mem].name << " " << scb[num_of_mem].score << " " << scb[num_of_mem].time;
                 }
                 else
                 {

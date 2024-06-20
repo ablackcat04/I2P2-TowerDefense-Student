@@ -11,8 +11,9 @@
 #include "ScoreboardScene.hpp"
 #include "Engine/LOG.hpp"
 #include "UI/Component/Scoreboard.hpp"
+#include "Utility/InternetHelper.hpp"
 
-Engine::Scoreboard* scb[2][2];
+Engine::Scoreboard* scb[2][2];      //scene, money/life
 Engine::ImageButton* money_btn;
 Engine::ImageButton* life_btn;
 unsigned int scene = 1;
@@ -53,6 +54,32 @@ void ScoreboardScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
+
+    if (InternetHelper::uploadFile(InternetHelper::upload_php_position, "Resource/scoreboard/local_test.txt")) {
+        Engine::LOG(Engine::INFO) << "Upload Test Success!";
+    } else {
+        Engine::LOG(Engine::ERROR) << "Upload Test Failed!";
+    }
+
+    for (int i = 1; i <=2; ++i) {
+        if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt",
+                                         "Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt")) {
+            Engine::LOG(Engine::INFO) << "Load Successfully";
+            online_avaliable[i-1][0] = true;
+        } else {
+            Engine::LOG(Engine::INFO) << "Failed to Load File";
+            online_avaliable[i-1][0] = false;
+        }
+
+        if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt",
+                                         "Resource/scoreboard/online/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt")) {
+            Engine::LOG(Engine::INFO) << "Load Successfully";
+            online_avaliable[i-1][1] = true;
+        } else {
+            Engine::LOG(Engine::INFO) << "Failed to Load File";
+            online_avaliable[i-1][1] = false;
+        }
+    }
 
     //AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 48, halfW, 50, 255, 255, 255, 255, 0.5, 0.5));
 
@@ -95,24 +122,34 @@ void ScoreboardScene::Initialize() {
 
 
 //    //scoreboard component init
-    std::string ss = "Resource/scoreboard.txt";
+    std::string ss = "Resource/scoreboard/scoreboard.txt";
 
-    for (int i = 0; i <= 1; i++) {
-        ss = (std::string)"Resource/stage" + (char)(i+1 + '0') + "_moneyLeft_scoreboard.txt";
-        scb[i][0] = new Engine::Scoreboard(ss, 150, 100, 220, 220, 55);
-        AddRefObject(*scb[i][0]);
-        AddRefControl(*scb[i][0]);
+    for (int i = 1; i <= 2; i++) {
+        if (online_avaliable[i-1][0]) {
+            ss = (std::string)"Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt";
+        } else {
+            ss = (std::string) "Resource/scoreboard/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt";
+        }
+        scb[i-1][0] = new Engine::Scoreboard(ss, 150, 100, 220, 220, 55);
+        AddRefObject(*scb[i-1][0]);
+        AddRefControl(*scb[i-1][0]);
 
-        ss = (std::string)"Resource/stage" + (char)(i+1 + '0') + "_lifeLeft_scoreboard.txt";
-        scb[i][1] = new Engine::Scoreboard(ss, 150, 100, 255, 200, 200);
-        AddRefObject(*scb[i][1]);
-        AddRefControl(*scb[i][1]);
+        if (online_avaliable[i-1][1]) {
+            ss = (std::string)"Resource/scoreboard/online/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt";
+        } else {
+            ss = (std::string)"Resource/scoreboard/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt";
+        }
+        scb[i-1][1] = new Engine::Scoreboard(ss, 150, 100, 255, 200, 200);
+        AddRefObject(*scb[i-1][1]);
+        AddRefControl(*scb[i-1][1]);
     }
 
+    Engine::LOG(Engine::INFO) << "All Scoreboard Loads Successfully";
 
     // Not safe if release resource while playing, however we only free while change scene, so it's fine.
     bgmInstance = AudioHelper::PlaySample("select.ogg", true, AudioHelper::BGMVolume);
 }
+
 void ScoreboardScene::Update(float deltaTime) {
     title_name = (std::string)"Scoreboard - " + "stage" + (char)(scene + '0')/* + (money_or_life == 0 ? ":Money" : ":Life")*/;
     OnlyShowCurrentScoreboard(GetCurrentScoreboard());
