@@ -1,28 +1,51 @@
-image Kuo "plot/Kuo.jpg" size 300 400
-audio gun "gun2.ogg"
-audio bs "BeyondSunshine.ogg"
+
 
 Plot_Start:
 
-middle "Plot 1"
-middle "at a very, very cold and lonely night......"
-middle "中文測試"
-middle "middle long test! hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey hey"
-中文名字 "哈囉哈囉~~"
-系統 "現在可以支援中文的長句了歐耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶"
-middle "中間的中文長句也可以喔耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶耶"
-ABlackCat "What should I do?"
-ABlackCat "Maybe I should write code"
-NULL "Writing Code..."
-Console "Hello I2P Final Project!!!"
-Console "Try to say a very very very very very very long sentence, please fix the system to present this properly. Test Test Test try to go to the fourth line!!!!!!!!!!!"
-show Kuo at 200 0
-System "Show Kuo at 200 0"
-hide Kuo
-play gun
-middle "(Gun Sound)"
-System "oops"
-play bs
-MP3_Player "Playing Beyond Sunshine by ABlackCat. Click to stop."
-stop bs
-MP3_Player "Audio Stopped!"
+桃井 "啊啊~~~終於上完課了~~~~~~"
+桃井 "到底為什麼學生要每天上這麼多課呢？？"
+桃井 "如果整天都是社團活動時間那該有多好......"
+桃井 "啊！"
+桃井 "先別管這個了，昨天老師突然傳訊息給我，叫我今天下課後盡快到部室去，還特別叮嚀說要比綠早到......雖然不知道是為了什麼，但畢竟是老師說的，還是早點過去比較好吧......"
+
+NULL "                                                  ."
+
+middle "一段時間後............"
+middle "遊戲開發部內"
+
+綠 "姐姐，這是什麼......"
+
+桃井 "哎呀我的妹妹啊，難道你不知道嗎？？？"
+桃井 "這就是辣個據說是世界上第一款採用完全潛行技術的遊戲主機，「NERvGear」啊！"
+
+綠 "姐姐，那個我當然知道"
+綠 "只是，你是從哪裡拿到的？？還一次兩個。"
+綠 "我想姊姊應該沒有這麼多錢對吧。"
+
+桃井 "QAQ綠你最近講話很傷人欸TAT"
+桃井 "不過你說的對，你家自豪的姊姊確實不可能有錢買這個還一次買兩台，所以你看看這個！"
+
+綠 ".........卡片......？"
+
+桃井 "對！你看好了喔！"
+
+卡片上的字 "為慶賀千年科學學園遊戲開發部新作完工，致贈新發售的完全潛行主機「NERvGear」兩臺跟【遊戲名稱待定】兩片，願他們可以成為遊戲開發部的助力，也期待遊戲開發部的新作！！"
+卡片上的字 "............夏萊的老師  上"
+
+綠 "居然是老師嗎？還有老師講話什麼時候這麼正經了......"
+
+桃井 "綠~~來玩吧~來玩吧~"
+
+綠 "？"
+
+桃井 "？什麼，老師在卡片不是寫了嗎？？希望他們可以成為遊戲開發部的助力，肯定是希望我們能把它當作下一個遊戲的參考！"
+桃井 "所以綠！來玩吧！"
+
+綠 "可是柚子跟愛麗絲都還沒到欸"
+
+桃井 "哎呀~看來你是沒有意識到這個情況呢~~"
+桃井 "現在我們有的NERvGear只有兩台......"
+桃井 "就算柚子跟愛麗絲來了也沒有辦法一起玩"
+桃井 "不如我們就先玩一波，等一下柚子跟愛麗絲來的話再換就好啦~~"
+
+綠 "聽你這麼一說"
