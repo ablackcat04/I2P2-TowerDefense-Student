@@ -1,5 +1,97 @@
+image phone "plot/phone.png" size 1600 832
+image phone_n "plot/phone_notification.png" size 1600 832
+image phone_m1 "plot/phone_momotalk1.png" size 1600 832
+image phone_m2 "plot/phone_momotalk2.png" size 1600 832
+
+audio notification "plot/sfx/notification.ogg"
+audio send "plot/sfx/send.ogg"
+
 Plot_Start:
+show phone at 0 0
+NULL "                  某一日......"
+
+show phone_n at 0 0
+hide phone
+play notification
+NULL "                                                         "
+
+middle "訊息？？"
+
+play send
+show phone_m1 at 0 0
+hide phone_n
+??? "老師......"
+
+play notification
+show phone_m2 at 0 0
+hide phone_m1
+??? "你覺得我的畫該怎麼樣才能更進步...？"
+
+hide phone_m2
+NULL "                                                         "
+
+桃井 "誒大家都已經到了啊~~"
 桃井 "那就馬上來看看網路上的評論吧~~~"
-桃井 "我看看......"
-網上的留言 "我很期待這個糞作團隊又會做出什麼樣的糞作"
+桃井 "欸咻……我看看......"
+
+網上的留言 "「我很期待這個糞作團隊又會做出什麼樣的糞作」"
+網上的留言 "「這輩子最期待事情就是看看這個團隊又會端出什麼樣的糞作出來」"
+
 桃井 "謂！好歹先玩過再作這種評論啊謂！"
+
+網上的留言 "「上面的，好歹先下載了再噴吧……」"
+
+桃井 "對嘛，這樣才對嘛！所謂的遊戲就是要玩了才知道好壞嘛~~"
+愛麗絲 "愛麗絲完全贊同~~遊戲這種東西果然還是要親身體驗才會知道好壞呢~"
+
+網上的留言 "「像我都下載完才開噴的。」"
+
+桃井 "............"
+桃井 "不管了看下一個"
+
+網上的留言 "「這次劇本是不是不太一樣啊」"
+網上的留言 "「好像有點料」"
+
+桃井 "哼哼～終於有人理解我那精心構思的劇本了嗎？"
+柚子 "我覺得倒是一如既往的胡來......"
+柚子 "雖然這也很有我們的味道......"
+
+網上的留言 "「相較起來其他的部分就……」"
+
+桃井 "啊老師你也來了啊！我們剛好在看我們剛發佈的新作收到的評論，老師你也來看吧~~"
+老師 "喔！這麼快就有這麼多啦！等我一下我脫個鞋馬上過去"
+NULL "之後桃井就這樣興高采烈的讀了一個小時的評論…………"
+
+middle "                           幾天後......                "
+
+play notification
+桃井 "老師~~~TAT"
+
+play notification
+桃井 "綠最近對我好冷淡喔QAQ"
+
+play notification
+桃井 "昨天我想邀她打格鬥遊戲，她卻堅持要先回宿舍，明明才晚上十點的說......"
+
+play notification
+桃井 "前天也是~~~"
+
+play notification
+桃井 "明明也才十一點......"
+
+play notification
+桃井 "還說什麼......菜就多練......都是些聽不懂的話語......"
+
+play notification
+桃井 "老師你有什麼好方法嗎？"
+
+老師 "嗯......我來想想......"
+play send
+
+Momotalk "訊息已傳送"
+
+老師 "啊！"
+老師 "之前看到的那個......在哪裡......"
+老師 "找到了！世界上第一款採用完全潛行技術的遊戲主機，就是這個......"
+
+middle "                                                                                   待續......"
