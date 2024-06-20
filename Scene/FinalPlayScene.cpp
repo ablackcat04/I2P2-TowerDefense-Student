@@ -745,11 +745,11 @@ void FinalPlayScene::ReadNotes(int songID){
     while(fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time){
         for(int i=0;i < lanes;i++){
             if(has_note[i]==1){//短條
-                endtime=start_time+5;
+                endtime=start_time*conductor.crotchet+5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
             else if(has_note[i]>1){//長條
-                endtime=start_time+5;
+                endtime=start_time*conductor.crotchet+5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
             }
         }
