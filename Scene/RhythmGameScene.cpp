@@ -102,7 +102,12 @@ void RhythmGameScene::Update(float deltaTime){
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         n->update(conductor);
-        if (n->active && conductor.song_position - n->start_time * conductor.crotchet - 1 > 0.1) {
+        float t;
+        if(n->ishold){
+            float addtime=(float)n->length/700.0;
+            t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
+        }else t=conductor.song_position - n->start_time * conductor.crotchet - 1;
+        if (t> 0.1) {
             allperfect= false;
             fullcombo = false;
             n = notes.erase(n);
@@ -171,7 +176,7 @@ void Note::render() {
     if (active) {
         //if(ishold) al_draw_filled_rectangle(402*x, y, 402*x + size, y + 500, *note_color);
         //else al_draw_filled_rectangle(402*x, y, 402*x + size, y + 10, *note_color);
-        al_draw_filled_rectangle(402*x, y, 402*x + size, y + length, *note_color);
+        al_draw_filled_rectangle(402*x, y-length, 402*x + size, y , *note_color);
     }
 }
 
@@ -190,12 +195,12 @@ void RhythmGameScene::OnKeyDown(int keyCode) {
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         float t = conductor.song_position - n->start_time * conductor.crotchet - 1;
         if (n->x == lane&&n->active) {
-            if (t > -0.5 && t < 0.5) {
+            if (t > -0.1 && t < 0.1) {
                 if(!n->ishold){
                     n = notes.erase(n);
                     --n;
                 }
-                if (t > -0.2 && t < 0.2) {
+                if (t > -0.05 && t < 0.05) {
                     score += 100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
@@ -228,10 +233,10 @@ void RhythmGameScene::OnKeyUp(int keyCode){
         float addtime=(float)n->length/700.0;
         float t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
         if (n->x == lane&&n->ishold&&n->active) {
-            if (t > -0.5 && t < 0.5) {
+            if (t > -0.1 && t < 0.1) {
                 n = notes.erase(n);
                 --n;
-                if (t > -0.2 && t < 0.2) {
+                if (t > -0.05 && t < 0.05) {
                     score += 100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
@@ -242,7 +247,7 @@ void RhythmGameScene::OnKeyUp(int keyCode){
                     allperfect= false;
                 }
                 ++combo;
-                last_hit_time[lane] = conductor.song_position;
+                last_up_time[lane] = conductor.song_position;
                 break;
             }
         }
