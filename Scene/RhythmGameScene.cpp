@@ -44,13 +44,14 @@ void RhythmGameScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;
-    bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", true, AudioHelper::BGMVolume);
+    //bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", true, AudioHelper::BGMVolume);
+    bgmInstance = AudioHelper::PlaySample("Monochize.ogg", true, AudioHelper::BGMVolume);
     conductor.init(100, 0);
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, 700, 1608, 15, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW/2, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW*1.5, halfH, 15, 802, 0.5, 0.5));
-    ReadNotes(1);
+    ReadNotes(2);
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, 0, 0, 255, 255, 255, 255);
     AddRefObject(*score_label);
