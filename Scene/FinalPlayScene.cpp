@@ -121,7 +121,9 @@ void FinalPlayScene::Initialize() {
     if(MapId==1) bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", true, AudioHelper::BGMVolume);
     else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochize.ogg", true, AudioHelper::BGMVolume);
     else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", true, AudioHelper::BGMVolume);
-    conductor.init(100, 0);
+    if(MapId==1)  conductor.init(152, 0);
+    else if(MapId==2)  conductor.init(480, 0);
+    else if(MapId==3) conductor.init(250, 0);
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
@@ -145,6 +147,8 @@ void FinalPlayScene::Initialize() {
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, w-100, 75, 0, 0, 0, 255, 0.5, 0.5));
 }
 void FinalPlayScene::Terminate() {
+    AudioHelper::StopSample(bgmInstance);
+    bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
     delete score_label;
     delete combo_label;
@@ -191,7 +195,7 @@ void FinalPlayScene::Update(float deltaTime) {
             AddNewObject(new Engine::Label("Fullcombo", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
         }
     }
-    if(conductor.song_position>=endtime) Engine::GameEngine::GetInstance().ChangeScene("stage-select");;
+    //if(conductor.song_position>=endtime) Engine::GameEngine::GetInstance().ChangeScene("stage-select");;
 
 
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
