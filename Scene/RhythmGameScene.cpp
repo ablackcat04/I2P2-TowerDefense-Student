@@ -45,7 +45,8 @@ void RhythmGameScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = (w - x_shift) / 2;
     int halfH = h / 2;
-    bgmInstance = AudioHelper::PlaySample("rhythm_game_test_audio_bpm_160.ogg", true, AudioHelper::BGMVolume);
+    //bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", true, AudioHelper::BGMVolume);
+    bgmInstance = AudioHelper::PlaySample("Monochize.ogg", true, AudioHelper::BGMVolume);
     conductor.init(100, 0);
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
@@ -89,12 +90,12 @@ void RhythmGameScene::ReadNotes(int songID){
     while(fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time){
         for(int i=0;i < lanes;i++){
             if(has_note[i]==1){//短條
-                endtime=start_time+5;
-                notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
+                endtime=start_time*conductor.crotchet+5;
+                notes.emplace_back(Note(i, start_time, &red,false,10));
             }
             else if(has_note[i]>1){//長條
-                endtime=start_time+5;
-                notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
+                endtime=start_time*conductor.crotchet+5;
+                notes.emplace_back(Note(i, start_time, &red,true,100*(has_note[i]-1)));
             }
         }
     }
