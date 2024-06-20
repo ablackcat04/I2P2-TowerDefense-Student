@@ -91,11 +91,11 @@ void RhythmGameScene::ReadNotes(int songID){
         for(int i=0;i < lanes;i++){
             if(has_note[i]==1){//短條
                 endtime=start_time*conductor.crotchet+5;
-                notes.emplace_back(Note(i, start_time, &red,false,10));
+                notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
             else if(has_note[i]>1){//長條
                 endtime=start_time*conductor.crotchet+5;
-                notes.emplace_back(Note(i, start_time, &red,true,100*(has_note[i]-1)));
+                notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
             }
         }
     }
