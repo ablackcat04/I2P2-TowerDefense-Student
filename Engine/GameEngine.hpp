@@ -154,6 +154,8 @@ namespace Engine {
 		/// </summary>
 		/// <returns>The Singleton instance of GameEngine.</returns>
 		static GameEngine& GetInstance();
+
+        ALLEGRO_DISPLAY* GetDisplay();
 	};
 }
 #endif // GAMEENGINE_HPP

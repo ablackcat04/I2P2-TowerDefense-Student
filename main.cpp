@@ -12,6 +12,7 @@
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/PlotScene.hpp"
 #include "Scene/RhythmGameScene.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
 int main() {
 	Engine::LOG::SetConfig(true);
@@ -28,6 +29,7 @@ int main() {
     game.AddNewScene("scoreboard-scene", new ScoreboardScene());
     game.AddNewScene("plot-scene", new PlotScene());
     game.AddNewScene("rhythm-game-scene", new RhythmGameScene());
+    game.AddNewScene("final-play", new FinalPlayScene());
 
     // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
 	game.Start("start", 60, 1600, 832);

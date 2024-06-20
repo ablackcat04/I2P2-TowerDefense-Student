@@ -11,9 +11,10 @@
 #include "Scene/PlayScene.hpp"
 #include "Engine/Point.hpp"
 #include "Turret.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
-PlayScene* Turret::getPlayScene() {
-	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+FinalPlayScene* Turret::getPlayScene() {
+	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 Turret::Turret(std::string imgBase, std::string imgTurret, float x, float y, float radius, int price, float coolDown) :
 	Sprite(imgTurret, x, y), price(price), coolDown(coolDown), imgBase(imgBase, x, y) {
@@ -21,7 +22,7 @@ Turret::Turret(std::string imgBase, std::string imgTurret, float x, float y, flo
 }
 void Turret::Update(float deltaTime) {
 	Sprite::Update(deltaTime);
-	PlayScene* scene = getPlayScene();
+	FinalPlayScene* scene = getPlayScene();
 	imgBase.Position = Position;
 	imgBase.Tint = Tint;
 	if (!Enabled)

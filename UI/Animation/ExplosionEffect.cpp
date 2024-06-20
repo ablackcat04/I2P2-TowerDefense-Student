@@ -7,9 +7,10 @@
 #include "Engine/IScene.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/Resources.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
-PlayScene* ExplosionEffect::getPlayScene() {
-	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+FinalPlayScene* ExplosionEffect::getPlayScene() {
+	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 ExplosionEffect::ExplosionEffect(float x, float y) : Sprite("play/explosion-1.png", x, y), timeTicks(0) {
 	for (int i = 1; i <= 5; i++) {

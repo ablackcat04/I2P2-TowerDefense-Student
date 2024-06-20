@@ -483,3 +483,7 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
         }
     }
 }
+
+void PlotScene::SetNextSceneTo(std::string scene_name) {
+    next_scene = scene_name;
+}

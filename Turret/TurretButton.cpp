@@ -4,9 +4,10 @@
 #include "Engine/IScene.hpp"
 #include "Scene/PlayScene.hpp"
 #include "TurretButton.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
-PlayScene* TurretButton::getPlayScene() {
-	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+FinalPlayScene* TurretButton::getPlayScene() {
+	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 TurretButton::TurretButton(std::string img, std::string imgIn, Engine::Sprite Base, Engine::Sprite Turret, float x, float y, int money) :
 	ImageButton(img, imgIn, x, y), money(money), Base(Base), Turret(Turret) {

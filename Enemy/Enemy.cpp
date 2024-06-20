@@ -18,8 +18,8 @@
 #include "Scene/PlayScene.hpp"
 #include "Turret/Turret.hpp"
 
-PlayScene* Enemy::getPlayScene() {
-	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+FinalPlayScene* Enemy::getPlayScene() {
+	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 void Enemy::OnExplode() {
 	getPlayScene()->EffectGroup->AddNewObject(new ExplosionEffect(Position.x, Position.y));

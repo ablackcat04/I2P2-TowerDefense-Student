@@ -17,6 +17,7 @@
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
 void UpdateText(std::queue<std::list<std::string>>& queue_of_text, std::string& text, std::string& name);
 
@@ -81,6 +82,8 @@ private:
 
     std::string plot_path = "Resource/plot/test.txt";
 
+    std::string next_scene = "stage-select";
+
     ALLEGRO_SAMPLE* text_sfx;
     ALLEGRO_SAMPLE_ID* text_sfx_id;
 
@@ -104,14 +107,23 @@ public:
 
     void SetPlotPathTo(std::string path);
 
+    void SetNextSceneTo(std::string scene_name);
+
     bool GoToPlayNext = false;
     int stage;
 
     void ChangeScene() {
-        if (GoToPlayNext) {
+        if (next_scene == "final-play") {
+            FinalPlayScene* scene = dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetScene("final-play"));
+            scene->MapId = stage;
+            SetLastStage(stage);
+            next_scene = "stage-select";
+            Engine::GameEngine::GetInstance().ChangeScene("final-play");
+        } else if (next_scene == "play") {
             PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
             scene->MapId = stage;
             SetLastStage(stage);
+            next_scene = "stage-select";
             Engine::GameEngine::GetInstance().ChangeScene("play");
         } else {
             Engine::GameEngine::GetInstance().ChangeScene("stage-select");

@@ -20,26 +20,14 @@
 #include <unordered_map>
 #include "UI/Component/RefImage.hpp"
 #include "Utility/Conductor.hpp"
+#include "Utility/Note.hpp"
 using namespace std;
 
-class Note {
-public:
-    int x;      // lane of the note (0 ~ 3)
-    float y;    // the y position of the note
-    float size;    // size of the note(x)
-    float start_time;
-    bool active;
-    bool ishold;//484長條
-    int length;
-    ALLEGRO_COLOR* note_color;
-
-    Note(int startX,float start, ALLEGRO_COLOR* color,bool longa,int leng) : x(startX), y(0), size(390), start_time(start), active(false), note_color(color) ,ishold(longa),length(leng) {}
-    void update(Conductor conductor);
-    void render();
-};
-
-class RhythmGameScene final : public Engine::IScene{
+class RhythmGameScene final : public Engine::IScene {
 private:
+    int x_shift = 1600;
+    int wid = 300;
+
     static const int lanes = 4;
     vector<Note> notes;
     ALLEGRO_SAMPLE* backgroundMusic;

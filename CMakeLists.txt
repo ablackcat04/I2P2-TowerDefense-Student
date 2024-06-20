@@ -114,6 +114,10 @@ add_executable(TowerDefense
         Scene/RhythmGameScene.cpp
         Utility/Conductor.cpp
         Utility/Conductor.hpp
+        Scene/FinalPlayScene.cpp
+        Scene/FinalPlayScene.hpp
+        Utility/Note.cpp
+        Utility/Note.hpp
         #        UI/Component/TextInput.cpp
 #        UI/Component/TextInput.hpp
 )

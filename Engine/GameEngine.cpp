@@ -266,4 +266,8 @@ namespace Engine {
 		static GameEngine instance;
 		return instance;
 	}
+
+    ALLEGRO_DISPLAY *GameEngine::GetDisplay() {
+        return display;
+    }
 }

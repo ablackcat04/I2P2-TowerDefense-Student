@@ -7,9 +7,10 @@
 #include "Engine/Group.hpp"
 #include "Engine/IScene.hpp"
 #include "Scene/PlayScene.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
-PlayScene* Bullet::getPlayScene() {
-	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+FinalPlayScene* Bullet::getPlayScene() {
+	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 void Bullet::OnExplode(Enemy* enemy) {
 }
@@ -21,7 +22,7 @@ Bullet::Bullet(std::string img, float speed, float damage, Engine::Point positio
 }
 void Bullet::Update(float deltaTime) {
 	Sprite::Update(deltaTime);
-	PlayScene* scene = getPlayScene();
+	FinalPlayScene* scene = getPlayScene();
 	// Can be improved by Spatial Hash, Quad Tree, ...
 	// However, simply loop through all enemies is enough for this program.
 	for (auto& it : scene->EnemyGroup->GetObjects()) {

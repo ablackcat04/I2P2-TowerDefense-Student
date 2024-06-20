@@ -30,7 +30,7 @@
 #include "PlotScene.hpp"
 
 //ODO: Add shortcut key for momoi turret
-//TODO: Insert the point of scoreboard correctly
+//ODO: Insert the point of scoreboard correctly
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };

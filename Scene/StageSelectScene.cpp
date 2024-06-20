@@ -8,9 +8,6 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "PlayScene.hpp"
-#include "Engine/Point.hpp"
-#include "Engine/Resources.hpp"
-#include "UI/Component/Slider.hpp"
 #include "StageSelectScene.hpp"
 #include "WinScene.hpp"
 #include "PlotScene.hpp"
@@ -28,11 +25,12 @@ void StageSelectScene::Initialize() {
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 - 50, 400, 100);
-    btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 1));
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::FinalPlayOnClick, this, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Stage 1", "pirulen.ttf", 48, halfW, halfH / 2, 0, 0, 0, 255, 0.5, 0.5));
+
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH /2 + 100, 400, 100);
-    btn->SetOnClickCallback(std::bind(&StageSelectScene::PlayOnClick, this, 2));
+    btn->SetOnClickCallback(std::bind(&StageSelectScene::FinalPlayOnClick, this, 2));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Stage 2", "pirulen.ttf", 48, halfW, halfH / 2 +150, 0, 0, 0, 255, 0.5, 0.5));
 
@@ -74,7 +72,18 @@ void StageSelectScene::PlayOnClick(int stage) {
     PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
     scene->stage = stage;
-    scene->GoToPlayNext = true;
+    //scene->GoToPlayNext = true;
+    scene->SetNextSceneTo("play");
+    SetLastStage(stage);
+    Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+}
+
+void StageSelectScene::FinalPlayOnClick(int stage) {
+    PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
+    scene->stage = stage;
+    //scene->GoToPlayNext = true;
+    scene->SetNextSceneTo("final-play");
     SetLastStage(stage);
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }

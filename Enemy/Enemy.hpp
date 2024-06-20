@@ -6,6 +6,7 @@
 
 #include "Engine/Point.hpp"
 #include "Engine/Sprite.hpp"
+#include "Scene/FinalPlayScene.hpp"
 
 class Bullet;
 class PlayScene;
@@ -17,7 +18,7 @@ protected:
 	float speed;
 	float hp;
 	int money;
-	static PlayScene* getPlayScene();
+	static FinalPlayScene* getPlayScene();
 	virtual void OnExplode();
 public:
 	float reachEndTime;
