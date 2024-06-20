@@ -39,8 +39,6 @@ void StageSelectScene::Initialize() {
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Scoreboard", "pirulen.ttf", 36, halfW, halfH / 2 + 300, 0, 0, 0, 255, 0.5, 0.5));
 
-
-
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 500, 400, 75);
     btn->SetOnClickCallback(std::bind(&StageSelectScene::TestOnClick, this));
     AddNewControlObject(btn);

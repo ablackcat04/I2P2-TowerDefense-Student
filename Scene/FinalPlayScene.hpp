@@ -42,6 +42,7 @@ private:
 
     int x_shift = 1600;
     int wid = 300;
+    int tmpscore=0;
 
     static const int lanes = 4;
     std::vector<Note> notes;

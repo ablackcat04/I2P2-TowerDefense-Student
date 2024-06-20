@@ -93,7 +93,7 @@ void FinalPlayScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    bgmId = AudioHelper::PlayBGM("play.ogg");
+    //bgmId = AudioHelper::PlayBGM("play.ogg");
 
     al_resize_display(Engine::GameEngine::GetInstance().GetDisplay(), 1900, 832);
 
@@ -118,14 +118,16 @@ void FinalPlayScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = (w - x_shift) / 2;
     int halfH = h / 2;
-    bgmInstance = AudioHelper::PlaySample("rhythm_game_test_audio_bpm_160.ogg", true, AudioHelper::BGMVolume);
+    if(MapId==1) bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", true, AudioHelper::BGMVolume);
+    else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochize.ogg", true, AudioHelper::BGMVolume);
+    else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", true, AudioHelper::BGMVolume);
     conductor.init(100, 0);
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/4, halfH, 4, 1000, 0.0, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid*3/4, halfH, 4, 1000, 0.0, 0.5));
-    ReadNotes(2);
+    ReadNotes(MapId);
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift, 0, 255, 255, 255, 255);
     AddRefObject(*score_label);
@@ -435,13 +437,25 @@ void FinalPlayScene::OnKeyDown(int keyCode) {
                 }
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
+                    tmpscore+=100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
+                    EarnMoney(50);
+                    if(tmpscore>=1000){
+                        tmpscore-=1000;
+                        EarnMoney(200);
+                    }
                 } else {
                     score += 50;
+                    tmpscore+=50;
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
                     allperfect= false;
+                    EarnMoney(25);
+                    if(tmpscore>=1000){
+                        tmpscore-=1000;
+                        EarnMoney(200);
+                    }
                 }
                 ++combo;
                 last_hit_time[lane] = conductor.song_position;
@@ -484,7 +498,7 @@ void FinalPlayScene::OnKeyDown(int keyCode) {
         // Hotkey for MissileTurret.
         UIBtnClicked(2);
     }
-    else if (keyCode == ALLEGRO_KEY_D) {
+    else if (keyCode == ALLEGRO_KEY_R) {
         UIBtnClicked(3);
     }
         // ODO: [CUSTOM-TURRET]: Make specific key to create the turret.
@@ -777,13 +791,25 @@ void FinalPlayScene::OnKeyUp(int keyCode){
                 --n;
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
+                    tmpscore+=100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
+                    EarnMoney(50);
+                    if(tmpscore>=1000){
+                        tmpscore-=1000;
+                        EarnMoney(200);
+                    }
                 } else {
                     score += 50;
+                    tmpscore+=50;
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
                     allperfect= false;
+                    EarnMoney(25);
+                    if(tmpscore>=1000){
+                        tmpscore-=1000;
+                        EarnMoney(200);
+                    }
                 }
                 ++combo;
                 last_up_time[lane] = conductor.song_position;
