@@ -9,7 +9,7 @@
 #include <fstream>
 
 namespace InternetHelper {
-    const std::string server_ip = "http://redlin.zapto.org";
+    const std::string server_ip = "http://192.168.56.1";
     const std::string upload_php_position = server_ip + "/I2P_project/upload.php";
 
     size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream);
