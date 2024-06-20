@@ -12,11 +12,14 @@
 #include "UI/Component/ImageButton.hpp"
 
 using namespace std;
+ALLEGRO_COLOR* note_color2;
 
 RhythmGameScene::RhythmGameScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor(){
     cyan = al_map_rgb(0, 220, 220);
     yellow = al_map_rgb(220, 220, 0);
     red = al_map_rgb(255, 0, 0);
+    blue = al_map_rgb(0,0,255);
+    note_color2=&blue;
 }
 
 void RhythmGameScene::Initialize() {
@@ -47,7 +50,7 @@ void RhythmGameScene::Initialize() {
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW/2, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW, halfH, 15, 802, 0.5, 0.5));
     AddNewObject(new Engine::Image("stage-select/defineline.png", halfW*1.5, halfH, 15, 802, 0.5, 0.5));
-    ReadNotes(1);
+    ReadNotes(2);
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, 0, 0, 255, 255, 255, 255);
     AddRefObject(*score_label);
@@ -68,6 +71,7 @@ void RhythmGameScene::Initialize() {
 void RhythmGameScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+    IScene::Terminate();
     delete score_label;
     delete combo_label;
     delete judgement_label;
@@ -82,12 +86,12 @@ void RhythmGameScene::ReadNotes(int songID){
     while(fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time){
         for(int i=0;i < lanes;i++){
             if(has_note[i]==1){//短條
+                endtime=start_time+5;
                 notes.emplace_back(Note(i, start_time, &red,false,10));
-                //endtime=start_time*conductor.crotchet+10;
             }
             else if(has_note[i]>1){//長條
+                endtime=start_time+5;
                 notes.emplace_back(Note(i, start_time, &red,true,100*(has_note[i]-1)));
-                //endtime=start_time*conductor.crotchet+10;
             }
         }
     }
@@ -123,7 +127,7 @@ void RhythmGameScene::Update(float deltaTime){
             AddNewObject(new Engine::Label("Fullcombo", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
         }
     }
-    //while(1) if(al_get_time()>=endtime) Terminate();
+    if(conductor.song_position>=endtime) Engine::GameEngine::GetInstance().ChangeScene("stage-select");;
 }
 
 void RhythmGameScene::Draw() const {
@@ -176,7 +180,12 @@ void Note::render() {
     if (active) {
         //if(ishold) al_draw_filled_rectangle(402*x, y, 402*x + size, y + 500, *note_color);
         //else al_draw_filled_rectangle(402*x, y, 402*x + size, y + 10, *note_color);
-        al_draw_filled_rectangle(402*x, y-length, 402*x + size, y , *note_color);
+        if(!ishold)al_draw_filled_rectangle(402*x, y-length, 402*x + size, y , *note_color);
+        else{
+            al_draw_filled_rectangle(402*x, y-length, 402*x + size, y-length+20 , *note_color);
+            al_draw_filled_rectangle(402*x, y-length+10, 402*x + size, y-10 , *note_color2);
+            al_draw_filled_rectangle(402*x, y-20, 402*x + size, y , *note_color);
+        }
     }
 }
 

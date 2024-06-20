@@ -62,9 +62,11 @@ private:
     std::string combo_text;
 
     ALLEGRO_FONT* font;
+
     ALLEGRO_COLOR cyan;
     ALLEGRO_COLOR yellow;
     ALLEGRO_COLOR red;
+    ALLEGRO_COLOR blue;
 
     mutable std::queue<float> frame_time;
 
