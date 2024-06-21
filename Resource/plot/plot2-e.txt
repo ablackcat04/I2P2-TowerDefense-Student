@@ -1,3 +1,13 @@
+
+
 Plot_Start:
 
-middle "You Won the second stage!!!"
+middle "在一番激戰後，敵人終於都被消滅"
+
+
+
+
+
+
+middle "第二章                                                                     失散的親人"
+NULL "                                                  待續......"
