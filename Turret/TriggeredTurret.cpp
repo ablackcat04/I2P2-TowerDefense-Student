@@ -69,3 +69,11 @@ void TriggeredTurret::Update(float deltaTime) {
         }
     }
 }
+
+void TriggeredTurret::TriggerByHit() {
+    triggered = true;
+}
+
+void TriggeredTurret::TriggerByRhythm(float R) {
+    return;
+}

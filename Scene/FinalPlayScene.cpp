@@ -16,8 +16,6 @@
 #include "Engine/AudioHelper.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "Enemy/Enemy.hpp"
-#include "Engine/GameEngine.hpp"
-#include "Engine/Group.hpp"
 #include "UI/Component/Label.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
@@ -25,7 +23,6 @@
 #include "Turret/MomoiTurret.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "Enemy/PlaneEnemy.hpp"
-#include "PlayScene.hpp"
 #include "Engine/Resources.hpp"
 #include "Enemy/SoldierEnemy.hpp"
 #include "Enemy/TankEnemy.hpp"
@@ -33,10 +30,6 @@
 #include "Enemy/FlameTank.hpp"
 #include "WinScene.hpp"
 #include "FinalPlayScene.hpp"
-#include "PlotScene.hpp"
-
-//ODO: Add shortcut key for momoi turret
-//ODO: Insert the point of scoreboard correctly
 
 bool FinalPlayScene::DebugMode = false;
 const std::vector<Engine::Point> FinalPlayScene::directions = { Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -171,7 +164,17 @@ void FinalPlayScene::Update(float deltaTime) {
     conductor.update();
     score_text = std::to_string(score);
 
-    auto ite = notes.begin();
+    a24th = ((conductor.song_position / conductor.crotchet)*6);
+
+    for (float f : l) {
+        if ((int)(a24th / (24/f)) > (int)(p24th / (24/f))) {
+            for (auto i: TowerGroup->GetObjects()) {
+                reinterpret_cast<Turret*>(i)->TriggerByRhythm(f);
+            }
+        }
+    }
+
+    p24th = a24th;
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         n->update(conductor);
@@ -474,7 +477,7 @@ void FinalPlayScene::OnKeyDown(int keyCode) {
                     }
                 }
                 for (auto i : TowerGroup->GetObjects()) {
-                    dynamic_cast<Turret*>(i)->Trigger();
+                    dynamic_cast<Turret *>(i)->TriggerByHit();
                 }
                 ++combo;
                 last_hit_time[lane] = conductor.song_position;
@@ -829,6 +832,9 @@ void FinalPlayScene::OnKeyUp(int keyCode){
                         tmpscore-=1000;
                         EarnMoney(200);
                     }
+                }
+                for (auto i : TowerGroup->GetObjects()) {
+                    dynamic_cast<Turret *>(i)->TriggerByHit();
                 }
                 ++combo;
                 last_up_time[lane] = conductor.song_position;

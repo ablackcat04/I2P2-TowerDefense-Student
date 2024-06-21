@@ -21,6 +21,9 @@ class TriggeredTurret: public Turret {
 public:
     TriggeredTurret(std::string imgBase, std::string imgTurret, float x, float y, float radius, int price, float coolDown);
     void Update(float deltaTime) override;
+
+    void TriggerByHit() override;
+    void TriggerByRhythm(float R) override;
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_TRIGGEREDTURRET_HPP

@@ -38,6 +38,7 @@ void Turret::Update(float deltaTime) {
 		}
 	}
 	if (!Target) {
+        triggered = false;
 		// Lock first seen target.
 		// Can be improved by Spatial Hash, Quad Tree, ...
 		// However, simply loop through all enemies is enough for this program.
@@ -68,12 +69,17 @@ void Turret::Update(float deltaTime) {
 		// Add 90 degrees (PI/2 radian), since we assume the image is oriented upward.
 		Rotation = atan2(rotation.y, rotation.x) + ALLEGRO_PI / 2;
 		// Shoot reload.
-		reload -= deltaTime;
-		if (reload <= 0) {
-			// shoot.
-			reload = coolDown;
-			CreateBullet();
-		}
+
+		//reload -= deltaTime;
+//		if (reload <= 0) {
+//			// shoot.
+//			reload = coolDown;
+//			CreateBullet();
+//		}
+        if (triggered) {
+            triggered = false;
+            CreateBullet();
+        }
 	}
 }
 
@@ -93,6 +99,12 @@ int Turret::GetPrice() const {
 	return price;
 }
 
-void Turret::Trigger() {
-    triggered = true;
+void Turret::TriggerByHit() {
+    triggered = false;
+}
+
+void Turret::TriggerByRhythm(float R) {
+    if (R == rhythm) {
+        triggered = true;
+    }
 }

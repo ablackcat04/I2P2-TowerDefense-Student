@@ -30,6 +30,10 @@ namespace Engine {
 class FinalPlayScene final : public Engine::IScene {
     // Tower part
 private:
+    const float l[10] = {0.5f, 1.f, 2.f, 4.f, 6.f, 8.f, 12.f};
+    int a24th = 0;
+    int p24th = 0;
+
     enum TileType {
         TILE_DIRT,
         TILE_FLOOR,

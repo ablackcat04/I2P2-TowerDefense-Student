@@ -18,6 +18,7 @@ MomoiTurret::MomoiTurret(float x, float y) :
         Turret("play/tower-base.png", "play/momoi64x64.png", x, y, 600, Price, 3.5) {
     // Move center downward, since we the turret head is slightly biased upward.
     Anchor.y -= 8.0f / GetBitmapHeight();
+    rhythm = 1.f;
 }
 void MomoiTurret::CreateBullet() {
 

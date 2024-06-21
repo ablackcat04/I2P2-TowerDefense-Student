@@ -12,6 +12,9 @@ class PlayScene;
 
 class Turret: public Engine::Sprite {
 protected:
+    float rhythm = 1;
+    int accumulated_24th = 0;
+
     int price;
     float coolDown;
     float reload = 0;
@@ -33,6 +36,7 @@ public:
     void Draw() const override;
 	int GetPrice() const;
 
-    void Trigger();
+    virtual void TriggerByHit();
+    virtual void TriggerByRhythm(float R);
 };
 #endif // TURRET_HPP
