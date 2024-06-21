@@ -53,6 +53,7 @@ Engine::Point FinalPlayScene::GetClientSize() {
 }
 
 FinalPlayScene::FinalPlayScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conductor() {
+    white = al_map_rgb(255,255,255);
     cyan = al_map_rgb(0, 220, 220);
     yellow = al_map_rgb(220, 220, 0);
     red = al_map_rgb(255, 0, 0);
@@ -124,11 +125,11 @@ void FinalPlayScene::Initialize() {
     if(MapId==1)  conductor.init(152, 0);
     else if(MapId==2)  conductor.init(480, 0);
     else if(MapId==3) conductor.init(250, 0);
-    AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
-    AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
-    AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
-    AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/4, halfH, 4, 1000, 0.0, 0.5));
-    AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid*3/4, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/4, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid*3/4, halfH, 4, 1000, 0.0, 0.5));
     ReadNotes(MapId);
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift, 0, 255, 255, 255, 255);
@@ -350,6 +351,17 @@ void FinalPlayScene::Draw() const {
         }
     }
 
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/4, halfH, 4, 1000, 0.0, 0.5));
+    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid*3/4, halfH, 4, 1000, 0.0, 0.5));
+
+    al_draw_line(x_shift, 700, x_shift + wid, 700, white, 10);
+    al_draw_line(x_shift + wid/4, 0, x_shift + wid/4, 700, white, 4);
+    al_draw_line(x_shift + wid/2, 0, x_shift + wid/2, 700, white, 4);
+    al_draw_line(x_shift + 3*wid/4, 0, x_shift + 3*wid/4, 700, white, 4);
+
     for (int i = 0; i < lanes; ++i) {   // draw the hit visual feed-back
         float t = conductor.song_position - last_hit_time[i];
         if (t < 0.1) {
@@ -460,6 +472,9 @@ void FinalPlayScene::OnKeyDown(int keyCode) {
                         tmpscore-=1000;
                         EarnMoney(200);
                     }
+                }
+                for (auto i : TowerGroup->GetObjects()) {
+                    dynamic_cast<Turret*>(i)->Trigger();
                 }
                 ++combo;
                 last_hit_time[lane] = conductor.song_position;

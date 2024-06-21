@@ -124,6 +124,8 @@ add_executable(TowerDefense
 #        UI/Component/TextInput.hpp
         Utility/InternetHelper.cpp
         Utility/InternetHelper.hpp
+        Turret/TriggeredTurret.cpp
+        Turret/TriggeredTurret.hpp
 )
 
 IF (WIN32)

@@ -1,6 +1,7 @@
 #ifndef MISSILETURRET_HPP
 #define MISSILETURRET_HPP
 #include "Turret.hpp"
+#include "TriggeredTurret.hpp"
 
 class MissileTurret: public Turret {
 public:

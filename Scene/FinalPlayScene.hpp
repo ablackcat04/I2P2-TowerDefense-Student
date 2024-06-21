@@ -67,6 +67,7 @@ private:
 
     ALLEGRO_FONT* font;
 
+    ALLEGRO_COLOR white;
     ALLEGRO_COLOR cyan;
     ALLEGRO_COLOR yellow;
     ALLEGRO_COLOR red;

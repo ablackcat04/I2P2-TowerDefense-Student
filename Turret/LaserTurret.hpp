@@ -1,6 +1,7 @@
 #ifndef LASERTURRET_HPP
 #define LASERTURRET_HPP
 #include "Turret.hpp"
+#include "TriggeredTurret.hpp"
 
 class LaserTurret: public Turret {
 public:

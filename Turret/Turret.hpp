@@ -22,6 +22,8 @@ protected:
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet() = 0;
 
+    bool triggered;
+
 public:
     bool Enabled = true;
     bool Preview = false;
@@ -30,5 +32,7 @@ public:
     void Update(float deltaTime) override;
     void Draw() const override;
 	int GetPrice() const;
+
+    void Trigger();
 };
 #endif // TURRET_HPP
