@@ -25,8 +25,8 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
 
 
 void PlotScene::Initialize() {
-    big_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 56, 0);
-    font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
+    big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
+    font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);
     current_text_color = new ALLEGRO_COLOR (al_map_rgb(255,255,255));
 
     while (!queue_of_text.empty()) {
@@ -198,7 +198,7 @@ void PlotScene::Initialize() {
         history_name[i] = "";
         history_text[i] = "";
         history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf", 48, 160, 200+65*i, 180, 180, 200, 255, 0.0);
-        history_text_label[i] = new Engine::Label(&history_text[i], "BoutiqueBitmap7x7_1.7.ttf", 48, 400, 200+65*i, 180, 180, 180, 255, 0.0);
+        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf", 44, 400, 200+65*i - 2, 180, 180, 180, 255, 0.0);
         AddRefObject(*history_name_label[i]);
         AddRefObject(*history_text_label[i]);
     }
@@ -242,7 +242,7 @@ void PlotScene::Draw() const {
                 while (ptr < partial_middle_text.size() && al_get_text_width(big_font, str.c_str()) <= 1250) {
                     str += partial_middle_text[ptr++];
                 }
-                al_draw_text(big_font, *current_text_color, 150, 200+60*lines, 0, str.c_str());
+                al_draw_text(big_font, *current_text_color, 150, 200+64*lines, 0, str.c_str());
             }
         } else {
             int ptr = 0;
