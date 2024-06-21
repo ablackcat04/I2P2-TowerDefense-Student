@@ -80,7 +80,7 @@ private:
     std::vector<std::pair<std::string, std::string>> history_info;
     int history_ptr;
 
-    std::string plot_path = "Resource/plot/test.txt";
+    std::string plot_path = "Resource/plot/plot3-e.txt";
 
     std::string next_scene = "stage-select";
 
