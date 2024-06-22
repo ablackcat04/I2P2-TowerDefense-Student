@@ -105,6 +105,10 @@ void FinalPlayScene::Initialize() {
     allperfect = true;
     fullcombo = true;
 
+    for (int i = 0; i < lanes; ++i) {
+        last_note_is_hold[i] = false;
+    }
+
     score = 0;
     font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 40, 0);
 
@@ -186,6 +190,7 @@ void FinalPlayScene::Update(float deltaTime) {
         if (t> 0.1) {
             allperfect= false;
             fullcombo = false;
+            last_judgement[n->x] = Judgement::missed;
             n = notes.erase(n);
             current_judgement = "Missed";
             --n;
@@ -368,7 +373,11 @@ void FinalPlayScene::Draw() const {
     for (int i = 0; i < lanes; ++i) {   // draw the hit visual feed-back
         float t = conductor.song_position - last_hit_time[i];
         if (t < 0.1) {
-            al_draw_rectangle(x_shift + wid/4 * i + 100 - (100)*(t*10), 675, x_shift + wid/4 * (i + 1) - 100 + (100)*(t*10), 725, (last_judgement[i] == Judgement::perfect ? cyan : yellow), 100*(t+0.05));
+            al_draw_rectangle(x_shift + wid/4 * i + 20 - (20)*(t*10), 685, x_shift + wid/4 * (i + 1) - 20 + (20)*(t*10), 715,
+                              (last_judgement[i] == Judgement::perfect ? cyan : yellow), 40*(t+0.05));
+        } else if (last_up_time[i] < last_hit_time[i] && last_judgement[i] != Judgement::missed && last_note_is_hold[i]) {
+            al_draw_rectangle(x_shift + wid/4 * i, 685, x_shift + wid/4 * (i + 1), 715,
+                              (last_judgement[i] == Judgement::perfect ? cyan : yellow), 40*(0.15));
         }
     }
 
@@ -453,7 +462,12 @@ void FinalPlayScene::OnKeyDown(int keyCode) {
                 if(!n->ishold){
                     n = notes.erase(n);
                     --n;
+                    last_note_is_hold[n->x] = false;
+                } else {
+                    last_note_is_hold[n->x] = true;
                 }
+
+
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
                     tmpscore+=100;

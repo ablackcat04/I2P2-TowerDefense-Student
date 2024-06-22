@@ -79,6 +79,8 @@ private:
 
     mutable std::queue<float> frame_time;
 
+    bool last_note_is_hold[lanes];
+
     float last_hit_time[lanes];
     float last_pressed_time[lanes];
     float last_up_time[lanes];
@@ -92,7 +94,7 @@ private:
 
     int lane_key[lanes] = {ALLEGRO_KEY_D, ALLEGRO_KEY_F, ALLEGRO_KEY_J, ALLEGRO_KEY_K};
 
-    static const int pressed_fx_max_brightness = 16;
+    static const int pressed_fx_max_brightness = 20;
     constexpr static const float pressed_fx_attack = 0.02;  // in sec
     constexpr static const float pressed_fx_decay = 0.4;    // in sec
 
