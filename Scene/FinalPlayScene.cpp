@@ -51,6 +51,10 @@ FinalPlayScene::FinalPlayScene() : backgroundMusic(nullptr), bgmInstance(nullptr
     yellow = al_map_rgb(220, 220, 0);
     red = al_map_rgb(255, 0, 0);
     blue = al_map_rgb(0,0,255);
+    last_note_is_hold[0] = false;
+    last_note_is_hold[1] = false;
+    last_note_is_hold[2] = false;
+    last_note_is_hold[3] = false;
 }
 
 void FinalPlayScene::Initialize() {
@@ -192,31 +196,44 @@ void FinalPlayScene::Update(float deltaTime) {
             float addtime=(float)n->length/700.0;
             t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
 
-//            if (cheat_mode) {
-//                float tt = conductor.song_position - n->start_time * conductor.crotchet - 1;
-//                if (tt > 0) {
-//
-//                }
-//            }
+            if (cheat_mode) {
+                float tt = conductor.song_position - n->start_time * conductor.crotchet - 1;
+                if (!n->be_hit_by_cheat && tt > 0) {
+                    last_note_is_hold[n->x] = true;
+                    last_hit_time[n->x] = conductor.song_position;
+                    last_judgement[n->x] = Judgement::perfect;
+                    current_judgement = "Perfect";
+                    ++combo;
+
+                    score += 100;
+                    tmpscore+=100;
+                    EarnMoney(50);
+                    if(tmpscore>=1000){
+                        tmpscore-=1000;
+                        EarnMoney(200);
+                    }
+
+                    n->be_hit_by_cheat = true;
+
+                    for (auto i : TowerGroup->GetObjects()) {
+                        dynamic_cast<Turret *>(i)->TriggerByHit();
+                    }
+                }
+            }
         } else {
             t = conductor.song_position - n->start_time * conductor.crotchet - 1;
         }
 
         if (cheat_mode) {
             if (t > 0) {
-                if(!n->ishold){
-                    n = notes.erase(n);
-                    --n;
-                    last_note_is_hold[n->x] = false;
-                } else {
-                    last_note_is_hold[n->x] = true;
+                last_note_is_hold[n->x] = false;
+                if (!n->ishold) {
+                    last_hit_time[n->x] = conductor.song_position;
                 }
+                last_up_time[n->x] = conductor.song_position;
 
-                last_hit_time[n->x] = conductor.song_position;
                 last_judgement[n->x] = Judgement::perfect;
-                n = notes.erase(n);
                 current_judgement = "Perfect";
-                --n;
                 ++combo;
 
                 score += 100;
@@ -230,6 +247,10 @@ void FinalPlayScene::Update(float deltaTime) {
                 for (auto i : TowerGroup->GetObjects()) {
                     dynamic_cast<Turret *>(i)->TriggerByHit();
                 }
+
+                n = notes.erase(n);
+                --n;
+
             }
         }
 
@@ -507,7 +528,7 @@ void FinalPlayScene::OnKeyDown(int keyCode) {
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         float t = conductor.song_position - n->start_time * conductor.crotchet - 1;
-        if (n->x == lane&&n->active) {
+        if (n->x == lane && n->active) {
             if (t > -0.1 && t < 0.1) {
                 if(!n->ishold){
                     n = notes.erase(n);

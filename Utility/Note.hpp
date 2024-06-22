@@ -19,12 +19,13 @@ public:
     float start_time;
     bool active;
     bool ishold;    //484長條
+    bool be_hit_by_cheat;
     int length;
     ALLEGRO_COLOR* note_color;
     ALLEGRO_COLOR* note_color2;
 
     Note(int startX,float start, ALLEGRO_COLOR* color, ALLEGRO_COLOR *color2,bool longa,int leng) : x(startX), y(0), size(390),
-        start_time(start), active(false), note_color(color) ,ishold(longa),length(leng), note_color2(color2) {}
+        start_time(start), active(false), note_color(color) ,ishold(longa), be_hit_by_cheat(false),length(leng), note_color2(color2) {}
     void update(Conductor conductor);
     void render();
 };

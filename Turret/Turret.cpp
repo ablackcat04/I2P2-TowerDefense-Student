@@ -90,7 +90,7 @@ void Turret::Draw() const {
 	}
 	imgBase.Draw();
 	Sprite::Draw();
-	if (PlayScene::DebugMode) {
+	if (FinalPlayScene::DebugMode) {
 		// Draw target radius.
 		al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(0, 0, 255), 2);
 	}
