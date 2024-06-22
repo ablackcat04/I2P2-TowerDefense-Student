@@ -36,7 +36,7 @@ Stage3: D1AB0LiC_DEV0Ti0N by Salad Savior (Free to use if informed)
 
 Prove of informed (X(Twitter) DM):
 ![img.png](img.png)
-
+---
 ## Work Allocation
 
 the one in front means do more work
@@ -48,49 +48,38 @@ cross means the one do less work but still engaged
 |:-------------------------------------------------------|:--------------------:|
 | Come up with what we are going to do                   |     吳彥儒、~~廖昱瑋~~      |
 | Write proposal                                         |       廖昱瑋、吳彥儒        |
+|                                                        |                      |
 | Teach team member how to use Git and GitHub (in CLion) |         吳彥儒          |
+| Merge branches                                         |         吳彥儒          |
 | Write this README.md file                              |         吳彥儒          |
 
 ### Plot Engine
 
-| **Tasks**                    | **Person in Charge** |
-|:-----------------------------|:--------------------:|
-| Decide what features to have |         吳彥儒          |
-|                              |                      |
-|                              |                      |
-|                              |                      |
-
-
-
-
-| Rhythm game engine                                     |       廖昱瑋、吳彥儒        |
-| Tower defense(integration with music and rhythm game)  |          5%          |
-| Fix Bugs in Scene                                      |         15%          |
-
-## Grading
-
-| **Hackathon Tasks**              | **Score** | **Check** |
-|:---------------------------------|:---------:|:---------:|
-| Add `StartScene`                 |    5%     |     -     |
-| Add `StageSelectScene`           |    5%     |     -     |
-| Move Controls to `SettingsScene` |    5%     |     -     |
-| Fix Bugs in Scene                |    15%    |     -     |
-
-| **Project Tasks**           | **Score** | **Check** |
-|:----------------------------|:---------:|:---------:|
-| Add `ScoreboardScene`       |    40%    |     -     |
-| Enemy Pathfinding           |    10%    |     -     |
-| 2 New Turrets/Enemies/Tools |    20%    |     -     |
-
-<!-- Please describe the new turret/enemy/tool you have implemented in the above table. -->
-
-| **Bonus Functions**   | **Score** | **Check** |
-|:----------------------|:---------:|:---------:|
-| Scoreboard Date Time  |    3%     |     -     |
-| Record User Name      |    7%     |     -     |
-| Other Bonus Functions |   ≤10%    |     -     |
-
-<!-- Please describe the bonus optimizations or features you have implemented in the above table. -->
+| **Tasks**                 | **Person in Charge** |
+|:--------------------------|:--------------------:|
+| Plan                      |         吳彥儒          |
+| Sync with Rhythm          |       廖昱瑋、吳彥儒        |
+| Notes fall from top       |       廖昱瑋、吳彥儒        |
+| Hit notes and Judgement   |         吳彥儒          |
+| Read notes                |         廖昱瑋          |
+| Hold notes implementation |         廖昱瑋          |
+| Visual effects            |         吳彥儒          |
+| Rhythm game cheat mode    |         吳彥儒          |
+---
+### Story Map
+| **Tasks**               | **Person in Charge** |
+|:------------------------|:--------------------:|
+| Plan                    |         吳彥儒          |
+| Story Map               |         劉奐均          |
+| Integration with others |         吳彥儒          |
+---
+### Tower Defense's Integration with Music
+| **Tasks**                                        | **Person in Charge** |
+|:-------------------------------------------------|:--------------------:|
+| Plan                                             |         吳彥儒          |
+| Make money by hitting notes                      |         廖昱瑋          |
+| Some Towers will only attack when notes were hit |         吳彥儒          |
+| Other Tower's attack sync with rhythm            |         吳彥儒          |
 
 ---
 
