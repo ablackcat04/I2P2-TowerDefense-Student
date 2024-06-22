@@ -13,7 +13,9 @@
 #include "UI/Component/Scoreboard.hpp"
 #include "Utility/InternetHelper.hpp"
 
-Engine::Scoreboard* scb[2][2];      //scene, money/life
+const int max_scene = 3;
+
+Engine::Scoreboard* scb[max_scene][2];      //scene, money/life
 Engine::ImageButton* money_btn;
 Engine::ImageButton* life_btn;
 unsigned int scene = 1;
@@ -21,8 +23,8 @@ unsigned int money_or_life = 0;     //money: 0, life: 1
 
 void AddScene(int a) {
     scene += a;
-    if (scene > 2) {
-        scene = 2;
+    if (scene > max_scene) {
+        scene = max_scene;
     } else if (scene < 1) {
         scene = 1;
     }
@@ -33,8 +35,8 @@ Engine::Scoreboard* GetCurrentScoreboard() {
 }
 
 void OnlyShowCurrentScoreboard(Engine::Scoreboard* current) {
-    for (int i = 0; i <= 1; ++i) {
-        for (int j = 0; j <= 1; ++j) {
+    for (int i = 0; i <= max_scene-1; ++i) {
+        for (int j = 0; j <= max_scene-1; ++j) {
             scb[i][j]->MakeNotShow();
         }
     }
@@ -61,7 +63,7 @@ void ScoreboardScene::Initialize() {
         Engine::LOG(Engine::ERROR) << "Upload Test Failed!";
     }
 
-    for (int i = 1; i <=2; ++i) {
+    for (int i = 1; i <= max_scene; ++i) {
         if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt",
                                          "Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt")) {
             Engine::LOG(Engine::INFO) << "Load Successfully";
@@ -124,7 +126,7 @@ void ScoreboardScene::Initialize() {
 //    //scoreboard component init
     std::string ss = "Resource/scoreboard/scoreboard.txt";
 
-    for (int i = 1; i <= 2; i++) {
+    for (int i = 1; i <= max_scene; i++) {
         if (online_avaliable[i-1][0]) {
             ss = (std::string)"Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt";
         } else {
@@ -158,10 +160,9 @@ void ScoreboardScene::Update(float deltaTime) {
 void ScoreboardScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
-    for (int i = 0; i <= 1; i++) {
-        for (int j = 0; j <= 1; j++) {
-            delete scb[i][j];
-        }
+    for (int i = 0; i <= max_scene-1; i++) {
+        delete scb[i][0];
+        delete scb[i][1];
     }
     delete Lscb;
     IScene::Terminate();
