@@ -42,7 +42,7 @@ if(cnt>1) {
 else {
     AddNewObject(new Engine::Image("map/lock.jpg", halfW/2+400, halfH/2+50, 200, 200, 0.5, 0.5));
 }
-    if (cnt>0) {
+    if (cnt>2) {
         btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW/2+750 , halfH / 2 -50, 200,
                                      200);
         btn->SetOnClickCallback(std::bind(&MapScene::PlayOnClick, this, 3));
