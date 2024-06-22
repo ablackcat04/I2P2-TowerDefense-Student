@@ -95,6 +95,141 @@ cross means the one do less work but still engaged
 | Other Tower's attack sync with rhythm            |         吳彥儒          |
 
 ---
+## Plot Scripting Language Documentation
+In order to handle the story, we develop a simple scripting language: **SimRen'Py**.
+This scripting language was initially intended to be very similar to Ren'Py, 
+a visual novel language based on python. However, due to the implementation of my Engine, 
+I changed some grammar for easier implementation in my situation!
+
+Below are some simple documentation of our language SimRen'Py:
+
+SimRen'Py contains of two part, the first is the preprocessing part, and the second part is the story part.
+These two part needs to be seperated by a special line of words (**Plot_Start:**).
+The script might look like this:
+
+```
+image Kuo "plot/Kuo.jpg" size 300 400
+
+Plot_Start:
+
+ABlackCat "What should I do?"
+ABlackCat "Maybe I should write code"
+```
+---
+## Preprocessing Instructions
+### image
+```
+image image_name "path/to/your/image/from/Resource/images" size width height
+```
+load the image for later use
+example:
+```
+image Kuo "plot/Kuo.jpg" size 300 400
+```
+---
+### audio
+```
+audio audio_name "path/to/your/audio/from/Resource/audios"
+```
+load the audio for later use.
+
+example:
+```
+audio notification "plot/sfx/notification.ogg"
+```
+---
+### color
+```
+color character_name r g b
+```
+pre-assigning color to specific character name, 
+the engine will automatically color the name as described if the name were later used.
+
+example:
+```
+color 彩奈 224 241 245
+```
+---
+## Instructions in the Story Part
+### text
+```
+character_name "words the character will say"
+```
+Simple text display, if the character name is not colored, 
+it will be colored with the default color. You can use NULL as the character name 
+if you don't want to show the character name.
+
+example:
+```
+ABlackCat "Maybe I should write code"
+```
+![img_1.png](img_1.png)
+
+---
+### middle
+```
+middle "words you want to show at the middle"
+```
+Display text at the middle.
+
+example:
+```
+middle "一段時間後............"
+```
+
+![img_2.png](img_2.png)
+
+---
+### show
+```
+show image_name at x y
+```
+Show loaded image at certain position.
+
+example:
+```
+image Kuo "plot/Kuo.jpg" size 300 400
+
+Plot_Start:
+
+show Kuo at 200 100
+```
+![img_3.png](img_3.png)
+
+---
+### hide
+```
+hide image_name
+```
+Hide certain showed image, do nothing if not showed before.
+
+example:
+```
+hide Kuo
+```
+---
+### play
+```
+play audio_name
+```
+Play loaded audio once.
+
+example:
+```
+play notification
+```
+---
+### stop
+```
+stop audio_name
+```
+Stop played audio, do nothing if the audio hasn't been played.
+
+example:
+```
+stop notification
+```
+---
 
 <style>
 table th{
