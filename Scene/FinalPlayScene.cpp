@@ -143,6 +143,11 @@ void FinalPlayScene::Initialize() {
     btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene("stage-select");});
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, w-100, 75, 0, 0, 0, 255, 0.5, 0.5));
+
+    cheat_mode = false;
+    cheat_btn = new Engine::ToggledTextButton("cheat", &cheat_mode, 1400, 400, al_map_rgb(0,0,0), al_map_rgb(50,50,50),
+                                            al_map_rgb(100,100,100));
+    AddRefControlObject(*cheat_btn);
 }
 void FinalPlayScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
@@ -183,10 +188,51 @@ void FinalPlayScene::Update(float deltaTime) {
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         n->update(conductor);
         float t;
-        if(n->ishold){
+        if (n->ishold) {
             float addtime=(float)n->length/700.0;
             t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
-        }else t=conductor.song_position - n->start_time * conductor.crotchet - 1;
+
+//            if (cheat_mode) {
+//                float tt = conductor.song_position - n->start_time * conductor.crotchet - 1;
+//                if (tt > 0) {
+//
+//                }
+//            }
+        } else {
+            t = conductor.song_position - n->start_time * conductor.crotchet - 1;
+        }
+
+        if (cheat_mode) {
+            if (t > 0) {
+                if(!n->ishold){
+                    n = notes.erase(n);
+                    --n;
+                    last_note_is_hold[n->x] = false;
+                } else {
+                    last_note_is_hold[n->x] = true;
+                }
+
+                last_hit_time[n->x] = conductor.song_position;
+                last_judgement[n->x] = Judgement::perfect;
+                n = notes.erase(n);
+                current_judgement = "Perfect";
+                --n;
+                ++combo;
+
+                score += 100;
+                tmpscore+=100;
+                EarnMoney(50);
+                if(tmpscore>=1000){
+                    tmpscore-=1000;
+                    EarnMoney(200);
+                }
+
+                for (auto i : TowerGroup->GetObjects()) {
+                    dynamic_cast<Turret *>(i)->TriggerByHit();
+                }
+            }
+        }
+
         if (t> 0.1) {
             allperfect= false;
             fullcombo = false;
@@ -200,8 +246,12 @@ void FinalPlayScene::Update(float deltaTime) {
     if(notes.empty()){
         if(allperfect){
             AddNewObject(new Engine::Label("Allperfect", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
+            EffectGroup->AddNewObject(new Plane());
+            EarnMoney(10000);
         } else if(fullcombo){
             AddNewObject(new Engine::Label("Fullcombo", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
+            EffectGroup->AddNewObject(new Plane());
+            EarnMoney(5000);
         }
     }
     //if(conductor.song_position>=endtime) Engine::GameEngine::GetInstance().ChangeScene("stage-select");;

@@ -18,6 +18,7 @@
 #include "Engine/Point.hpp"
 #include "Utility/Conductor.hpp"
 #include "Utility/Note.hpp"
+#include "UI/Component/ToggledTextButton.hpp"
 
 class Turret;
 namespace Engine {
@@ -97,6 +98,9 @@ private:
     static const int pressed_fx_max_brightness = 20;
     constexpr static const float pressed_fx_attack = 0.02;  // in sec
     constexpr static const float pressed_fx_decay = 0.4;    // in sec
+
+    bool cheat_mode;
+    Engine::ToggledTextButton* cheat_btn;
 
 protected:
     int lives;
