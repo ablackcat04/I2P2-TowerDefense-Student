@@ -30,6 +30,7 @@
 #include "Enemy/FlameTank.hpp"
 #include "WinScene.hpp"
 #include "PlayScene.hpp"
+#include "MapScene.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -345,6 +346,7 @@ void PlayScene::Update(float deltaTime) {
                 delete imgTarget;*/
                 WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
                 scene->MapId = MapId;
+                reinterpret_cast<MapScene*>(Engine::GameEngine::GetInstance().GetScene("map-scene"))->Pluscnt();
                 Engine::GameEngine::GetInstance().ChangeScene("win");
 
 //                PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));

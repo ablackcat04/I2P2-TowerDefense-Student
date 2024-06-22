@@ -31,7 +31,6 @@ int main() {
     game.AddNewScene("plot-scene", new PlotScene());
 	game.AddNewScene("map-scene", new MapScene());
     game.AddNewScene("rhythm-game-scene", new RhythmGameScene());
-    game.AddNewScene("final-play", new PlayScene());
 
     // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
 	game.Start("start", 60, 1600, 832);

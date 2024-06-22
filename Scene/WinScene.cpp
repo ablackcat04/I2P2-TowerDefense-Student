@@ -95,7 +95,7 @@ void WinScene::Terminate() {
 void WinScene::Update(float deltaTime) {
 	ticks += deltaTime;
 	if (ticks > 4 && ticks < 100 &&
-        dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("final-play"))->MapId == 2) {
+        dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"))->MapId == 2) {
 		ticks = 100;
 		bgmId = AudioHelper::PlayBGM("happy.ogg");
 	}
