@@ -3,7 +3,7 @@
 #include <string>
 
 #include "Engine/Sprite.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
 class Enemy;
 class PlayScene;
@@ -17,7 +17,7 @@ protected:
 	float speed;
 	float damage;
 	Turret* parent;
-	static FinalPlayScene* getPlayScene();
+	static PlayScene* getPlayScene();
 	virtual void OnExplode(Enemy* enemy);
 public:
 	Enemy* Target = nullptr;

@@ -4,14 +4,14 @@
 #include <memory>
 #include <vector>
 
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 #include "Engine/Sprite.hpp"
 
 class PlayScene;
 
 class Plane : public Engine::Sprite {
 protected:
-	FinalPlayScene* getPlayScene();
+	PlayScene* getPlayScene();
 	const float timeSpanLight = 1;
 	const float timeSpanShockwave = 1;
 	const float shockWaveRadius = 180;

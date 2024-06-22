@@ -11,10 +11,10 @@
 #include "Scene/PlayScene.hpp"
 #include "Engine/Point.hpp"
 #include "Turret.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
-FinalPlayScene* Turret::getPlayScene() {
-	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+PlayScene* Turret::getPlayScene() {
+	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 
 Turret::Turret(std::string imgBase, std::string imgTurret, float x, float y, float radius, int price, float coolDown) :
@@ -25,7 +25,7 @@ Turret::Turret(std::string imgBase, std::string imgTurret, float x, float y, flo
 
 void Turret::Update(float deltaTime) {
 	Sprite::Update(deltaTime);
-	FinalPlayScene* scene = getPlayScene();
+	PlayScene* scene = getPlayScene();
 	imgBase.Position = Position;
 	imgBase.Tint = Tint;
 	if (!Enabled)
@@ -90,7 +90,7 @@ void Turret::Draw() const {
 	}
 	imgBase.Draw();
 	Sprite::Draw();
-	if (FinalPlayScene::DebugMode) {
+	if (PlayScene::DebugMode) {
 		// Draw target radius.
 		al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(0, 0, 255), 2);
 	}

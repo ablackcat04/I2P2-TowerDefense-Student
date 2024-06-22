@@ -15,8 +15,8 @@
 #include "Scene/PlayScene.hpp"
 #include "Turret/Turret.hpp"
 
-FinalPlayScene* Enemy::getPlayScene() {
-	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+PlayScene* Enemy::getPlayScene() {
+	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 void Enemy::OnExplode() {
 	getPlayScene()->EffectGroup->AddNewObject(new ExplosionEffect(Position.x, Position.y));
@@ -49,12 +49,12 @@ void Enemy::Hit(float damage) {
 	}
 }
 void Enemy::UpdatePath(const std::vector<std::vector<int>>& mapDistance) {
-	int x = static_cast<int>(floor(Position.x / FinalPlayScene::BlockSize));
-	int y = static_cast<int>(floor(Position.y / FinalPlayScene::BlockSize));
+	int x = static_cast<int>(floor(Position.x / PlayScene::BlockSize));
+	int y = static_cast<int>(floor(Position.y / PlayScene::BlockSize));
 	if (x < 0) x = 0;
-	if (x >= FinalPlayScene::MapWidth) x = FinalPlayScene::MapWidth - 1;
+	if (x >= PlayScene::MapWidth) x = PlayScene::MapWidth - 1;
 	if (y < 0) y = 0;
-	if (y >= FinalPlayScene::MapHeight) y = FinalPlayScene::MapHeight - 1;
+	if (y >= PlayScene::MapHeight) y = PlayScene::MapHeight - 1;
 	Engine::Point pos(x, y);
 	int num = mapDistance[y][x];
 	if (num == -1) {
@@ -64,10 +64,10 @@ void Enemy::UpdatePath(const std::vector<std::vector<int>>& mapDistance) {
 	path = std::vector<Engine::Point>(num + 1);
 	while (num != 0) {
 		std::vector<Engine::Point> nextHops;
-		for (auto& dir : FinalPlayScene::directions) {
+		for (auto& dir : PlayScene::directions) {
 			int x = pos.x + dir.x;
 			int y = pos.y + dir.y;
-			if (x < 0 || x >= FinalPlayScene::MapWidth || y < 0 || y >= FinalPlayScene::MapHeight || mapDistance[y][x] != num - 1)
+			if (x < 0 || x >= PlayScene::MapWidth || y < 0 || y >= PlayScene::MapHeight || mapDistance[y][x] != num - 1)
 				continue;
 			nextHops.emplace_back(x, y);
 		}
@@ -79,7 +79,7 @@ void Enemy::UpdatePath(const std::vector<std::vector<int>>& mapDistance) {
 		path[num] = pos;
 		num--;
 	}
-	path[0] = FinalPlayScene::EndGridPoint;
+	path[0] = PlayScene::EndGridPoint;
 }
 void Enemy::Update(float deltaTime) {
 	// Pre-calculate the velocity.
@@ -92,14 +92,14 @@ void Enemy::Update(float deltaTime) {
 			reachEndTime = 0;
 			return;
 		}
-		Engine::Point target = path.back() * FinalPlayScene::BlockSize + Engine::Point(FinalPlayScene::BlockSize / 2, FinalPlayScene::BlockSize / 2);
+		Engine::Point target = path.back() * PlayScene::BlockSize + Engine::Point(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
 		Engine::Point vec = target - Position;
 		// Add up the distances:
 		// 1. to path.back()
 		// 2. path.back() to border
 		// 3. All intermediate block size
 		// 4. to end point
-		reachEndTime = (vec.Magnitude() + (path.size() - 1) * FinalPlayScene::BlockSize - remainSpeed) / speed;
+		reachEndTime = (vec.Magnitude() + (path.size() - 1) * PlayScene::BlockSize - remainSpeed) / speed;
 		Engine::Point normalized = vec.Normalize();
 		if (remainSpeed - vec.Magnitude() > 0) {
 			Position = target;
@@ -116,7 +116,7 @@ void Enemy::Update(float deltaTime) {
 }
 void Enemy::Draw() const {
 	Sprite::Draw();
-	if (FinalPlayScene::DebugMode) {
+	if (PlayScene::DebugMode) {
 		// Draw collision radius.
 		al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
 	}

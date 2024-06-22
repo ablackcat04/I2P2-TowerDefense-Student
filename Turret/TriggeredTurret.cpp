@@ -18,7 +18,7 @@ TriggeredTurret::TriggeredTurret(std::string imgBase, std::string imgTurret, flo
 
 void TriggeredTurret::Update(float deltaTime) {
     Sprite::Update(deltaTime);
-    FinalPlayScene* scene = getPlayScene();
+    PlayScene* scene = getPlayScene();
     imgBase.Position = Position;
     imgBase.Tint = Tint;
     if (!Enabled)

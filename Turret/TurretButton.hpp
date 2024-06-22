@@ -4,13 +4,13 @@
 
 #include "UI/Component/ImageButton.hpp"
 #include "Engine/Sprite.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
 class PlayScene;
 
 class TurretButton : public Engine::ImageButton {
 protected:
-    FinalPlayScene* getPlayScene();
+    PlayScene* getPlayScene();
 public:
 	int money;
 	Engine::Sprite Base;

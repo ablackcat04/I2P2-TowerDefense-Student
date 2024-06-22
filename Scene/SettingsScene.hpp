@@ -15,8 +15,6 @@ public:
 
     void Terminate() override;
 
-    void PlayOnClick(int stage);
-
     void BackOnClick();
 
     void BGMSlideOnValueChanged(float value);

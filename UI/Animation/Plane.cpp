@@ -14,8 +14,8 @@
 #include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
 
-FinalPlayScene* Plane::getPlayScene() {
-	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+PlayScene* Plane::getPlayScene() {
+	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 Plane::Plane() : Sprite("play/plane.png", -100, Engine::GameEngine::GetInstance().GetScreenHeight() / 2), stage(0), timeTicks(0) {
 	for (int i = 1; i <= 10; i++) {
@@ -30,8 +30,8 @@ void Plane::Update(float deltaTime) {
 	switch (stage) {
 	case 0:
 		// Check if out of boundary.
-		if (!Engine::Collider::IsRectOverlap(Position - Size / 2, Position + Size / 2, Engine::Point(-100, 0), FinalPlayScene::GetClientSize())) {
-			Position = FinalPlayScene::GetClientSize() / 2;
+		if (!Engine::Collider::IsRectOverlap(Position - Size / 2, Position + Size / 2, Engine::Point(-100, 0), PlayScene::GetClientSize())) {
+			Position = PlayScene::GetClientSize() / 2;
 			Velocity = Engine::Point();
 			bmp = bmps[0];
 			Size.x = GetBitmapWidth() * minScale;

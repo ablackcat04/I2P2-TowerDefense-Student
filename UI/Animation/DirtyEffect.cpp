@@ -7,10 +7,10 @@
 #include "Engine/Group.hpp"
 #include "Engine/IScene.hpp"
 #include "Scene/PlayScene.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
-FinalPlayScene* DirtyEffect::getPlayScene() {
-	return dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
+PlayScene* DirtyEffect::getPlayScene() {
+	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());
 }
 DirtyEffect::DirtyEffect(std::string img, float timeSpan, float x, float y) : Sprite(img, x, y), timeSpan(timeSpan), alpha(1) {
 	std::random_device dev;

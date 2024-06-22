@@ -10,7 +10,7 @@
 #include <string>
 
 #include "Engine/Sprite.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 #include "Turret.hpp"
 
 class Enemy;

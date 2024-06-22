@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Engine/Sprite.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
 class Enemy;
 class PlayScene;
@@ -21,7 +21,7 @@ protected:
     float rotateRadian = 2 * ALLEGRO_PI;
     Sprite imgBase;
     std::list<Turret*>::iterator lockedTurretIterator;
-    FinalPlayScene* getPlayScene();
+    PlayScene* getPlayScene();
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet() = 0;
 

@@ -17,7 +17,7 @@
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
 #include "Engine/GameEngine.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
 void UpdateText(std::queue<std::list<std::string>>& queue_of_text, std::string& text, std::string& name);
 
@@ -114,17 +114,11 @@ public:
 
     void ChangeScene() {
         if (next_scene == "final-play") {
-            FinalPlayScene* scene = dynamic_cast<FinalPlayScene*>(Engine::GameEngine::GetInstance().GetScene("final-play"));
+            PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("final-play"));
             scene->MapId = stage;
             SetLastStage(stage);
             next_scene = "stage-select";
             Engine::GameEngine::GetInstance().ChangeScene("final-play");
-        } else if (next_scene == "play") {
-            PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
-            scene->MapId = stage;
-            SetLastStage(stage);
-            next_scene = "stage-select";
-            Engine::GameEngine::GetInstance().ChangeScene("play");
         } else {
             Engine::GameEngine::GetInstance().ChangeScene("stage-select");
         }

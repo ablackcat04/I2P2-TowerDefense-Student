@@ -3,7 +3,7 @@
 #include <string>
 
 #include "Engine/Sprite.hpp"
-#include "Scene/FinalPlayScene.hpp"
+#include "Scene/PlayScene.hpp"
 
 class PlayScene;
 
@@ -11,7 +11,7 @@ class DirtyEffect : public Engine::Sprite {
 protected:
 	float timeSpan;
 	float alpha;
-    FinalPlayScene* getPlayScene();
+    PlayScene* getPlayScene();
 public:
 	DirtyEffect(std::string img, float timeSpan, float x, float y);
 	void Update(float deltaTime) override;
