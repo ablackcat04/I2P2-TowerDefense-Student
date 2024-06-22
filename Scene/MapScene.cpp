@@ -9,11 +9,9 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "MapScene.hpp"
-#include "Engine/Point.hpp"
-#include "Engine/Resources.hpp"
-#include "UI/Component/Slider.hpp"
-#include "PlayScene.hpp"
 #include "WinScene.hpp"
+#include "PlotScene.hpp"
+
 void MapScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -68,10 +66,17 @@ void MapScene::BackOnClick(int stage) {
 }
 
 void MapScene::PlayOnClick(int stage) {
-    PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
-    scene->MapId = stage;
+//    PlayScene *scene = dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetScene("play"));
+//    scene->MapId = stage;
+//    SetLastStage(stage);
+//    Engine::GameEngine::GetInstance().ChangeScene("play");
+
+    PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
+    scene->stage = stage;
+    scene->SetNextSceneTo("play");
     SetLastStage(stage);
-    Engine::GameEngine::GetInstance().ChangeScene("play");
+    Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
 void MapScene::Pluscnt() {
     if(cnt<=3)cnt++;

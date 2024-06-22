@@ -124,7 +124,7 @@ public:
             next_scene = "stage-select";
             Engine::GameEngine::GetInstance().ChangeScene("play");
         } else {
-            Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+            Engine::GameEngine::GetInstance().ChangeScene("map-scene");
         }
     }
 };
