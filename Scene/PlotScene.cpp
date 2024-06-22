@@ -25,8 +25,10 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
 
 
 void PlotScene::Initialize() {
-    big_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 56, 0);
-    font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
+    big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
+    font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);
+    name_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
+    deafult_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
     current_text_color = new ALLEGRO_COLOR (al_map_rgb(255,255,255));
 
     while (!queue_of_text.empty()) {
@@ -48,6 +50,7 @@ void PlotScene::Initialize() {
 
     music_map.clear();
     image_map.clear();
+    name_color_map.clear();
 
     text_target = "";
     name = "";
@@ -107,6 +110,8 @@ void PlotScene::Initialize() {
             }
             audio_info a = {sam, 0};
             music_map.emplace(words[1], a);
+        } else if (words[0] == "color" && words.size() == 5) {
+            name_color_map.emplace(words[1], new ALLEGRO_COLOR (al_map_rgb(atoi(words[2].c_str()), atoi(words[3].c_str()), atoi(words[4].c_str()))));
         } else {
             Engine::LOG(Engine::ERROR) << "Plot Pre-Processing Syntax Error 116";
             ChangeScene();
@@ -179,8 +184,8 @@ void PlotScene::Initialize() {
         AddRefObject(*i.second.img);
     }
 
-    pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
-    AddRefObject(*pName);
+    //pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
+    //AddRefObject(*pName);
 
     btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1500, 9, 32, 32);
 
@@ -198,7 +203,7 @@ void PlotScene::Initialize() {
         history_name[i] = "";
         history_text[i] = "";
         history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf", 48, 160, 200+65*i, 180, 180, 200, 255, 0.0);
-        history_text_label[i] = new Engine::Label(&history_text[i], "BoutiqueBitmap7x7_1.7.ttf", 48, 400, 200+65*i, 180, 180, 180, 255, 0.0);
+        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf", 44, 400, 200+65*i - 2, 180, 180, 180, 255, 0.0);
         AddRefObject(*history_name_label[i]);
         AddRefObject(*history_text_label[i]);
     }
@@ -224,7 +229,6 @@ void PlotScene::Draw() const {
     IScene::Draw();
     if (!history) {
         if (partial_middle_text != "") {
-            //al_draw_multiline_text(big_font, *current_text_color, 150, 200, 1300, 60, 0, partial_middle_text.c_str());
 
             int ptr = 0;
             std::string str = "";
@@ -242,9 +246,17 @@ void PlotScene::Draw() const {
                 while (ptr < partial_middle_text.size() && al_get_text_width(big_font, str.c_str()) <= 1250) {
                     str += partial_middle_text[ptr++];
                 }
-                al_draw_text(big_font, *current_text_color, 150, 200+60*lines, 0, str.c_str());
+                al_draw_text(big_font, *current_text_color, 150, 200+64*lines, 0, str.c_str());
             }
         } else {
+            // name
+            //pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
+            if (!name_color_map.contains(name)) {
+                al_draw_text(name_font, *deafult_name_color, 150, 575, 0.5, name.c_str());
+            } else {
+                al_draw_text(name_font, *(name_color_map.find(name)->second), 150, 575, 0.5, name.c_str());
+            }
+
             int ptr = 0;
             std::string str = "";
 
@@ -424,6 +436,15 @@ void PlotScene::Terminate() {
     for (auto i : music_map) {
         al_destroy_sample(i.second.sample);
     }
+
+    music_map.clear();
+
+    for (auto i : name_color_map) {
+         delete i.second;
+    }
+
+    name_color_map.clear();
+
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
 
