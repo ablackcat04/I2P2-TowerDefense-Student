@@ -6,6 +6,10 @@ image phone_m2 "plot/phone_momotalk2.png" size 1600 832
 audio notification "plot/sfx/notification.ogg"
 audio send "plot/sfx/send.ogg"
 
+color 桃井 247 165 255
+color 柚子 250 224 186
+color 愛麗絲 139 147 180
+
 Plot_Start:
 show phone at 0 0
 NULL "                  某一日......"

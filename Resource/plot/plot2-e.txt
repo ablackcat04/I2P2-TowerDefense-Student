@@ -1,4 +1,5 @@
-
+color 桃井 247 165 255
+color 系統 255 255 255
 
 Plot_Start:
 

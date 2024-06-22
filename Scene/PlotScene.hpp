@@ -87,9 +87,13 @@ private:
     ALLEGRO_SAMPLE* text_sfx;
     ALLEGRO_SAMPLE_ID* text_sfx_id;
 
+    ALLEGRO_FONT* name_font;
+    ALLEGRO_COLOR* deafult_name_color;
     ALLEGRO_FONT* font;
     ALLEGRO_FONT* big_font;
     ALLEGRO_COLOR* current_text_color;
+
+    std::unordered_map<std::string, ALLEGRO_COLOR*> name_color_map;
 
 public:
     explicit PlotScene() = default;

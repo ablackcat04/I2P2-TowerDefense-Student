@@ -1,4 +1,5 @@
-
+color 桃井 247 165 255
+color 綠 178 229 111
 
 Plot_Start:
 
