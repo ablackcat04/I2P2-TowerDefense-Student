@@ -152,6 +152,8 @@ void FinalPlayScene::Initialize() {
     cheat_btn = new Engine::ToggledTextButton("cheat", &cheat_mode, 1400, 400, al_map_rgb(0,0,0), al_map_rgb(50,50,50),
                                             al_map_rgb(100,100,100));
     AddRefControlObject(*cheat_btn);
+
+    ap_fc_triggered = false;
 }
 void FinalPlayScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
@@ -265,14 +267,17 @@ void FinalPlayScene::Update(float deltaTime) {
         }
     }
     if(notes.empty()){
-        if(allperfect){
-            AddNewObject(new Engine::Label("Allperfect", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
-            EffectGroup->AddNewObject(new Plane());
-            EarnMoney(10000);
-        } else if(fullcombo){
-            AddNewObject(new Engine::Label("Fullcombo", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
-            EffectGroup->AddNewObject(new Plane());
-            EarnMoney(5000);
+        if (!ap_fc_triggered) {
+            if(allperfect){
+                AddNewObject(new Engine::Label("Allperfect", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
+                EffectGroup->AddNewObject(new Plane());
+                EarnMoney(10000);
+            } else if(fullcombo){
+                AddNewObject(new Engine::Label("Fullcombo", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
+                EffectGroup->AddNewObject(new Plane());
+                EarnMoney(5000);
+            }
+            ap_fc_triggered = true;
         }
     }
     //if(conductor.song_position>=endtime) Engine::GameEngine::GetInstance().ChangeScene("stage-select");;

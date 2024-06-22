@@ -91,6 +91,7 @@ private:
     Judgement last_judgement[lanes];
     bool allperfect;
     bool fullcombo;
+    bool ap_fc_triggered;
     float endtime;
 
     int lane_key[lanes] = {ALLEGRO_KEY_D, ALLEGRO_KEY_F, ALLEGRO_KEY_J, ALLEGRO_KEY_K};
