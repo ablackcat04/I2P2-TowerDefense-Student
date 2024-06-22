@@ -15,13 +15,26 @@ void Note::update(Conductor conductor) {
 
 void Note::render() {
     if (active) {
-        //if(ishold) al_draw_filled_rectangle(402*x, y, 402*x + size, y + 500, *note_color);
-        //else al_draw_filled_rectangle(402*x, y, 402*x + size, y + 10, *note_color);
         if(!ishold)al_draw_filled_rectangle(x_shift + wid/4*x, y-length, x_shift + wid/4*(x + 1), y , *note_color);
         else{
-            al_draw_filled_rectangle(x_shift + wid/4*x, y-length, x_shift + wid/4*(x + 1), y-length+20 , *note_color);
-            al_draw_filled_rectangle(x_shift + wid/4*x, y-length+10, x_shift + wid/4*(x + 1), y-10 , *note_color2);
-            al_draw_filled_rectangle(x_shift + wid/4*x, y-20, x_shift + wid/4*(x + 1), y , *note_color);
+            if (y-length+20 > 700 && y-length <= 700) {
+                al_draw_filled_rectangle(x_shift + wid/4*x, y-length, x_shift + wid/4*(x + 1), 700 , *note_color);
+            } else if (y-length+20 <= 700) {
+                al_draw_filled_rectangle(x_shift + wid/4*x, y-length, x_shift + wid/4*(x + 1), y-length+20 , *note_color);
+            }
+
+
+            if (y - 10 > 700 && y - length + 10 <= 700) {
+                al_draw_filled_rectangle(x_shift + wid / 4 * x, y - length + 10, x_shift + wid / 4 * (x + 1), 700,*note_color2);
+            } else if (y - 10 <= 700) {
+                al_draw_filled_rectangle(x_shift + wid / 4 * x, y - length + 10, x_shift + wid / 4 * (x + 1), y - 10,*note_color2);
+            }
+
+            if (y > 700 && y - 20 <= 700) {
+                al_draw_filled_rectangle(x_shift + wid/4*x, y-20, x_shift + wid/4*(x + 1), 700 , *note_color);
+            } else if (y <= 700) {
+                al_draw_filled_rectangle(x_shift + wid/4*x, y-20, x_shift + wid/4*(x + 1), y , *note_color);
+            }
         }
     }
 }
