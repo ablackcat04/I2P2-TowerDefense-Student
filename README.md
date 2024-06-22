@@ -53,7 +53,20 @@ cross means the one do less work but still engaged
 | Merge branches                                         |         吳彥儒          |
 | Write this README.md file                              |         吳彥儒          |
 
-### Plot Engine
+---
+
+### Plot
+
+| **Tasks**                    |                     **Person in Charge**                     |
+|:-----------------------------|:------------------------------------------------------------:|
+| Plan                         |                             吳彥儒                              |
+| Simple Scripting Language    |                             吳彥儒                              |
+| Plot Engine                  |                             吳彥儒                              |
+| Plot (over 7500 words total) |                             吳彥儒                              |
+| Credit to the original work  | Blue Archive (NAT Games, Publisher: NEXON Korea Corporation) |
+
+---
+### Rhythm Game
 
 | **Tasks**                 | **Person in Charge** |
 |:--------------------------|:--------------------:|
