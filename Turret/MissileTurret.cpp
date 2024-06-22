@@ -8,11 +8,13 @@
 #include "MissileTurret.hpp"
 #include "Scene/PlayScene.hpp"
 #include "Engine/Point.hpp"
+#include "TriggeredTurret.hpp"
 
 const int MissileTurret::Price = 300;
 MissileTurret::MissileTurret(float x, float y) :
-	Turret("play/tower-base.png", "play/turret-3.png", x, y, 1000, Price, 4) {
+	TriggeredTurret("play/tower-base.png", "play/turret-3.png", x, y, 1000, Price, 4) {
     rhythm = 0.5f;
+    notes_to_trigger = 2;
 }
 void MissileTurret::CreateBullet() {
 	Engine::Point diff = Engine::Point(cos(Rotation - ALLEGRO_PI / 2), sin(Rotation - ALLEGRO_PI / 2));

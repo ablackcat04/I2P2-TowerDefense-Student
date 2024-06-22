@@ -17,6 +17,8 @@ class Enemy;
 class PlayScene;
 
 class TriggeredTurret: public Turret {
+protected:
+    int notes_to_trigger = 1;
 
 public:
     TriggeredTurret(std::string imgBase, std::string imgTurret, float x, float y, float radius, int price, float coolDown);

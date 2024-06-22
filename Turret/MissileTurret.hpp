@@ -3,7 +3,7 @@
 #include "Turret.hpp"
 #include "TriggeredTurret.hpp"
 
-class MissileTurret: public Turret {
+class MissileTurret: public TriggeredTurret {
 public:
 	static const int Price;
     MissileTurret(float x, float y);

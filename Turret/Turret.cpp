@@ -20,6 +20,7 @@ FinalPlayScene* Turret::getPlayScene() {
 Turret::Turret(std::string imgBase, std::string imgTurret, float x, float y, float radius, int price, float coolDown) :
 	Sprite(imgTurret, x, y), price(price), coolDown(coolDown), imgBase(imgBase, x, y) {
 	CollisionRadius = radius;
+    triggered = 0;
 }
 
 void Turret::Update(float deltaTime) {
@@ -38,7 +39,7 @@ void Turret::Update(float deltaTime) {
 		}
 	}
 	if (!Target) {
-        triggered = false;
+        triggered = 0;
 		// Lock first seen target.
 		// Can be improved by Spatial Hash, Quad Tree, ...
 		// However, simply loop through all enemies is enough for this program.
@@ -76,8 +77,8 @@ void Turret::Update(float deltaTime) {
 //			reload = coolDown;
 //			CreateBullet();
 //		}
-        if (triggered) {
-            triggered = false;
+        if (triggered != 0) {
+            triggered = 0;
             CreateBullet();
         }
 	}
@@ -100,11 +101,11 @@ int Turret::GetPrice() const {
 }
 
 void Turret::TriggerByHit() {
-    triggered = false;
+    triggered = 0;
 }
 
 void Turret::TriggerByRhythm(float R) {
     if (R == rhythm) {
-        triggered = true;
+        triggered = 1;
     }
 }

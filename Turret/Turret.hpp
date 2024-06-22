@@ -25,7 +25,7 @@ protected:
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet() = 0;
 
-    bool triggered;
+    int triggered;
 
 public:
     bool Enabled = true;

@@ -9,10 +9,11 @@
 #include "Turret.hpp"
 #include <cmath>
 #include "Enemy/Enemy.hpp"
+#include "Engine/LOG.hpp"
 
 TriggeredTurret::TriggeredTurret(std::string imgBase, std::string imgTurret, float x, float y, float radius, int price,
                                  float coolDown) : Turret(imgBase, imgTurret, x, y, radius, price, coolDown) {
-    triggered = false;
+    triggered = 0;
 }
 
 void TriggeredTurret::Update(float deltaTime) {
@@ -61,17 +62,15 @@ void TriggeredTurret::Update(float deltaTime) {
         // Add 90 degrees (PI/2 radian), since we assume the image is oriented upward.
         Rotation = atan2(rotation.y, rotation.x) + ALLEGRO_PI / 2;
         // Shoot reload.
-
-        if (triggered) {
-            // shoot.
-            triggered = false;
+        if (triggered >= notes_to_trigger) {
             CreateBullet();
         }
+        triggered = 0;
     }
 }
 
 void TriggeredTurret::TriggerByHit() {
-    triggered = true;
+    triggered += 1;
 }
 
 void TriggeredTurret::TriggerByRhythm(float R) {
