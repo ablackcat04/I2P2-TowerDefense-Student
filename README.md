@@ -20,12 +20,14 @@ which you need to unlock them one by one by passing the song before it on the ma
 similar to the game Lanota.
 
 game map snapshot:
+![img_4.png](img_4.png)
 
-There will also be stories along the way, 
+There will also be stories along the way,
 presented in a visual novel way, 
 similar to the game vivid/stasis or Rotaeno.
 
 plot-engine snapshot:
+![img_5.png](img_5.png)
 
 ## Song Credits
 Stage1: Beyond Apocalypse by ABlackCat (a.k.a.吳彥儒)
@@ -37,10 +39,10 @@ Stage3: D1AB0LiC_DEV0Ti0N by Salad Savior (Free to use if informed)
 Prove of informed (X(Twitter) DM):
 ![img.png](img.png)
 ---
-## Work Allocation
+## Work Allocation & Features
 
 the one in front means do more work
-cross means the one do less work but still engaged
+cross means the one do much less work but still engaged
 
 ### Miscellaneous Tasks
 
@@ -48,14 +50,15 @@ cross means the one do less work but still engaged
 |:-------------------------------------------------------|:--------------------:|
 | Come up with what we are going to do                   |     吳彥儒、~~廖昱瑋~~      |
 | Write proposal                                         |       廖昱瑋、吳彥儒        |
-|                                                        |                      |
+| Provide project2 code                                  |         吳彥儒          |
 | Teach team member how to use Git and GitHub (in CLion) |         吳彥儒          |
 | Merge branches                                         |         吳彥儒          |
+| Inform Salad Savior for song3                          |         吳彥儒          |
 | Write this README.md file                              |         吳彥儒          |
 
 ---
 
-### Plot
+### Plot & Plot Engine
 
 | **Tasks**                    |                     **Person in Charge**                     |
 |:-----------------------------|:------------------------------------------------------------:|
@@ -94,6 +97,15 @@ cross means the one do less work but still engaged
 | Some Towers will only attack when notes were hit |         吳彥儒          |
 | Other Tower's attack sync with rhythm            |         吳彥儒          |
 
+---
+### Online Scoreboard
+| **Tasks**                             | **Person in Charge** |
+|:--------------------------------------|:--------------------:|
+| Based on project2's scoreboard        |         吳彥儒          |
+| Compile curl from source              |         吳彥儒          |
+| Link the libraries in CMake           |         吳彥儒          |
+| Implementation of download and upload |         吳彥儒          |
+| Internal network server & code        |         吳彥儒          |
 ---
 ## Plot Scripting Language Documentation
 In order to handle the story, we develop a simple scripting language: **SimRen'Py**.
