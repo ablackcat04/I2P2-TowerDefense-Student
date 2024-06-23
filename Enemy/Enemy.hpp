@@ -14,10 +14,14 @@ class Turret;
 
 class Enemy : public Engine::Sprite {
 protected:
+    float rhythm = -1.f;
  	std::vector<Engine::Point> path;
 	float speed;
 	float hp;
 	int money;
+
+    float damaged_ratio = 1.0f;
+
 	static PlayScene* getPlayScene();
 	virtual void OnExplode();
 public:
@@ -29,5 +33,7 @@ public:
 	void UpdatePath(const std::vector<std::vector<int>>& mapDistance);
 	void Update(float deltaTime) override;
 	void Draw() const override;
+
+    virtual void TriggerByRhythm(float R);
 };
 #endif // ENEMY_HPP

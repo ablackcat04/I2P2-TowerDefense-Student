@@ -186,8 +186,13 @@ void PlayScene::Update(float deltaTime) {
             for (auto i: TowerGroup->GetObjects()) {
                 reinterpret_cast<Turret*>(i)->TriggerByRhythm(f);
             }
+            for (auto i : EnemyGroup->GetObjects()) {
+                reinterpret_cast<Enemy*>(i)->TriggerByRhythm(f);
+            }
         }
     }
+
+
 
     p24th = a24th;
 

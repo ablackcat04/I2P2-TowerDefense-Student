@@ -35,7 +35,7 @@ Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float
 	reachEndTime = 0;
 }
 void Enemy::Hit(float damage) {
-	hp -= damage;
+	hp -= damage * damaged_ratio;
 	if (hp <= 0) {
 		OnExplode();
 		// Remove all turret's reference to target.
@@ -120,4 +120,8 @@ void Enemy::Draw() const {
 		// Draw collision radius.
 		al_draw_circle(Position.x, Position.y, CollisionRadius, al_map_rgb(255, 0, 0), 2);
 	}
+}
+
+void Enemy::TriggerByRhythm(float R) {
+    return;
 }
