@@ -138,9 +138,9 @@ void PlayScene::Initialize() {
     AddRefObject(*score_label);
     fps_label = new Engine::Label(&fps, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift + wid - 50, 0, 255, 255, 255, 255);
     AddRefObject(*fps_label);
-    judgement_label = new Engine::Label(&current_judgement, "BoutiqueBitmap7x7_1.7.ttf", 64, x_shift + halfW, 490, 255, 255, 255, 255, 1, 1);
+    judgement_label = new Engine::Label(&current_judgement, "BoutiqueBitmap7x7_1.7.ttf", 64, x_shift + 45, 490, 255, 255, 255, 255, 1, 1);
     AddRefObject(*judgement_label);
-    combo_label = new Engine::Label(&combo_text, "BoutiqueBitmap7x7_1.7.ttf", 64, x_shift + halfW, 400, 255, 255, 255, 255, 1, 1);
+    combo_label = new Engine::Label(&combo_text, "BoutiqueBitmap7x7_1.7.ttf", 64, x_shift + 121, 400, 255, 255, 255, 255, 1, 1);
     AddRefObject(*combo_label);
 
     Engine::ImageButton* btn;

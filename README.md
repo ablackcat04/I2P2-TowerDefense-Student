@@ -33,7 +33,13 @@ Game mechanics(Rhythm game part): notes will fall from the top of the screen, an
 a line called timing line, the user needs to press a certain key to hit the note on a certain lane. 
 The final thing we implemented is very similar to osu! mania 4K.
 
+Game mechanics(Tower defense part): We will build this part based on project2 but we will introduce 
+more interaction with the music and the rhythm game part.
 
+game snapshot:
+![img_13.png](img_13.png)
+
+---
 ## Song Credits
 Stage1: Beyond Apocalypse by ABlackCat (a.k.a.吳彥儒)
 
@@ -130,13 +136,30 @@ Unlock songs/stages one by one.
 | Visual effects            |         吳彥儒          |
 | Rhythm game cheat mode    |         吳彥儒          |
 
-### Overview
-
-
-
 ### Features
 
+There are two kinds of notes: hit and hold, for hit, you need to hit the corresponding key at the right
+timing to hit it, and for hold, you need to hit the corresponding key at the start of the hold and leave
+the key at the end of the hold.
 
+There are three kinds of judgements: perfect, good and missed. The judgement tolerance is listed below:
+
+perfect: -50ms ~ 50ms
+
+good: -100ms ~ -50ms, 50ms ~ 100ms
+
+missed: note not hit 100ms after the time it should be hit
+
+There are combo counters, combo display and judgement display. There is also a fps display which we first
+wrote for debugging, but it looks cool, so we keep it in place.
+
+When notes are hit, there will be a growing square appearing, giving the player visual feedback of 
+hitting a note. The square will not disappear if the note you hit is hold, and you actually hold it.
+
+There is also visual feedback if you press the key for a lane, the lane will become a little bit brighter 
+for a short time. We implement it with attack time and decay time, which we are kind of proud of.
+
+We also implement the cheat mode, which the system will automatically play the rhythm game part for you.
 
 ---
 ### Tower Defense's Integration with Music
@@ -165,7 +188,7 @@ attack synced with the music.
 ![img_10.png](img_10.png) : Shoot when multiple notes are hit at the same time.
 
 #### Momoi Turret
-![img_11.png](img_11.png) : Sniper, shoot every 4 beat (bar in 4/4).
+![img_11.png](img_11.png) : Sniper, shoot every 4 beat (bar in 4/4), cost money to shoot.
 
 ---
 ### Online Scoreboard
@@ -328,8 +351,3 @@ stop notification
 ```
 ---
 
-<style>
-table th{
-    width: 100%;
-}
-</style>
