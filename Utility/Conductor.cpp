@@ -18,7 +18,8 @@ Conductor::Conductor() {
 
 void Conductor::init(double bpm, double offset) {
     Engine::LOG(Engine::INFO) << "Conductor Initialized";
-    crotchet = (double)60.0 / this->bpm;
+    this->bpm = bpm;
+    crotchet = (double)60.0 / bpm;
     song_position = 0.0f;
     startTime = al_get_time();
 }

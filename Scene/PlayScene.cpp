@@ -125,7 +125,7 @@ void PlayScene::Initialize() {
     else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochize.ogg", true, AudioHelper::BGMVolume);
     else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", true, AudioHelper::BGMVolume);
     if(MapId==1)  conductor.init(152, 0);
-    else if(MapId==2)  conductor.init(480, 0);
+    else if(MapId==2)  conductor.init(160, 0);
     else if(MapId==3) conductor.init(250, 0);
     //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
     //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
