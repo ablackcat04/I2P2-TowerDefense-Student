@@ -135,6 +135,7 @@ Unlock songs/stages one by one.
 | Hold notes implementation |         廖昱瑋          |
 | Visual effects            |         吳彥儒          |
 | Rhythm game cheat mode    |         吳彥儒          |
+| Chart Design              |       吳彥儒、廖昱瑋        |
 
 ### Features
 
@@ -193,7 +194,7 @@ will be triggered, killing all the enemies on screen to reward player playing go
 ![img_10.png](readme_images/img_10.png) : Shoot when multiple notes are hit at the same time.
 
 #### Momoi Turret
-![img_11.png](readme_images/img_11.png) : Sniper, shoot every 4 beat (bar in 4/4), cost money to shoot.
+![img_11.png](readme_images/img_11.png) : Sniper, shoot every 8 beat (2 bars in 4/4), cost money to shoot.
 
 ---
 #### Boss

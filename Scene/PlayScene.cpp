@@ -121,9 +121,9 @@ void PlayScene::Initialize() {
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = (w - x_shift) / 2;
     int halfH = h / 2;
-    if(MapId==1) bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", true, AudioHelper::BGMVolume);
-    else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochize.ogg", true, AudioHelper::BGMVolume);
-    else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", true, AudioHelper::BGMVolume);
+    if(MapId==1) bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", false, AudioHelper::BGMVolume);
+    else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochize.ogg", false, AudioHelper::BGMVolume);
+    else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", false, AudioHelper::BGMVolume);
     if(MapId==1)  conductor.init(152, 0);
     else if(MapId==2)  conductor.init(160, 0);
     else if(MapId==3) conductor.init(250, 0);
@@ -887,7 +887,6 @@ void PlayScene::ReadNotes(int songID){
     float start_time;
     std::ifstream fin(filename);
     while(fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time){
-        Engine::LOG(Engine::INFO) << has_note[0] << " " << has_note[1] << " " << has_note[2] << " " << has_note[3] << " " << start_time;
         for(int i=0;i < lanes;i++){
             if(has_note[i] > 0.95f && has_note[i] < 1.05f){//短條
                 endtime=start_time*conductor.crotchet+5;
