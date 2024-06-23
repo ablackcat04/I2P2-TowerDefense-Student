@@ -170,6 +170,7 @@ We also implement the cheat mode, which the system will automatically play the r
 | Make money by hitting notes                      |         廖昱瑋          |
 | Some towers will only attack when notes were hit |         吳彥儒          |
 | Other Tower's attack synced with the music       |         吳彥儒          |
+| Boss and Boss special ability                    |         吳彥儒          |
 
 ### Features
 After making the rhythm game on its own, we merge the tower defense from project2 and the rhythm game
@@ -181,7 +182,7 @@ Furthermore, if you got full-combo or all-perfect on the rhythm game part, the c
 will be triggered, killing all the enemies on screen to reward player playing good in the rhythm game part.
 
 ---
-### Tower Introduction (Integration with Rhythm Game)
+### Tower & Boss Introduction (Integration with Rhythm Game)
 #### Machine Gun Turret
 ![img_8.png](readme_images/img_8.png)  : Shoot when at least note is hit.
 
@@ -193,6 +194,12 @@ will be triggered, killing all the enemies on screen to reward player playing go
 
 #### Momoi Turret
 ![img_11.png](readme_images/img_11.png) : Sniper, shoot every 4 beat (bar in 4/4), cost money to shoot.
+
+---
+#### Boss
+![img.png](img.png)  ![img_1.png](img_1.png): Raise shield at the first and second beat, put shield 
+down at the third and fourth beat. If shielded, reduce received damage by 75%; If not shielded, 
+increase received damage to 400%.
 
 ---
 ### Online Scoreboard
