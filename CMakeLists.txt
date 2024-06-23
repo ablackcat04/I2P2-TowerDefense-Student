@@ -114,8 +114,6 @@ add_executable(TowerDefense
         Scene/MapScene.cpp
         UI/Component/ToggledTextButton.cpp
         UI/Component/ToggledTextButton.hpp
-        Scene/RhythmGameScene.hpp
-        Scene/RhythmGameScene.cpp
         Utility/Conductor.cpp
         Utility/Conductor.hpp
         Scene/PlayScene.cpp

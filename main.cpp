@@ -12,7 +12,6 @@
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/PlotScene.hpp"
 #include "Scene/MapScene.hpp"
-#include "Scene/RhythmGameScene.hpp"
 #include "Scene/PlayScene.hpp"
 
 int main() {
@@ -30,7 +29,6 @@ int main() {
     game.AddNewScene("scoreboard-scene", new ScoreboardScene());
     game.AddNewScene("plot-scene", new PlotScene());
 	game.AddNewScene("map-scene", new MapScene());
-    game.AddNewScene("rhythm-game-scene", new RhythmGameScene());
 
     // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
     auto* scene = reinterpret_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
