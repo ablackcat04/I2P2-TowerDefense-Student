@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <cmath>
 #include <fstream>
-#include <functional>
 #include <vector>
 #include <queue>
 #include <string>
@@ -16,7 +15,6 @@
 #include "Engine/AudioHelper.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "Enemy/Enemy.hpp"
-#include "UI/Component/Label.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
 #include "Turret/MissileTurret.hpp"

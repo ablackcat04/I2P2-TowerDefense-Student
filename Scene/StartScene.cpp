@@ -3,20 +3,11 @@
 //
 
 #include "StartScene.hpp"
-#include <allegro5/allegro_audio.h>
 #include <functional>
-#include <memory>
-#include <string>
 
-#include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
-#include "PlayScene.hpp"
-#include "Engine/Point.hpp"
-#include "Engine/Resources.hpp"
-#include "UI/Component/Slider.hpp"
-#include "Scene/StartScene.hpp"
 
 void StartScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -25,7 +16,7 @@ void StartScene::Initialize() {
     int halfH = h / 2;
     Engine::ImageButton* btn;
 
-    AddNewObject(new Engine::Label("Rhythm Defense", "pirulen.ttf", 120, halfW, halfH / 3 + 50, 10, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Rhythm Defense", "pirulen.ttf", 112, halfW, halfH / 3 + 50, 10, 255, 255, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 200 , 400, 100);
     btn->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));

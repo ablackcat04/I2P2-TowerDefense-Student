@@ -6,7 +6,6 @@
 #include "UI/Component/Label.hpp"
 #include "LoseScene.hpp"
 #include "PlayScene.hpp"
-#include "PlayScene.hpp"
 
 void LoseScene::Initialize() {
 	// ODO: [HACKATHON-1-SCENE] (1/4): You can imitate the 2 files: 'LoseScene.hpp', 'LoseScene.cpp' to implement your start scene.

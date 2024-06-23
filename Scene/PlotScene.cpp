@@ -13,7 +13,6 @@
 #include "UI/Component/ImageButton.hpp"
 #include "PlayScene.hpp"
 #include "Engine/LOG.hpp"
-#include "UI/Component/ToggledTextButton.hpp"
 
 void splitLine(const std::string& line, std::vector<std::string>& words) {
     std::istringstream iss(line);
