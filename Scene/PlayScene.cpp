@@ -529,6 +529,24 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 void PlayScene::OnKeyDown(int keyCode) {
     IScene::OnKeyDown(keyCode);
 
+    if (keyCode == ALLEGRO_KEY_Q) {
+        // Hotkey for MachineGunTurret.
+        UIBtnClicked(0);
+    }
+    else if (keyCode == ALLEGRO_KEY_W) {
+        // Hotkey for LaserTurret.
+        UIBtnClicked(1);
+    }
+    else if (keyCode == ALLEGRO_KEY_E) {
+        // Hotkey for MissileTurret.
+        UIBtnClicked(2);
+    }
+    else if (keyCode == ALLEGRO_KEY_R) {
+        UIBtnClicked(3);
+    } else if (keyCode == ALLEGRO_KEY_TAB) {
+        DebugMode = !DebugMode;
+    }
+
     int lane = -1;
     for (int i = 0; i < lanes; ++i) {
         if (lane_key[i] == keyCode) {
@@ -583,47 +601,37 @@ void PlayScene::OnKeyDown(int keyCode) {
                 break;
             }
         }
-    }
 
+        if (keyCode == ALLEGRO_KEY_TAB) {
+            DebugMode = !DebugMode;
+        }
+        else {
+            keyStrokes.push_back(keyCode);
+            if (keyStrokes.size() > code.size())
+                keyStrokes.pop_front();
+            if (keyCode == ALLEGRO_KEY_ENTER && keyStrokes.size() == code.size()) {
+                auto it = keyStrokes.begin();
+                for (int c : code) {
+                    if (!((*it == c) ||
+                          (c == ALLEGRO_KEYMOD_SHIFT &&
+                           (*it == ALLEGRO_KEY_LSHIFT || *it == ALLEGRO_KEY_RSHIFT))))
+                        return;
+                    ++it;
+                }
 
-    if (keyCode == ALLEGRO_KEY_TAB) {
-        DebugMode = !DebugMode;
-    }
-    else {
-        keyStrokes.push_back(keyCode);
-        if (keyStrokes.size() > code.size())
-            keyStrokes.pop_front();
-        if (keyCode == ALLEGRO_KEY_ENTER && keyStrokes.size() == code.size()) {
-            auto it = keyStrokes.begin();
-            for (int c : code) {
-                if (!((*it == c) ||
-                      (c == ALLEGRO_KEYMOD_SHIFT &&
-                       (*it == ALLEGRO_KEY_LSHIFT || *it == ALLEGRO_KEY_RSHIFT))))
-                    return;
-                ++it;
+                EffectGroup->AddNewObject(new Plane());
+                EarnMoney(10000);
             }
-
-            EffectGroup->AddNewObject(new Plane());
-            EarnMoney(10000);
         }
     }
-    if (keyCode == ALLEGRO_KEY_Q) {
-        // Hotkey for MachineGunTurret.
-        UIBtnClicked(0);
-    }
-    else if (keyCode == ALLEGRO_KEY_W) {
-        // Hotkey for LaserTurret.
-        UIBtnClicked(1);
-    }
-    else if (keyCode == ALLEGRO_KEY_E) {
-        // Hotkey for MissileTurret.
-        UIBtnClicked(2);
-    }
-    else if (keyCode == ALLEGRO_KEY_R) {
-        UIBtnClicked(3);
-    }
-        // ODO: [CUSTOM-TURRET]: Make specific key to create the turret.
-    else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
+
+
+
+
+
+
+
+    if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
         // Hotkey for Speed up.
         SpeedMult = keyCode - ALLEGRO_KEY_0;
     }
