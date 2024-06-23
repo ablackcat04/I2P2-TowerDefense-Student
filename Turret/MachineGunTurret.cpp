@@ -9,10 +9,10 @@
 #include "Scene/PlayScene.hpp"
 #include "Engine/Point.hpp"
 
-const int MachineGunTurret::Price = 50;
+const int MachineGunTurret::Price = 100;
 MachineGunTurret::MachineGunTurret(float x, float y) :
 	// TODO: [CUSTOM-TOOL] You can imitate the 2 files: 'MachineGunTurret.hpp', 'MachineGunTurret.cpp' to create a new turret.
-        TriggeredTurret("play/tower-base.png", "play/turret-1.png", x, y, 200, Price, 0.5) {
+        TriggeredTurret("play/tower-base.png", "play/turret-1.png", x, y, 225, Price, 0.5) {
 	// Move center downward, since we the turret head is slightly biased upward.
 	Anchor.y += 8.0f / GetBitmapHeight();
 }

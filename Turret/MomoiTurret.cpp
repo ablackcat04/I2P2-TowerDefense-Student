@@ -13,12 +13,12 @@
 #include "Engine/Group.hpp"
 #include "Scene/PlayScene.hpp"
 
-const int MomoiTurret::Price = 300;
+const int MomoiTurret::Price = 250;
 MomoiTurret::MomoiTurret(float x, float y) :
         Turret("play/tower-base.png", "play/momoi64x64.png", x, y, 600, Price, 3.5) {
     // Move center downward, since we the turret head is slightly biased upward.
     Anchor.y -= 8.0f / GetBitmapHeight();
-    rhythm = 1.f;
+    rhythm = 0.5f;
 }
 void MomoiTurret::CreateBullet() {
 

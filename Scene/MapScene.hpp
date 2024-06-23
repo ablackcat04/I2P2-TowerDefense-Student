@@ -5,7 +5,7 @@
 #include "Engine/IScene.hpp"
 class MapScene final : public Engine::IScene {
 private:
-    int cnt=1;
+    int cnt = 1;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 public:
     explicit MapScene() = default;

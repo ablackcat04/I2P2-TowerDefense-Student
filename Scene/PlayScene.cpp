@@ -30,6 +30,7 @@
 #include "PlayScene.hpp"
 #include "MapScene.hpp"
 #include "Enemy/BossEnemy.hpp"
+#include "Engine/LOG.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -882,16 +883,17 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
 
 void PlayScene::ReadNotes(int songID){
     std::string filename = std::string("Resource/song") + std::to_string(songID) ;
-    int has_note[lanes];
+    float has_note[lanes];
     float start_time;
     std::ifstream fin(filename);
     while(fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time){
+        Engine::LOG(Engine::INFO) << has_note[0] << " " << has_note[1] << " " << has_note[2] << " " << has_note[3] << " " << start_time;
         for(int i=0;i < lanes;i++){
-            if(has_note[i]==1){//短條
+            if(has_note[i] > 0.95f && has_note[i] < 1.05f){//短條
                 endtime=start_time*conductor.crotchet+5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
-            else if(has_note[i]>1){//長條
+            else if(has_note[i] != 1.f && has_note[i] != 0.0f){//長條
                 endtime=start_time*conductor.crotchet+5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
             }

@@ -10,7 +10,7 @@
 #include "Engine/Point.hpp"
 #include "TriggeredTurret.hpp"
 
-const int MissileTurret::Price = 300;
+const int MissileTurret::Price = 200;
 MissileTurret::MissileTurret(float x, float y) :
 	TriggeredTurret("play/tower-base.png", "play/turret-3.png", x, y, 1000, Price, 4) {
     rhythm = 0.5f;
