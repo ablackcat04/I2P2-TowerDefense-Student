@@ -106,13 +106,18 @@ Also, you can skip the story by clicking the skip button in the top right corner
 | **Tasks**                 | **Person in Charge** |
 |:--------------------------|:--------------------:|
 | Plan                      |         吳彥儒          |
-| Sync with Rhythm          |       廖昱瑋、吳彥儒        |
+| Sync with Rhythm          |     廖昱瑋、~~吳彥儒~~      |
 | Notes fall from top       |       廖昱瑋、吳彥儒        |
 | Hit notes and Judgement   |         吳彥儒          |
 | Read notes                |         廖昱瑋          |
 | Hold notes implementation |         廖昱瑋          |
 | Visual effects            |         吳彥儒          |
 | Rhythm game cheat mode    |         吳彥儒          |
+
+#### Features
+
+
+
 ---
 ### Story Map
 | **Tasks**               | **Person in Charge** |
@@ -120,14 +125,24 @@ Also, you can skip the story by clicking the skip button in the top right corner
 | Plan                    |         吳彥儒          |
 | Story Map               |         劉奐均          |
 | Integration with others |         吳彥儒          |
+
+#### Features
+
 ---
 ### Tower Defense's Integration with Music
 | **Tasks**                                        | **Person in Charge** |
 |:-------------------------------------------------|:--------------------:|
 | Plan                                             |         吳彥儒          |
+| Merge rhythm game into tower defense             |         吳彥儒          |
 | Make money by hitting notes                      |         廖昱瑋          |
-| Some Towers will only attack when notes were hit |         吳彥儒          |
-| Other Tower's attack sync with rhythm            |         吳彥儒          |
+| Some towers will only attack when notes were hit |         吳彥儒          |
+| Other Tower's attack synced with the music       |         吳彥儒          |
+
+#### Features
+After making the rhythm game on its own, we merge the tower defense from project2 and the rhythm game
+together. We also integrate the tower defense with music and rhythm game by making it able to make money
+by hitting notes, making Some towers will only attack when notes were hit and making other tower's 
+attack synced with the music.
 
 ---
 ### Online Scoreboard
@@ -138,15 +153,29 @@ Also, you can skip the story by clicking the skip button in the top right corner
 | Link the libraries in CMake           |         吳彥儒          |
 | Implementation of download and upload |         吳彥儒          |
 | Internal network server & code        |         吳彥儒          |
+
+#### Features
+Try to get scoreboards from our internal network server everytime needed, if failed to connect to server, 
+use local scoreboards instead. It's also capable to upload modified scoreboard after winning a stage 
+and the username name is entered.
+
+From project2: We have 2 scoreboards for each stage: money left and life left, since we have 3 stages now, 
+the total number of scoreboard is 6. You can switch between them smoothly in the scoreboard scene.
+You can also scroll up and down to see the whole scoreboard.
+
+snapshot: 
+![img_7.png](img_7.png)
+
 ---
 ## Documentation of our Scripting Language: SimRen'Py
 In order to handle the story, we develop a simple scripting language: **SimRen'Py**.
 This scripting language was initially intended to be very similar to Ren'Py, 
-a visual novel language based on python. However, due to the implementation of my Engine, 
-I changed some grammar for easier implementation in my situation!
+a visual novel language based on python. However, due to the implementation of our Engine, 
+we modified some grammar for easier implementation in our situation!
 
-Below are some simple documentation of our language SimRen'Py:
+Here are some simple documentation of our language SimRen'Py.
 
+---
 SimRen'Py contains of two part, the first is the preprocessing part, and the second part is the story part.
 These two part needs to be seperated by a special line of words (**Plot_Start:**).
 The script might look like this:
@@ -166,6 +195,7 @@ ABlackCat "Maybe I should write code"
 image image_name "path/to/your/image/from/Resource/images" size width height
 ```
 load the image for later use
+
 example:
 ```
 image Kuo "plot/Kuo.jpg" size 300 400
