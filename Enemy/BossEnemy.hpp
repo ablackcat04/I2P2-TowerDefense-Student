@@ -11,7 +11,6 @@
 class BossEnemy : public Enemy {
 private:
     bool shield;
-
     bool triggeredBy1;
 public:
     BossEnemy(int x, int y);
