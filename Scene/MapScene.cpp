@@ -78,8 +78,12 @@ void MapScene::PlayOnClick(int stage) {
     SetLastStage(stage);
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
-void MapScene::Pluscnt() {
+void MapScene::IncCount() {
     if(cnt<=3)cnt++;
+}
+
+int MapScene::GetCount() {
+    return cnt;
 }
 // Created by Prox64 on 2024/6/11.
 //

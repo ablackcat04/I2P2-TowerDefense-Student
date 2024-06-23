@@ -13,7 +13,8 @@ public:
     void Terminate() override;
     void PlayOnClick(int stage);
     void BackOnClick(int stage);
-    void Pluscnt();
+    void IncCount();
+    int GetCount();
 };
 
 #endif // MAPSCENE_HPP

@@ -346,14 +346,14 @@ void PlayScene::Update(float deltaTime) {
                 delete imgTarget;*/
                 WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
                 scene->MapId = MapId;
-                reinterpret_cast<MapScene*>(Engine::GameEngine::GetInstance().GetScene("map-scene"))->Pluscnt();
-                Engine::GameEngine::GetInstance().ChangeScene("win");
 
-//                PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
-//                scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
-//                scene->stage = MapId;
-//                scene->GoToPlayNext = false;
-//                Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+                auto* m = reinterpret_cast<MapScene *>(Engine::GameEngine::GetInstance().GetScene("map-scene"));
+
+                if (MapId == m->GetCount()) {
+                    m->IncCount();
+                }
+
+                Engine::GameEngine::GetInstance().ChangeScene("win");
             }
             continue;
         }
