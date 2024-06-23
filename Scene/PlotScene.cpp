@@ -499,7 +499,7 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
                 }
             }
         } else {
-            OnClickCallBack();
+            //OnClickCallBack();
         }
     }
 }
