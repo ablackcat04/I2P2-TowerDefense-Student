@@ -3,11 +3,6 @@
 #include <utility>
 #include "Engine/Collider.hpp"
 #include "Enemy/Enemy.hpp"
-#include "Engine/GameEngine.hpp"
-#include "Engine/Group.hpp"
-#include "Engine/IScene.hpp"
-#include "Scene/PlayScene.hpp"
-#include "Scene/PlayScene.hpp"
 
 PlayScene* Bullet::getPlayScene() {
 	return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene());

@@ -3,8 +3,6 @@
 
 #include "UI/Animation/DirtyEffect.hpp"
 #include "Enemy/Enemy.hpp"
-#include "Engine/Group.hpp"
-#include "Scene/PlayScene.hpp"
 #include "MomoiBullet.hpp"
 
 class Turret;

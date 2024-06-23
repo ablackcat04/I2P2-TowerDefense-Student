@@ -124,6 +124,8 @@ add_executable(TowerDefense
         Utility/InternetHelper.hpp
         Turret/TriggeredTurret.cpp
         Turret/TriggeredTurret.hpp
+        Enemy/BossEnemy.cpp
+        Enemy/BossEnemy.hpp
 )
 
 IF (WIN32)

@@ -5,8 +5,6 @@
 #include <random>
 
 #include "Scene/PlayScene.hpp"
-
-#include "Engine/Point.hpp"
 #include "FlameTank.hpp"
 
 FlameTank::FlameTank(int x, int y) : Enemy("play/enemy-6.png", x, y, 25, 30, 175, 50),

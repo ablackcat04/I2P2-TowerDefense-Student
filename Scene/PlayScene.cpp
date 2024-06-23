@@ -29,6 +29,7 @@
 #include "WinScene.hpp"
 #include "PlayScene.hpp"
 #include "MapScene.hpp"
+#include "Enemy/BossEnemy.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -377,6 +378,9 @@ void PlayScene::Update(float deltaTime) {
                 // ODO: [CUSTOM-ENEMY]: You need to modify 'Resource/enemy1.txt', or 'Resource/enemy2.txt' to spawn the 4th enemy.
                 //         The format is "[EnemyId] [TimeDelay] [Repeat]".
                 // ODO: [CUSTOM-ENEMY]: Enable the creation of the enemy.
+                break;
+            case 5:
+                EnemyGroup->AddNewObject(enemy = new BossEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
             default:
                 continue;
