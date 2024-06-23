@@ -60,13 +60,45 @@ cross means the one do much less work but still engaged
 
 ### Plot & Plot Engine
 
-| **Tasks**                    |                     **Person in Charge**                     |
-|:-----------------------------|:------------------------------------------------------------:|
-| Plan                         |                             吳彥儒                              |
-| Simple Scripting Language    |                             吳彥儒                              |
-| Plot Engine                  |                             吳彥儒                              |
-| Plot (over 7500 words total) |                             吳彥儒                              |
-| Credit to the original work  | Blue Archive (NAT Games, Publisher: NEXON Korea Corporation) |
+| **Tasks**                            |                     **Person in Charge**                     |
+|:-------------------------------------|:------------------------------------------------------------:|
+| Plan                                 |                             吳彥儒                              |
+| Simple Scripting Language: SimRen'Py |                             吳彥儒                              |
+| Plot Engine                          |                             吳彥儒                              |
+| Plot (over 7500 words total)         |                             吳彥儒                              |
+| Credit to the original work          | Blue Archive (NAT Games, Publisher: NEXON Korea Corporation) |
+
+#### Features
+Able to read .txt file of our self-defined language: SimRen'Py and present the plot.
+SimRen'Py means "Simplified Ren'Py".
+We've also written a simple documentation for SimRen'Py, which is at the end of this README file, 
+be sure to check it out!
+
+The Engine is able to process text, character name, image and audio.
+The Engine can show text in the bottom or the middle, the text will appear one by one, accompanied 
+by a text appearing sound effect. You can always make it show the whole sentence by clicking mouse, 
+pressing Enter on your keyboard or scrolling down with your mouse. When it reaches the end of the 
+sentence, you can proceed by the same controls listed above. The Engine supports multiline texts, 
+we've tested the engine in English and Chinese, and it works fine in both.
+
+The Engine can display character name a little bit left up to the bottom text, you can also color
+them with different color, see more in the documentation.
+
+The Engine can show and hide each individual image, useful for presenting your story.
+
+The Engine can play and stop individual audio, useful for playing sound effects and BGMs.
+
+The Engine supports auto mode, if you enabled the auto mode, it will automatically proceed after
+it reaches the end of a sentence for a while.
+
+The Engine supports history mode, you can enter the history mode by scrolling your mouse up once, 
+after you enter the history mode, you can scroll up and down to see happened dialog. You can exit 
+history mode by scrolling down once if you're at the last sentence of history.
+
+history mode snapshot:
+![img_6.png](img_6.png)
+
+Also, you can skip the story by clicking the skip button in the top right corner.
 
 ---
 ### Rhythm Game
@@ -107,7 +139,7 @@ cross means the one do much less work but still engaged
 | Implementation of download and upload |         吳彥儒          |
 | Internal network server & code        |         吳彥儒          |
 ---
-## Plot Scripting Language Documentation
+## Documentation of our Scripting Language: SimRen'Py
 In order to handle the story, we develop a simple scripting language: **SimRen'Py**.
 This scripting language was initially intended to be very similar to Ren'Py, 
 a visual novel language based on python. However, due to the implementation of my Engine, 
