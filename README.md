@@ -87,8 +87,8 @@ be sure to check it out!
 
 The Engine is able to process text, character name, image and audio.
 The Engine can show text in the bottom or the middle, the text will appear one by one, accompanied 
-by a text appearing sound effect. You can always make it show the whole sentence by clicking mouse, 
-pressing Enter on your keyboard or scrolling down with your mouse. When it reaches the end of the 
+by a text appearing sound effect. You can always make it show the whole sentence by clicking mouse or 
+pressing Enter on your keyboard. When it reaches the end of the 
 sentence, you can proceed by the same controls listed above. The Engine supports multiline texts, 
 we've tested the engine in English and Chinese, and it works fine in both.
 
