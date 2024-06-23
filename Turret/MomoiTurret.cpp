@@ -22,10 +22,10 @@ MomoiTurret::MomoiTurret(float x, float y) :
 }
 void MomoiTurret::CreateBullet() {
 
-    if (getPlayScene()->GetMoney() < 30) {
+    if (getPlayScene()->GetMoney() < 15) {
         return;
     }
-    getPlayScene()->EarnMoney(-30);
+    getPlayScene()->EarnMoney(-15);
 
     Engine::Point diff = Engine::Point(cos(Rotation - ALLEGRO_PI / 2), sin(Rotation - ALLEGRO_PI / 2));
     float rotation = atan2(diff.y, diff.x);
