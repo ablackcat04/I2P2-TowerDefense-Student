@@ -208,10 +208,10 @@ void PlayScene::Update(float deltaTime) {
 
                     score += 100;
                     tmpscore+=100;
-                    EarnMoney(50);
+                    EarnMoney(5);
                     if(tmpscore>=1000){
                         tmpscore-=1000;
-                        EarnMoney(200);
+                        //EarnMoney(200);
                     }
 
                     n->be_hit_by_cheat = true;
@@ -239,10 +239,10 @@ void PlayScene::Update(float deltaTime) {
 
                 score += 100;
                 tmpscore+=100;
-                EarnMoney(50);
+                EarnMoney(5);
                 if(tmpscore>=1000){
                     tmpscore-=1000;
-                    EarnMoney(200);
+                    //EarnMoney(200);
                 }
 
                 for (auto i : TowerGroup->GetObjects()) {
@@ -549,10 +549,10 @@ void PlayScene::OnKeyDown(int keyCode) {
                     tmpscore+=100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
-                    EarnMoney(50);
+                    EarnMoney(5);
                     if(tmpscore>=1000){
                         tmpscore-=1000;
-                        EarnMoney(200);
+                        //EarnMoney(200);
                     }
                 } else {
                     score += 50;
@@ -560,10 +560,10 @@ void PlayScene::OnKeyDown(int keyCode) {
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
                     allperfect= false;
-                    EarnMoney(25);
+                    EarnMoney(2);
                     if(tmpscore>=1000){
                         tmpscore-=1000;
-                        EarnMoney(200);
+                        //EarnMoney(200);
                     }
                 }
                 for (auto i : TowerGroup->GetObjects()) {
@@ -906,10 +906,10 @@ void PlayScene::OnKeyUp(int keyCode){
                     tmpscore+=100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
-                    EarnMoney(50);
+                    EarnMoney(5);
                     if(tmpscore>=1000){
                         tmpscore-=1000;
-                        EarnMoney(200);
+                        //EarnMoney(200);
                     }
                 } else {
                     score += 50;
@@ -917,10 +917,10 @@ void PlayScene::OnKeyUp(int keyCode){
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
                     allperfect= false;
-                    EarnMoney(25);
+                    EarnMoney(2);
                     if(tmpscore>=1000){
                         tmpscore-=1000;
-                        EarnMoney(200);
+                        //EarnMoney(200);
                     }
                 }
                 for (auto i : TowerGroup->GetObjects()) {
