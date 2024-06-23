@@ -29,6 +29,11 @@ similar to the game vivid/stasis or Rotaeno.
 plot-engine snapshot:
 ![img_5.png](img_5.png)
 
+Game mechanics(Rhythm game part): notes will fall from the top of the screen, and when it reaches 
+a line called timing line, the user needs to press a certain key to hit the note on a certain lane. 
+The final thing we implemented is very similar to osu! mania 4K.
+
+
 ## Song Credits
 Stage1: Beyond Apocalypse by ABlackCat (a.k.a.吳彥儒)
 
@@ -68,7 +73,7 @@ cross means the one do much less work but still engaged
 | Plot (over 7500 words total)         |                             吳彥儒                              |
 | Credit to the original work          | Blue Archive (NAT Games, Publisher: NEXON Korea Corporation) |
 
-#### Features
+### Features
 Able to read .txt file of our self-defined language: SimRen'Py and present the plot.
 SimRen'Py means "Simplified Ren'Py".
 We've also written a simple documentation for SimRen'Py, which is at the end of this README file, 
@@ -101,6 +106,17 @@ history mode snapshot:
 Also, you can skip the story by clicking the skip button in the top right corner.
 
 ---
+### Story Map
+| **Tasks**               | **Person in Charge** |
+|:------------------------|:--------------------:|
+| Plan                    |         吳彥儒          |
+| Story Map               |         劉奐均          |
+
+### Features
+
+Unlock songs/stages one by one.
+
+---
 ### Rhythm Game
 
 | **Tasks**                 | **Person in Charge** |
@@ -114,19 +130,13 @@ Also, you can skip the story by clicking the skip button in the top right corner
 | Visual effects            |         吳彥儒          |
 | Rhythm game cheat mode    |         吳彥儒          |
 
-#### Features
+### Overview
 
 
 
----
-### Story Map
-| **Tasks**               | **Person in Charge** |
-|:------------------------|:--------------------:|
-| Plan                    |         吳彥儒          |
-| Story Map               |         劉奐均          |
-| Integration with others |         吳彥儒          |
+### Features
 
-#### Features
+
 
 ---
 ### Tower Defense's Integration with Music
@@ -138,11 +148,24 @@ Also, you can skip the story by clicking the skip button in the top right corner
 | Some towers will only attack when notes were hit |         吳彥儒          |
 | Other Tower's attack synced with the music       |         吳彥儒          |
 
-#### Features
+### Features
 After making the rhythm game on its own, we merge the tower defense from project2 and the rhythm game
 together. We also integrate the tower defense with music and rhythm game by making it able to make money
 by hitting notes, making Some towers will only attack when notes were hit and making other tower's 
 attack synced with the music.
+---
+### Tower Introduction (Integration with Rhythm Game)
+#### Machine Gun Turret
+![img_8.png](img_8.png)  : Shoot when at least note is hit.
+
+#### Laser Turret
+![img_9.png](img_9.png)  : Shoot every beat.
+
+#### Missile Turret
+![img_10.png](img_10.png) : Shoot when multiple notes are hit at the same time.
+
+#### Momoi Turret
+![img_11.png](img_11.png) : Sniper, shoot every 4 beat (bar in 4/4).
 
 ---
 ### Online Scoreboard
@@ -150,7 +173,7 @@ attack synced with the music.
 |:--------------------------------------|:--------------------:|
 | Based on project2's scoreboard        |         吳彥儒          |
 | Compile curl from source              |         吳彥儒          |
-| Link the libraries in CMake           |         吳彥儒          |
+| Link the library in CMake             |         吳彥儒          |
 | Implementation of download and upload |         吳彥儒          |
 | Internal network server & code        |         吳彥儒          |
 
