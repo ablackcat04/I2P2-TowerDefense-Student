@@ -33,6 +33,9 @@ int main() {
     game.AddNewScene("rhythm-game-scene", new RhythmGameScene());
 
     // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
-	game.Start("start", 60, 1600, 832);
+    auto* scene = reinterpret_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    scene->SetPlotPathTo("Resource/plot/prologue.txt");
+    scene->SetNextSceneTo("start");
+	game.Start("plot-scene", 60, 1600, 832);
 	return 0;
 }

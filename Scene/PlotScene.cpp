@@ -508,3 +508,15 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
 void PlotScene::SetNextSceneTo(std::string scene_name) {
     next_scene = scene_name;
 }
+
+void PlotScene::ChangeScene() {
+    if (next_scene == "play") {
+        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
+        scene->MapId = stage;
+        SetLastStage(stage);
+        next_scene = "map-scene";
+        Engine::GameEngine::GetInstance().ChangeScene("play");
+    } else {
+        Engine::GameEngine::GetInstance().ChangeScene(next_scene);
+    }
+}

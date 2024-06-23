@@ -116,17 +116,7 @@ public:
     bool GoToPlayNext = false;
     int stage;
 
-    void ChangeScene() {
-        if (next_scene == "play") {
-            PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
-            scene->MapId = stage;
-            SetLastStage(stage);
-            next_scene = "stage-select";
-            Engine::GameEngine::GetInstance().ChangeScene("play");
-        } else {
-            Engine::GameEngine::GetInstance().ChangeScene("map-scene");
-        }
-    }
+    void ChangeScene();
 };
 
 
