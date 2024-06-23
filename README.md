@@ -176,6 +176,10 @@ After making the rhythm game on its own, we merge the tower defense from project
 together. We also integrate the tower defense with music and rhythm game by making it able to make money
 by hitting notes, making Some towers will only attack when notes were hit and making other tower's 
 attack synced with the music.
+
+Furthermore, if you got full-combo or all-perfect on the rhythm game part, the cheat code from project2 
+will be triggered, killing all the enemies on screen to reward player playing good in the rhythm game part.
+
 ---
 ### Tower Introduction (Integration with Rhythm Game)
 #### Machine Gun Turret
