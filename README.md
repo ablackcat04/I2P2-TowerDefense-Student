@@ -20,14 +20,14 @@ which you need to unlock them one by one by passing the song before it on the ma
 similar to the game Lanota.
 
 game map snapshot:
-![img_4.png](readme_images/img_4.png)
+![img_4.png](Readme_Images/Game_Showcase/Overview/Game_Map.png)
 
 There will also be stories along the way,
 presented in a visual novel way, 
 similar to the game vivid/stasis or Rotaeno.
 
 plot-engine snapshot:
-![img_5.png](readme_images/img_5.png)
+![img_5.png](Readme_Images/Game_Showcase/Overview/Plot_Engine.png)
 
 Game mechanics(Rhythm game part): notes will fall from the top of the screen, and when it reaches 
 a line called timing line, the user needs to press a certain key to hit the note on a certain lane. 
@@ -37,7 +37,7 @@ Game mechanics(Tower defense part): We will build this part based on project2 bu
 more interaction with the music and the rhythm game part.
 
 game snapshot:
-![img_13.png](readme_images/img_13.png)
+![img_13.png](Readme_Images/Game_Showcase/Overview/Gameplay.png)
 
 ---
 ## Song Credits
@@ -48,7 +48,7 @@ Stage2: Monochrize by ABlackCat (a.k.a.吳彥儒)
 Stage3: D1AB0LiC_DEV0Ti0N by Salad Savior (Free to use if informed)
 
 Prove of informed (X(Twitter) DM):
-![img.png](readme_images/img.png)
+![img.png](Readme_Images/Others/Proof_of_Informing_of_D1AB0LiC_DEV0Ti0N.png)
 ---
 ## Work Allocation & Features
 
@@ -107,7 +107,7 @@ after you enter the history mode, you can scroll up and down to see happened dia
 history mode by scrolling down once if you're at the last sentence of history.
 
 history mode snapshot:
-![img_6.png](readme_images/img_6.png)
+![img_6.png](Readme_Images/Game_Showcase/Overview/Plot_Engine_History_Mode.png)
 
 Also, you can skip the story by clicking the skip button in the top right corner.
 
@@ -185,20 +185,20 @@ will be triggered, killing all the enemies on screen to reward player playing go
 ---
 ### Tower & Boss Introduction (Integration with Rhythm Game)
 #### Machine Gun Turret
-![img_8.png](readme_images/img_8.png)  : Shoot when at least note is hit.
+![img_8.png](Readme_Images/Game_Showcase/Tower_Defense/Machine_Gun_Turret.png)  : Shoot when at least note is hit.
 
 #### Laser Turret
-![img_9.png](readme_images/img_9.png)  : Shoot every beat.
+![img_9.png](Readme_Images/Game_Showcase/Tower_Defense/Laser_Turret.png)  : Shoot every beat.
 
 #### Missile Turret
-![img_10.png](readme_images/img_10.png) : Shoot when multiple notes are hit at the same time.
+![img_10.png](Readme_Images/Game_Showcase/Tower_Defense/Missile_Turret.png) : Shoot when multiple notes are hit at the same time.
 
 #### Momoi Turret
-![img_11.png](readme_images/img_11.png) : Sniper, shoot every 8 beat (2 bars in 4/4), cost money to shoot.
+![img_11.png](Readme_Images/Game_Showcase/Tower_Defense/Momoi_Turret.png) : Sniper, shoot every 8 beat (2 bars in 4/4), cost money to shoot.
 
 ---
 #### Boss
-![img.png](img.png)  ![img_1.png](img_1.png): Raise shield at the first and second beat, put shield 
+![img.png](Readme_Images/Game_Showcase/Tower_Defense/Boss_with_Shield.png)  ![img_1.png](Readme_Images/Game_Showcase/Tower_Defense/Boss.png): Raise shield at the first and second beat, put shield 
 down at the third and fourth beat. If shielded, reduce received damage by 75%; If not shielded, 
 increase received damage to 400%.
 
@@ -222,7 +222,7 @@ the total number of scoreboard is 6. You can switch between them smoothly in the
 You can also scroll up and down to see the whole scoreboard.
 
 snapshot: 
-![img_7.png](readme_images/img_7.png)
+![img_7.png](Readme_Images/Game_Showcase/Overview/Scoreboard.png)
 
 ---
 ## Documentation of our Scripting Language: SimRen'Py
@@ -295,7 +295,7 @@ example:
 ```
 ABlackCat "Maybe I should write code"
 ```
-![img_1.png](readme_images/img_1.png)
+![img_1.png](Readme_Images/SimRenPy_Example_Image/text.png)
 
 ---
 ### middle
@@ -309,7 +309,7 @@ example:
 middle "一段時間後............"
 ```
 
-![img_2.png](readme_images/img_2.png)
+![img_2.png](Readme_Images/SimRenPy_Example_Image/middle.png)
 
 ---
 ### show
@@ -326,7 +326,7 @@ Plot_Start:
 
 show Kuo at 200 100
 ```
-![img_3.png](readme_images/img_3.png)
+![img_3.png](Readme_Images/SimRenPy_Example_Image/show.png)
 
 ---
 ### hide
