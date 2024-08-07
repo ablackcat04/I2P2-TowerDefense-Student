@@ -1,8 +1,8 @@
-//
-#include <allegro5/allegro_audio.h>
 #include <functional>
 #include <memory>
 #include <string>
+
+#include <allegro5/allegro_audio.h>
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"

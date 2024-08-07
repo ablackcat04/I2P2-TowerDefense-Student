@@ -1,18 +1,14 @@
-//
-// Created by wuru8 on 2024/6/20.
-//
-
 #ifndef INC_2024_I2P2_TOWERDEFENSE_PLAYSCENE_HPP
 #define INC_2024_I2P2_TOWERDEFENSE_PLAYSCENE_HPP
 
-
-#include <allegro5/allegro_audio.h>
 #include <list>
 #include <memory>
 #include <utility>
 #include <vector>
-#include <allegro5/allegro_font.h>
 #include <queue>
+
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_font.h>
 
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"

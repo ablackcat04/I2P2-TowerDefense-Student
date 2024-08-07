@@ -1,9 +1,3 @@
-//
-// Created by wuru8 on 2024/6/20.
-//
-
-#include "allegro5/allegro_primitives.h"
-#include <allegro5/allegro.h>
 #include <algorithm>
 #include <cmath>
 #include <fstream>
@@ -11,6 +5,9 @@
 #include <queue>
 #include <string>
 #include <memory>
+
+#include "allegro5/allegro_primitives.h"
+#include <allegro5/allegro.h>
 
 #include "Engine/AudioHelper.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
@@ -30,7 +27,6 @@
 #include "PlayScene.hpp"
 #include "MapScene.hpp"
 #include "Enemy/BossEnemy.hpp"
-#include "Engine/LOG.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };

@@ -1,17 +1,18 @@
-#include <allegro5/allegro_audio.h>
 #include <functional>
 #include <memory>
 #include <string>
 
+#include <allegro5/allegro_audio.h>
+
+#include "Engine/LOG.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
-#include "PlayScene.hpp"
-#include "ScoreboardScene.hpp"
-#include "Engine/LOG.hpp"
 #include "UI/Component/Scoreboard.hpp"
 #include "Utility/InternetHelper.hpp"
+#include "PlayScene.hpp"
+#include "ScoreboardScene.hpp"
 
 const int max_scene = 3;
 

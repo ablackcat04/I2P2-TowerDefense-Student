@@ -1,8 +1,8 @@
 #ifndef SettingsScene_HPP
 #define SettingsScene_HPP
 
-#include <allegro5/allegro_audio.h>
 #include <memory>
+#include <allegro5/allegro_audio.h>
 #include "Engine/IScene.hpp"
 
 class SettingsScene final : public Engine::IScene {

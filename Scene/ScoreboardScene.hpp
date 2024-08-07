@@ -1,11 +1,8 @@
-//
-// Created by wuru8 on 2024/5/11.
-//
-
 #ifndef INC_2024_I2P2_TOWERDEFENSE_SCOREBOARDSCENE_HPP
 #define INC_2024_I2P2_TOWERDEFENSE_SCOREBOARDSCENE_HPP
-#include <allegro5/allegro_audio.h>
+
 #include <memory>
+#include <allegro5/allegro_audio.h>
 #include "Engine/IScene.hpp"
 
 class ScoreboardScene final : public Engine::IScene {

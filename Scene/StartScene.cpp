@@ -1,13 +1,9 @@
-//
-// Created by Hsuan on 2024/4/10.
-//
-
-#include "StartScene.hpp"
 #include <functional>
 
 #include "Engine/GameEngine.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
+#include "StartScene.hpp"
 
 void StartScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;

@@ -5,7 +5,9 @@
 #include <queue>
 #include <vector>
 #include <unordered_map>
+
 #include <allegro5/allegro_audio.h>
+
 #include "Engine/GameEngine.hpp"
 #include "Engine/IScene.hpp"
 #include "UI/Component/Label.hpp"

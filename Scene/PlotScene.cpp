@@ -1,9 +1,3 @@
-//
-// Created by wuru8 on 2024/6/8.
-//
-
-#include "PlotScene.hpp"
-
 #include <allegro5/allegro_audio.h>
 #include <functional>
 #include <memory>
@@ -11,8 +5,9 @@
 #include <sstream>
 
 #include "UI/Component/ImageButton.hpp"
-#include "PlayScene.hpp"
 #include "Engine/LOG.hpp"
+#include "PlayScene.hpp"
+#include "PlotScene.hpp"
 
 void splitLine(const std::string& line, std::vector<std::string>& words) {
     std::istringstream iss(line);

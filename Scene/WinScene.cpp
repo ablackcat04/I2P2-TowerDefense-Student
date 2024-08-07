@@ -3,15 +3,15 @@
 
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Engine/LOG.hpp"
 #include "UI/Component/Image.hpp"
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
+#include "UI/Component/Scoreboard.hpp"
+#include "Utility/InternetHelper.hpp"
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
-#include "Engine/LOG.hpp"
-#include "UI/Component/Scoreboard.hpp"
-#include "Scene/PlotScene.hpp"
-#include "Utility/InternetHelper.hpp"
+#include "PlotScene.hpp"
 
 Engine::Label *Lwin;
 

@@ -1,5 +1,6 @@
 #ifndef WINSCENE_HPP
 #define WINSCENE_HPP
+
 #include <allegro5/allegro_audio.h>
 #include "Engine/IScene.hpp"
 
@@ -18,8 +19,6 @@ private:
 	float ticks;
 	ALLEGRO_SAMPLE_ID bgmId;
 protected:
-//    static std::string username;
-//    static int name_ptr;
     std::string username = "";
     bool Rshift = false;
     bool Lshift = false;
