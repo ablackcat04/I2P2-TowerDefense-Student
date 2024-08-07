@@ -11,7 +11,7 @@ private:
     Engine::Label *Lscb = nullptr;
     std::string title_name = "Scoreboard - stage1";
 
-    bool online_avaliable[2][2];
+    bool online_available[2][2];
 
 public:
     explicit ScoreboardScene() = default;
@@ -22,8 +22,5 @@ public:
     static void BackOnClick(int stage);
     void Update(float deltaTime) override;
 };
-
-
-
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_SCOREBOARDSCENE_HPP

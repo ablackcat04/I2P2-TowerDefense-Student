@@ -17,7 +17,6 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
     }
 }
 
-
 void PlotScene::Initialize() {
     big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
     font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);

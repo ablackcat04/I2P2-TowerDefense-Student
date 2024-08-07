@@ -68,19 +68,19 @@ void ScoreboardScene::Initialize() {
         if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt",
                                          "Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt")) {
             Engine::LOG(Engine::INFO) << "Load Successfully";
-            online_avaliable[i-1][0] = true;
+            online_available[i - 1][0] = true;
         } else {
             Engine::LOG(Engine::INFO) << "Failed to Load File";
-            online_avaliable[i-1][0] = false;
+            online_available[i - 1][0] = false;
         }
 
         if (InternetHelper::downloadFile(InternetHelper::server_ip +  "/I2P_project/scoreboard/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt",
                                          "Resource/scoreboard/online/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt")) {
             Engine::LOG(Engine::INFO) << "Load Successfully";
-            online_avaliable[i-1][1] = true;
+            online_available[i - 1][1] = true;
         } else {
             Engine::LOG(Engine::INFO) << "Failed to Load File";
-            online_avaliable[i-1][1] = false;
+            online_available[i - 1][1] = false;
         }
     }
 
@@ -128,7 +128,7 @@ void ScoreboardScene::Initialize() {
     std::string ss = "Resource/scoreboard/scoreboard.txt";
 
     for (int i = 1; i <= max_scene; i++) {
-        if (online_avaliable[i-1][0]) {
+        if (online_available[i - 1][0]) {
             ss = (std::string)"Resource/scoreboard/online/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt";
         } else {
             ss = (std::string) "Resource/scoreboard/stage" + std::to_string(i) + "_moneyLeft_scoreboard.txt";
@@ -137,7 +137,7 @@ void ScoreboardScene::Initialize() {
         AddRefObject(*scb[i-1][0]);
         AddRefControl(*scb[i-1][0]);
 
-        if (online_avaliable[i-1][1]) {
+        if (online_available[i - 1][1]) {
             ss = (std::string)"Resource/scoreboard/online/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt";
         } else {
             ss = (std::string)"Resource/scoreboard/stage" + std::to_string(i) + "_lifeLeft_scoreboard.txt";

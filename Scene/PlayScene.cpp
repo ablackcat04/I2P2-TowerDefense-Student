@@ -10,23 +10,23 @@
 #include <allegro5/allegro.h>
 
 #include "Engine/AudioHelper.hpp"
+#include "Engine/Resources.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
-#include "Enemy/Enemy.hpp"
+#include "UI/Animation/Plane.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
 #include "Turret/MissileTurret.hpp"
 #include "Turret/MomoiTurret.hpp"
-#include "UI/Animation/Plane.hpp"
+#include "Turret/TurretButton.hpp"
+#include "Enemy/Enemy.hpp"
 #include "Enemy/PlaneEnemy.hpp"
-#include "Engine/Resources.hpp"
 #include "Enemy/SoldierEnemy.hpp"
 #include "Enemy/TankEnemy.hpp"
-#include "Turret/TurretButton.hpp"
 #include "Enemy/FlameTank.hpp"
+#include "Enemy/BossEnemy.hpp"
 #include "WinScene.hpp"
 #include "PlayScene.hpp"
 #include "MapScene.hpp"
-#include "Enemy/BossEnemy.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -120,11 +120,6 @@ void PlayScene::Initialize() {
     if(MapId==1)  conductor.init(152, 0);
     else if(MapId==2)  conductor.init(160, 0);
     else if(MapId==3) conductor.init(250, 0);
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/4, halfH, 4, 1000, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid*3/4, halfH, 4, 1000, 0.0, 0.5));
     ReadNotes(MapId);
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift, 0, 255, 255, 255, 255);
@@ -186,8 +181,6 @@ void PlayScene::Update(float deltaTime) {
         }
     }
 
-
-
     p24th = a24th;
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
@@ -207,12 +200,7 @@ void PlayScene::Update(float deltaTime) {
                     ++combo;
 
                     score += 100;
-                    tmpscore+=100;
                     EarnMoney(5);
-                    if(tmpscore>=1000){
-                        tmpscore-=1000;
-                        //EarnMoney(200);
-                    }
 
                     n->be_hit_by_cheat = true;
 
@@ -238,12 +226,7 @@ void PlayScene::Update(float deltaTime) {
                 ++combo;
 
                 score += 100;
-                tmpscore+=100;
                 EarnMoney(5);
-                if(tmpscore>=1000){
-                    tmpscore-=1000;
-                    //EarnMoney(200);
-                }
 
                 for (auto i : TowerGroup->GetObjects()) {
                     dynamic_cast<Turret *>(i)->TriggerByHit();
@@ -251,7 +234,6 @@ void PlayScene::Update(float deltaTime) {
 
                 n = notes.erase(n);
                 --n;
-
             }
         }
 
@@ -392,13 +374,13 @@ void PlayScene::Update(float deltaTime) {
     }
 }
 void PlayScene::Draw() const {
-    IScene::Draw();
+    //IScene::Draw();
+
     if (DebugMode) {
         // Draw reverse BFS distance on all reachable blocks.
         for (int i = 0; i < MapHeight; i++) {
             for (int j = 0; j < MapWidth; j++) {
                 if (mapDistance[i][j] != -1) {
-                    // Not elegant nor efficient, but it's quite enough for debugging.
                     Engine::Label label(std::to_string(mapDistance[i][j]), "pirulen.ttf", 32, (j + 0.5) * BlockSize, (i + 0.5) * BlockSize);
                     label.Anchor = Engine::Point(0.5, 0.5);
                     label.Draw();
@@ -434,12 +416,6 @@ void PlayScene::Draw() const {
             break;
         }
     }
-
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, 700, wid, 10, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift, halfH, 4, 1000, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/2, halfH, 4, 1000, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid/4, halfH, 4, 1000, 0.0, 0.5));
-    //AddNewObject(new Engine::Image("stage-select/defineline.png", x_shift+wid*3/4, halfH, 4, 1000, 0.0, 0.5));
 
     al_draw_line(x_shift, 700, x_shift + wid, 700, white, 10);
     al_draw_line(x_shift + wid/4, 0, x_shift + wid/4, 700, white, 4);
@@ -615,12 +591,6 @@ void PlayScene::OnKeyDown(int keyCode) {
             }
         }
     }
-
-
-
-
-
-
 
     if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
         // Hotkey for Speed up.
@@ -865,24 +835,23 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
 }
 
 void PlayScene::ReadNotes(int songID){
-    std::string filename = std::string("Resource/song") + std::to_string(songID) ;
+    std::string filename = std::string("Resource/song") + std::to_string(songID);
     float has_note[lanes];
     float start_time;
     std::ifstream fin(filename);
-    while(fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time){
-        for(int i=0;i < lanes;i++){
-            if(has_note[i] > 0.95f && has_note[i] < 1.05f){//短條
-                endtime=start_time*conductor.crotchet+5;
+    while (fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time) {
+        for (int i=0;i < lanes;i++){
+            if (has_note[i] > 0.95f && has_note[i] < 1.05f){
+                endtime=start_time*conductor.crotchet + 5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
-            else if(has_note[i] != 1.f && has_note[i] != 0.0f){//長條
-                endtime=start_time*conductor.crotchet+5;
+            else if (has_note[i] != 1.f && has_note[i] != 0.0f) {
+                endtime=start_time*conductor.crotchet + 5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
             }
         }
     }
 }
-
 
 void PlayScene::OnKeyUp(int keyCode){
     int lane = -1;
@@ -895,6 +864,7 @@ void PlayScene::OnKeyUp(int keyCode){
     if (lane == -1) {
         return;
     }
+
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         float addtime=(float)n->length/700.0;
         float t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
@@ -904,25 +874,15 @@ void PlayScene::OnKeyUp(int keyCode){
                 --n;
                 if (t > -0.05 && t < 0.05) {
                     score += 100;
-                    tmpscore+=100;
                     current_judgement = "Perfect";
                     last_judgement[lane] = Judgement::perfect;
                     EarnMoney(5);
-                    if(tmpscore>=1000){
-                        tmpscore-=1000;
-                        //EarnMoney(200);
-                    }
                 } else {
                     score += 50;
-                    tmpscore+=50;
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
                     allperfect= false;
                     EarnMoney(2);
-                    if(tmpscore>=1000){
-                        tmpscore-=1000;
-                        //EarnMoney(200);
-                    }
                 }
                 for (auto i : TowerGroup->GetObjects()) {
                     dynamic_cast<Turret *>(i)->TriggerByHit();

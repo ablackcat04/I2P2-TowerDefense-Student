@@ -22,10 +22,10 @@ namespace Engine {
     class Image;
     class Label;
     class Sprite;
-}  // namespace Engine
+}
 
 class PlayScene final : public Engine::IScene {
-    // Tower part
+    // Tower Defense part
 private:
     const float l[10] = {0.5f, 1.f, 2.f, 4.f, 6.f, 8.f, 12.f};
     int a24th = 0;
@@ -153,8 +153,6 @@ public:
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
     std::vector<std::vector<int>> CalculateBFSDistance();
-    // void ModifyReadMapTiles();
-
 
     // rhythm game part
     void ReadNotes(int songID);

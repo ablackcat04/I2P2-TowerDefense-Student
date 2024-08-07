@@ -12,12 +12,9 @@ public:
 	explicit StageSelectScene() = default;
 	void Initialize() override;
 	void Terminate() override;
-    void PlayOnClick(int stage);
     void ScoreboardOnClick();
 	void BackOnClick(int stage);
-    void TestOnClick();
 	void TestMapOnClick();
-    void RhythmGameOnClick();
 };
 
 #endif // STAGESELECTSCENE_HPP

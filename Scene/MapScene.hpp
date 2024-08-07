@@ -7,14 +7,14 @@
 
 class MapScene final : public Engine::IScene {
 private:
-    int cnt = 1;
+    int maximum_opened_stage = 1;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 public:
     explicit MapScene() = default;
     void Initialize() override;
     void Terminate() override;
     void PlayOnClick(int stage);
-    void BackOnClick(int stage);
+    void BackOnClick();
     void IncCount();
     int GetCount();
 };
