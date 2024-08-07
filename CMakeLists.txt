@@ -88,8 +88,6 @@ add_executable(TowerDefense
         Turret/TurretButton.hpp
         Scene/WinScene.cpp
         Scene/WinScene.hpp
-
-        # ODO: [HACKATHON-1-SCENE] (2/4) Add the new scene source files here
         Scene/StartScene.cpp
         Scene/StartScene.hpp
         Scene/SettingsScene.cpp

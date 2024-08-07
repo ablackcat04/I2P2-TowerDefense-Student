@@ -18,7 +18,6 @@ int main() {
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine& game = Engine::GameEngine::GetInstance();
 
-    // ODO: [HACKATHON-1-SCENE] (3/4): Register Scenes here
     game.AddNewScene("start", new StartScene());
     game.AddNewScene("stage-select", new StageSelectScene());
 	game.AddNewScene("settings", new SettingsScene());
@@ -30,7 +29,6 @@ int main() {
     game.AddNewScene("plot-scene", new PlotScene());
 	game.AddNewScene("map-scene", new MapScene());
 
-    // ODO: [HACKATHON-1-SCENE] (4/4): Change the start scene
     auto* scene = reinterpret_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/prologue.txt");
     scene->SetNextSceneTo("start");

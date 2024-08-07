@@ -60,9 +60,6 @@ PlayScene::PlayScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conduc
 
 void PlayScene::Initialize() {
     al_resize_display(Engine::GameEngine::GetInstance().GetDisplay(), 1920, 832);
-    // ODO: [HACKATHON-3-BUG] (1/5): There's a bug in this file, which crashes the game when you lose. Try to find it.
-    // ODO: [HACKATHON-3-BUG] (2/5): Find out the cheat code to test.
-    // ODO: [HACKATHON-3-BUG] (2/5): It should generate a Plane, and add 10000 to the money, but it doesn't work now.
     mapState.clear();
     keyStrokes.clear();
     ticks = 0;
@@ -381,9 +378,6 @@ void PlayScene::Update(float deltaTime) {
                 break;
             case 4:
                 EnemyGroup->AddNewObject(enemy = new FlameTank(SpawnCoordinate.x, SpawnCoordinate.y));
-                // ODO: [CUSTOM-ENEMY]: You need to modify 'Resource/enemy1.txt', or 'Resource/enemy2.txt' to spawn the 4th enemy.
-                //         The format is "[EnemyId] [TimeDelay] [Repeat]".
-                // ODO: [CUSTOM-ENEMY]: Enable the creation of the enemy.
                 break;
             case 5:
                 EnemyGroup->AddNewObject(enemy = new BossEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
@@ -687,8 +681,6 @@ void PlayScene::ReadMap() {
     }
 }
 void PlayScene::ReadEnemyWave() {
-    // ODO: [HACKATHON-3-BUG] (3/5): Trace the code to know how the enemies are created.
-    // ODO: [HACKATHON-3-BUG] (3/5): There is a bug in these files, which let the game only spawn the first enemy, try to fix it.
     std::string filename = std::string("Resource/enemy") + std::to_string(MapId) + ".txt";
     // Read enemy file.
     float type, wait, repeat;
@@ -757,7 +749,6 @@ void PlayScene::ConstructUI() {
     btn->SetOnClickCallback([this] { UIBtnClicked(3); });
     UIGroup->AddNewControlObject(btn);
 
-    // ODO: [CUSTOM-TURRET]: Create a button to support constructing the turret.
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int shift = 135 + 25;
@@ -769,7 +760,6 @@ void PlayScene::ConstructUI() {
 void PlayScene::UIBtnClicked(int id) {
     if (preview)
         UIGroup->RemoveObject(preview->GetObjectIterator());
-    // ODO: [CUSTOM-TURRET]: On callback, create the turret.
     if (id == 0 && money >= MachineGunTurret::Price)
         preview = new MachineGunTurret(0, 0);
     else if (id == 1 && money >= LaserTurret::Price)
@@ -829,9 +819,6 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     while (!que.empty()) {
         Engine::Point p = que.front();
         que.pop();
-        // ODO: [BFS PathFinding] (1/1): Implement a BFS starting from the most right-bottom block in the map.
-        //               For each step you should assign the corresponding distance to the most right-bottom block.
-        //               mapState[y][x] is TILE_DIRT if it is empty.
 
         if (p.y < 0 || p.x < 0 || p.y >= MapHeight || p.x >= MapWidth) {
             continue;
