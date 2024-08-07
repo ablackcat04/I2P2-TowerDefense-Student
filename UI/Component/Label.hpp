@@ -37,23 +37,9 @@ namespace Engine {
 		/// <param name="anchorX">The centerX of the object. (0, 0) means top-left, while (1, 0) means top-right.</param>
 		/// <param name="anchorY">The centerY of the object. (0, 1) means bottom-left, while (1, 1) means bottom-right.</param>
 		explicit Label(const std::string& text, const std::string& font, int fontSize, float x, float y, unsigned char r = 0, unsigned char g = 0, unsigned char b = 0, unsigned char a = 255, float anchorX = 0, float anchorY = 0);
-		/// <summary>
-		/// Draw text with loaded font.
-		/// </summary>
-
         explicit Label(std::string *ta, const std::string& font , int fontSize, float x, float y, unsigned char r = 0, unsigned char g = 0, unsigned char b = 0, unsigned char a = 255, float anchorX = 0, float anchorY = 0, bool is_input = false);
-
-
-		void Draw() const override;
-		/// <summary>
-		/// Return text width.
-		/// </summary>
-		/// <returns>Width of the text.</returns>
+        void Draw() const override;
 		int GetTextWidth() const;
-		/// <summary>
-		/// Return text height.
-		/// </summary>
-		/// <returns>Height of the text.</returns>
 		int GetTextHeight() const;
 	};
 }

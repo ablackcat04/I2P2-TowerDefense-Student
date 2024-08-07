@@ -1,4 +1,3 @@
-// [main.cpp]
 // This is the entry point of your game.
 // You can register your scenes here, and start the game.
 #include "Engine/GameEngine.hpp"
@@ -12,7 +11,6 @@
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/PlotScene.hpp"
 #include "Scene/MapScene.hpp"
-#include "Scene/PlayScene.hpp"
 
 int main() {
 	Engine::LOG::SetConfig(true);
@@ -32,6 +30,7 @@ int main() {
     auto* scene = reinterpret_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/prologue.txt");
     scene->SetNextSceneTo("start");
+
 	game.Start("plot-scene", 60, 1600, 832);
 	return 0;
 }

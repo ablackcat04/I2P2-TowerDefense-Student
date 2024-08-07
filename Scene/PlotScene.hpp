@@ -35,8 +35,6 @@ private:
     };
 
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
-    //Engine::Label *pMiddleText = nullptr;
-    Engine::Label *pName = nullptr;
     std::string text_target;
     std::string partial_target;
     std::string text1;
@@ -83,7 +81,7 @@ private:
     ALLEGRO_SAMPLE_ID* text_sfx_id;
 
     ALLEGRO_FONT* name_font;
-    ALLEGRO_COLOR* deafult_name_color;
+    ALLEGRO_COLOR* default_name_color;
     ALLEGRO_FONT* font;
     ALLEGRO_FONT* big_font;
     ALLEGRO_COLOR* current_text_color;
@@ -94,8 +92,6 @@ public:
     explicit PlotScene() = default;
     void Initialize() override;
     void Terminate() override;
-    static void SkipOnClick();
-    static void AutoOnClick();
     static void BackOnClick(int stage);
     void Update(float deltaTime) override;
     void OnMouseScroll(int mx, int my, int delta);

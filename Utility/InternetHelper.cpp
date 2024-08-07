@@ -1,6 +1,3 @@
-//
-// Created by wuru8 on 2024/6/13.
-//
 #include "Engine/LOG.hpp"
 #include "InternetHelper.hpp"
 #include <curl/curl.h>
@@ -22,7 +19,7 @@ bool InternetHelper::downloadFile(const std::string &url, const std::string &loc
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         res = curl_easy_perform(curl);
-        /* always cleanup */
+
         curl_easy_cleanup(curl);
         fclose(fp);
         return res == CURLE_OK;

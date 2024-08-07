@@ -21,7 +21,7 @@ void PlotScene::Initialize() {
     big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
     font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);
     name_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
-    deafult_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
+    default_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
     current_text_color = new ALLEGRO_COLOR (al_map_rgb(255,255,255));
 
     while (!queue_of_text.empty()) {
@@ -32,11 +32,6 @@ void PlotScene::Initialize() {
 
     history_info.clear();
     history_ptr = 0;
-
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;
 
     history = false;
     prev_history = false;
@@ -59,10 +54,10 @@ void PlotScene::Initialize() {
 
     // Read plot from file
     std::string line;
-    std::ifstream plot(plot_path);
+    std::ifstream plot_file_stream(plot_path);
 
     // Pre Processing
-    while (std::getline(plot, line)) {
+    while (std::getline(plot_file_stream, line)) {
         Engine::LOG(Engine::INFO) << "Plot: " << line;
 
         if (line == "Plot_Start:") {
@@ -111,7 +106,7 @@ void PlotScene::Initialize() {
         }
     }
     // Reading Script
-    while (std::getline(plot, line)) {
+    while (std::getline(plot_file_stream, line)) {
         Engine::LOG(Engine::INFO) << "Plot: " << line;
         if (line == "") {
             continue;
@@ -177,9 +172,6 @@ void PlotScene::Initialize() {
         AddRefObject(*i.second.img);
     }
 
-    //pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
-    //AddRefObject(*pName);
-
     btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1500, 9, 32, 32);
 
     btn->SetOnClickCallback([this] { ChangeScene(); });
@@ -205,7 +197,7 @@ void PlotScene::Initialize() {
                                             al_map_rgb(200,200,255));
     AddRefControlObject(*t);
 
-    plot.close();
+    plot_file_stream.close();
 
     time = 0.0f;
     auto_timer = 0.0f;
@@ -245,7 +237,7 @@ void PlotScene::Draw() const {
             // name
             //pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
             if (!name_color_map.contains(name)) {
-                al_draw_text(name_font, *deafult_name_color, 150, 575, 0.5, name.c_str());
+                al_draw_text(name_font, *default_name_color, 150, 575, 0.5, name.c_str());
             } else {
                 al_draw_text(name_font, *(name_color_map.find(name)->second), 150, 575, 0.5, name.c_str());
             }
@@ -361,8 +353,6 @@ void PlotScene::OnClickCallBack() {
                     Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
                 }
             }
-
-            //history_info.push_back({"", middle_text});
         }
         queue_of_text.pop();
     } else {
@@ -373,7 +363,6 @@ void PlotScene::OnClickCallBack() {
 void PlotScene::SetPlotPathTo(std::string path) {
     plot_path = path;
 }
-
 
 void PlotScene::Update(float deltaTime) {
     if (history != prev_history) {
@@ -493,7 +482,7 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
                 }
             }
         } else {
-            //OnClickCallBack();
+            OnClickCallBack();
         }
     }
 }

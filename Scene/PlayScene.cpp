@@ -168,7 +168,7 @@ void PlayScene::Update(float deltaTime) {
     conductor.update();
     score_text = std::to_string(score);
 
-    a24th = ((conductor.song_position / conductor.crotchet)*6);
+    a24th = ((conductor.song_position / conductor.length_per_beat_in_seconds) * 6);
 
     for (float f : l) {
         if ((int)(a24th / (24/f)) > (int)(p24th / (24/f))) {
@@ -186,23 +186,23 @@ void PlayScene::Update(float deltaTime) {
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         n->update(conductor);
         float t;
-        if (n->ishold) {
+        if (n->is_hold) {
             float addtime=(float)n->length/700.0;
-            t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
+            t = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1 - addtime;
 
             if (cheat_mode) {
-                float tt = conductor.song_position - n->start_time * conductor.crotchet - 1;
-                if (!n->be_hit_by_cheat && tt > 0) {
-                    last_note_is_hold[n->x] = true;
-                    last_hit_time[n->x] = conductor.song_position;
-                    last_judgement[n->x] = Judgement::perfect;
+                float tt = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1;
+                if (!n->will_be_hit_by_cheat && tt > 0) {
+                    last_note_is_hold[n->lane] = true;
+                    last_hit_time[n->lane] = conductor.song_position;
+                    last_judgement[n->lane] = Judgement::perfect;
                     current_judgement = "Perfect";
                     ++combo;
 
                     score += 100;
                     EarnMoney(5);
 
-                    n->be_hit_by_cheat = true;
+                    n->will_be_hit_by_cheat = true;
 
                     for (auto i : TowerGroup->GetObjects()) {
                         dynamic_cast<Turret *>(i)->TriggerByHit();
@@ -210,18 +210,18 @@ void PlayScene::Update(float deltaTime) {
                 }
             }
         } else {
-            t = conductor.song_position - n->start_time * conductor.crotchet - 1;
+            t = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1;
         }
 
         if (cheat_mode) {
             if (t > 0) {
-                last_note_is_hold[n->x] = false;
-                if (!n->ishold) {
-                    last_hit_time[n->x] = conductor.song_position;
+                last_note_is_hold[n->lane] = false;
+                if (!n->is_hold) {
+                    last_hit_time[n->lane] = conductor.song_position;
                 }
-                last_up_time[n->x] = conductor.song_position;
+                last_up_time[n->lane] = conductor.song_position;
 
-                last_judgement[n->x] = Judgement::perfect;
+                last_judgement[n->lane] = Judgement::perfect;
                 current_judgement = "Perfect";
                 ++combo;
 
@@ -240,7 +240,7 @@ void PlayScene::Update(float deltaTime) {
         if (t> 0.1) {
             allperfect= false;
             fullcombo = false;
-            last_judgement[n->x] = Judgement::missed;
+            last_judgement[n->lane] = Judgement::missed;
             n = notes.erase(n);
             current_judgement = "Missed";
             --n;
@@ -410,7 +410,7 @@ void PlayScene::Draw() const {
     }
 
     for (auto note : notes) {
-        if (note.active) {
+        if (note.is_active) {
             note.render();
         } else {
             break;
@@ -526,15 +526,15 @@ void PlayScene::OnKeyDown(int keyCode) {
     }
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
-        float t = conductor.song_position - n->start_time * conductor.crotchet - 1;
-        if (n->x == lane && n->active) {
+        float t = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1;
+        if (n->lane == lane && n->is_active) {
             if (t > -0.1 && t < 0.1) {
-                if(!n->ishold){
+                if(!n->is_hold){
                     n = notes.erase(n);
                     --n;
-                    last_note_is_hold[n->x] = false;
+                    last_note_is_hold[n->lane] = false;
                 } else {
-                    last_note_is_hold[n->x] = true;
+                    last_note_is_hold[n->lane] = true;
                 }
 
 
@@ -842,11 +842,11 @@ void PlayScene::ReadNotes(int songID){
     while (fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time) {
         for (int i=0;i < lanes;i++){
             if (has_note[i] > 0.95f && has_note[i] < 1.05f){
-                endtime=start_time*conductor.crotchet + 5;
+                endtime=start_time*conductor.length_per_beat_in_seconds + 5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
             else if (has_note[i] != 1.f && has_note[i] != 0.0f) {
-                endtime=start_time*conductor.crotchet + 5;
+                endtime=start_time*conductor.length_per_beat_in_seconds + 5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
             }
         }
@@ -867,8 +867,8 @@ void PlayScene::OnKeyUp(int keyCode){
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
         float addtime=(float)n->length/700.0;
-        float t = conductor.song_position - n->start_time * conductor.crotchet - 1 - addtime;
-        if (n->x == lane&&n->ishold&&n->active) {
+        float t = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1 - addtime;
+        if (n->lane == lane && n->is_hold && n->is_active) {
             if (t > -0.1 && t < 0.1) {
                 n = notes.erase(n);
                 --n;

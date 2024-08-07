@@ -32,7 +32,7 @@ void Slider::SetValue(float value) {
     }
 }
 void Slider::OnMouseDown(int button, int mx, int my) {
-	if ((button & 1) && mouseIn)
+	if ((button & 1) && isMouseIn)
 		Down = true;
 }
 void Slider::OnMouseUp(int button, int mx, int my) {

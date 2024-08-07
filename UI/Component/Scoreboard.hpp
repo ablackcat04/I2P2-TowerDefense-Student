@@ -1,25 +1,21 @@
-//
-// Created by wuru8 on 2024/5/11.
-//
-
 #ifndef INC_2024_I2P2_TOWERDEFENSE_SCOREBOARD_HPP
 #define INC_2024_I2P2_TOWERDEFENSE_SCOREBOARD_HPP
-#include <allegro5/bitmap.h>
+
 #include <memory>
 #include <string>
 #include <utility>
+#include <allegro5/bitmap.h>
 
 #include "Engine/IObject.hpp"
 #include "Engine/LOG.hpp"
 #include "Engine/IControl.hpp"
 
 
-typedef struct
-{
+struct ScoreBoardInstance {
     int score;
     char name[100];
     char time[30];
-} ScoreBoardInstance;
+};
 
 extern int upper;
 

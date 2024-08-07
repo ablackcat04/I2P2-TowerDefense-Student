@@ -1,15 +1,8 @@
-//
-// Created by wuru8 on 2024/6/8.
-//
-
-#include "RefImage.hpp"
-#include <allegro5/allegro.h>
 #include <memory>
-
-#include "Engine/IObject.hpp"
-#include "Image.hpp"
-#include "Engine/Point.hpp"
+#include <allegro5/allegro.h>
 #include "Engine/Resources.hpp"
+#include "RefImage.hpp"
+
 
 namespace Engine {
     RefImage::RefImage(std::string img, float x, float y, float w, float h, float anchorX, float anchorY) :
@@ -27,7 +20,7 @@ namespace Engine {
             bmp = Resources::GetInstance().GetBitmap(img);
             Size.y = GetBitmapHeight() * Size.x / GetBitmapWidth();
         }
-        else /* Size.x != 0 && Size.y != 0 */ {
+        else /* Size.lane != 0 && Size.y != 0 */ {
             bmp = Resources::GetInstance().GetBitmap(img, Size.x, Size.y);
         }
         ypos= nullptr;
@@ -49,7 +42,7 @@ namespace Engine {
             bmp = Resources::GetInstance().GetBitmap(img);
             Size.y = GetBitmapHeight() * Size.x / GetBitmapWidth();
         }
-        else /* Size.x != 0 && Size.y != 0 */ {
+        else /* Size.lane != 0 && Size.y != 0 */ {
             bmp = Resources::GetInstance().GetBitmap(img, Size.x, Size.y);
         }
     }
@@ -82,11 +75,8 @@ namespace Engine {
             bmp = Resources::GetInstance().GetBitmap(img);
             Size.y = GetBitmapHeight() * Size.x / GetBitmapWidth();
         }
-        else /* Size.x != 0 && Size.y != 0 */ {
+        else /* Size.lane != 0 && Size.y != 0 */ {
             bmp = Resources::GetInstance().GetBitmap(img, Size.x, Size.y);
         }
     }
 }
-
-
-

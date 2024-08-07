@@ -83,7 +83,7 @@ namespace Engine {
 		al_set_target_bitmap(prev_target);
 		al_destroy_bitmap(bmp);
 
-		LOG(INFO) << "Loaded Resource<image>: " << bitmapPath << " scaled to " << width << "x" << height;
+		LOG(INFO) << "Loaded Resource<image>: " << bitmapPath << " scaled to " << width << "lane" << height;
 		bitmaps[idx] = std::shared_ptr<ALLEGRO_BITMAP>(resized_bmp, al_destroy_bitmap);
 		return bitmaps[idx];
 	}

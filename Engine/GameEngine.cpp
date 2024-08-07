@@ -9,7 +9,6 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
-#include <utility>
 
 #include "Allegro5Exception.hpp"
 #include "GameEngine.hpp"
@@ -157,6 +156,7 @@ namespace Engine {
 			}
 		}
 	}
+
 	void GameEngine::update(float deltaTime) {
 		if (!nextScene.empty()) {
 			changeScene(nextScene);
@@ -167,10 +167,12 @@ namespace Engine {
 			deltaTime = deltaTimeThreshold;
 		activeScene->Update(deltaTime);
 	}
+
 	void GameEngine::draw() const {
 		activeScene->Draw();
 		al_flip_display();
 	}
+
 	void GameEngine::destroy() {
 		// Destroy allegro5 window resources.
 		al_destroy_timer(update_timer);
@@ -180,6 +182,7 @@ namespace Engine {
 		for (const auto &pair : scenes)
 			delete pair.second;
 	}
+
 	void GameEngine::changeScene(const std::string& name) {
 		if (scenes.count(name) == 0)
 			throw std::invalid_argument("Cannot change to a unknown scene.");
@@ -193,6 +196,7 @@ namespace Engine {
 		activeScene->Initialize();
 		LOG(INFO) << "Changed to " << name << " scene";
 	}
+
 	void GameEngine::Start(const std::string& firstSceneName, int fps, int screenW, int screenH,
 		int reserveSamples, const char* title, const char* icon, bool freeMemoryOnSceneChanged, float deltaTimeThreshold) {
 		LOG(INFO) << "Game Initializing...";
@@ -226,41 +230,51 @@ namespace Engine {
 		LOG(INFO) << "Game end";
 		destroy();
 	}
+
 	void GameEngine::AddNewScene(const std::string& name, IScene* scene) {
 		if (scenes.count(name) != 0)
 			throw std::invalid_argument("Cannot add scenes with the same name.");
 		scenes[name] = scene;
 	}
+
 	void GameEngine::ChangeScene(const std::string& name) {
 		nextScene = name;
 	}
+
 	IScene* GameEngine::GetActiveScene() const {
 		return activeScene;
 	}
+
 	IScene* GameEngine::GetScene(const std::string& name) {
 		if (scenes.count(name) == 0)
 			throw std::invalid_argument("Cannot get scenes that aren't added.");
 		return scenes[name];
 	}
+
 	Point GameEngine::GetScreenSize() const {
 		return Point(screenW, screenH);
 	}
+
 	int GameEngine::GetScreenWidth() const {
 		return screenW;
 	}
+
 	int GameEngine::GetScreenHeight() const {
 		return screenH;
 	}
+
 	Point GameEngine::GetMousePosition() const {
 		ALLEGRO_MOUSE_STATE state;
 		al_get_mouse_state(&state);
 		return Point(state.x, state.y);
 	}
+
 	bool GameEngine::IsKeyDown(int keyCode) const {
 		ALLEGRO_KEYBOARD_STATE state;
 		al_get_keyboard_state(&state);
 		return al_key_down(&state, keyCode);
 	}
+
 	GameEngine& GameEngine::GetInstance() {
 		// The classic way to lazy initialize a Singleton.
 		static GameEngine instance;

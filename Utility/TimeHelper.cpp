@@ -1,7 +1,3 @@
-//
-// Created by wuru8 on 2024/5/13.
-//
-
 #include "TimeHelper.hpp"
 #include <chrono>
 #include <ctime>

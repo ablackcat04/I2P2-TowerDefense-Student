@@ -2,9 +2,8 @@
 #include <memory>
 
 #include "Engine/IObject.hpp"
-#include "Label.hpp"
-#include "Engine/Point.hpp"
 #include "Engine/Resources.hpp"
+#include "Label.hpp"
 
 int flash = 0;
 

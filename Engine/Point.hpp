@@ -13,9 +13,9 @@ namespace Engine {
 		/// </summary>
 		explicit Point();
 		/// <summary>
-		/// Construct a Point with coordinate (x, y).
+		/// Construct a Point with coordinate (lane, y).
 		/// </summary>
-		/// <param name="x">X coordinate of the point</param>
+		/// <param name="lane">X coordinate of the point</param>
 		/// <param name="y">Y coordinate of the point</param>
 		explicit Point(float x, float y);
 		/// <summary>
