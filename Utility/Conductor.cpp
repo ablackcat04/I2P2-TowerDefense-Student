@@ -8,8 +8,8 @@ void Conductor::update() {
 
 Conductor::Conductor() {
     Engine::LOG(Engine::INFO) << "Conductor Created";
-    bpm = 160;
-    offset_in_seconds = 0;
+    bpm = 160.0;
+    offset_in_seconds = 0.0;
 }
 
 void Conductor::init(double bpm, double offset) {

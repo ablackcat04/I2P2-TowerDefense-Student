@@ -1,6 +1,3 @@
-//
-// Created by wuru8 on 2024/6/20.
-//
 #include "allegro5/allegro_primitives.h"
 #include "Note.hpp"
 
@@ -9,7 +6,7 @@ void Note::update(Conductor conductor) {
         is_active = true;
     }
     if (is_active) {
-        y = 700*(conductor.song_position - start_time * conductor.length_per_beat_in_seconds);    // change the y position of the note
+        y = 700 * (conductor.song_position - start_time * conductor.length_per_beat_in_seconds);    // change the y position of the note
     }
 }
 

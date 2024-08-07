@@ -13,7 +13,6 @@ namespace InternetHelper {
     bool downloadFile(const std::string &url, const std::string &localPath);
 
     bool uploadFile(const std::string &url, const std::string &localPath);
-};
-
+}
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_INTERNETHELPER_HPP
