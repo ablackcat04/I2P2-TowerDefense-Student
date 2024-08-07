@@ -124,6 +124,7 @@ add_executable(TowerDefense
         Turret/TriggeredTurret.hpp
         Enemy/BossEnemy.cpp
         Enemy/BossEnemy.hpp
+        Utility/UsefulConstants.hpp
 )
 
 IF (WIN32)

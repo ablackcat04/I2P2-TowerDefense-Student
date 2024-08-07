@@ -16,7 +16,7 @@ namespace Engine {
 	/// </summary>
 	class GameEngine final {
 	private:
-		// Allegro5 settings, frames per second, screen width, screen height, maximum simultaneous audio samples.
+		// Allegro5 settings, frames per second, screen width_in_pixel, screen height, maximum simultaneous audio samples.
 		int fps{}, screenW{}, screenH{}, reserveSamples{};
 		// Determines whether to free memory between scenes.
 		bool freeMemoryOnSceneChanged{};
@@ -90,7 +90,7 @@ namespace Engine {
 		/// </summary>
 		/// <param name="firstSceneName">The scene name of the first scene of the game.</param>
 		/// <param name="fps">The target frame per seconds of the game.</param>
-		/// <param name="screenW">Window screen width.</param>
+		/// <param name="screenW">Window screen width_in_pixel.</param>
 		/// <param name="screenH">Window screen height.</param>
 		/// <param name="reserveSamples">Maximum simultaneous audio samples.</param>
 		/// <param name="title">Window's title text.</param>
@@ -130,9 +130,9 @@ namespace Engine {
 		/// <returns>Screen size.</returns>
 		Point GetScreenSize() const;
 		/// <summary>
-		/// Get screen width.
+		/// Get screen width_in_pixel.
 		/// </summary>
-		/// <returns>Screen width.</returns>
+		/// <returns>Screen width_in_pixel.</returns>
 		int GetScreenWidth() const;
 		/// <summary>
 		/// Get screen height.

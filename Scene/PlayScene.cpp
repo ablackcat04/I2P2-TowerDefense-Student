@@ -115,7 +115,7 @@ void PlayScene::Initialize() {
     int halfW = (w - x_shift) / 2;
     int halfH = h / 2;
     if(MapId==1) bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", false, AudioHelper::BGMVolume);
-    else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochize.ogg", false, AudioHelper::BGMVolume);
+    else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochrize.ogg", false, AudioHelper::BGMVolume);
     else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", false, AudioHelper::BGMVolume);
     if(MapId==1)  conductor.init(152, 0);
     else if(MapId==2)  conductor.init(160, 0);
@@ -187,12 +187,12 @@ void PlayScene::Update(float deltaTime) {
         n->update(conductor);
         float t;
         if (n->is_hold) {
-            float addtime=(float)n->length/700.0;
+            float addtime= (float)n->height_in_pixel / 700.0;
             t = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1 - addtime;
 
             if (cheat_mode) {
                 float tt = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1;
-                if (!n->will_be_hit_by_cheat && tt > 0) {
+                if (!n->will_note_be_hit_by_cheat && tt > 0) {
                     last_note_is_hold[n->lane] = true;
                     last_hit_time[n->lane] = conductor.song_position;
                     last_judgement[n->lane] = Judgement::perfect;
@@ -202,7 +202,7 @@ void PlayScene::Update(float deltaTime) {
                     score += 100;
                     EarnMoney(5);
 
-                    n->will_be_hit_by_cheat = true;
+                    n->will_note_be_hit_by_cheat = true;
 
                     for (auto i : TowerGroup->GetObjects()) {
                         dynamic_cast<Turret *>(i)->TriggerByHit();
@@ -840,9 +840,9 @@ void PlayScene::ReadNotes(int songID){
     float start_time;
     std::ifstream fin(filename);
     while (fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time) {
-        for (int i=0;i < lanes;i++){
-            if (has_note[i] > 0.95f && has_note[i] < 1.05f){
-                endtime=start_time*conductor.length_per_beat_in_seconds + 5;
+        for (int i = 0; i < lanes; i++){
+            if (has_note[i] > 0.95f && has_note[i] < 1.05f) {
+                endtime = start_time*conductor.length_per_beat_in_seconds + 5;
                 notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
             else if (has_note[i] != 1.f && has_note[i] != 0.0f) {
@@ -853,7 +853,7 @@ void PlayScene::ReadNotes(int songID){
     }
 }
 
-void PlayScene::OnKeyUp(int keyCode){
+void PlayScene::OnKeyUp(int keyCode) {
     int lane = -1;
     for (int i = 0; i < lanes; ++i) {
         if (lane_key[i] == keyCode) {
@@ -866,7 +866,7 @@ void PlayScene::OnKeyUp(int keyCode){
     }
 
     for (auto n = notes.begin(); n != notes.end(); ++n) {
-        float addtime=(float)n->length/700.0;
+        float addtime = (float)n->height_in_pixel / 700.0;
         float t = conductor.song_position - n->start_time * conductor.length_per_beat_in_seconds - 1 - addtime;
         if (n->lane == lane && n->is_hold && n->is_active) {
             if (t > -0.1 && t < 0.1) {

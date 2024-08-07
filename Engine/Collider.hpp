@@ -23,7 +23,7 @@ namespace Engine {
 		/// </summary>
 		/// <param name="pnt">The point we want to detect.</param>
 		/// <param name="rectPos">The rectangle left-upper position.</param>
-		/// <param name="rectSize">The rectangle size. (width, height)</param>
+		/// <param name="rectSize">The rectangle size. (width_in_pixel, height)</param>
 		/// <returns>Determines whether the pixel is in the rectangle.</returns>
 		static bool IsPointInRect(Point pnt, Point rectPos, Point rectSize);
 		/// <summary>

@@ -250,7 +250,7 @@ ABlackCat "Maybe I should write code"
 ## Preprocessing Instructions
 ### image
 ```
-image image_name "path/to/your/image/from/Resource/images" size width height
+image image_name "path/to/your/image/from/Resource/images" size width_in_pixel height
 ```
 load the image for later use
 

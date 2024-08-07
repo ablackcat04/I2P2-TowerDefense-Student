@@ -12,25 +12,25 @@ void Note::update(Conductor conductor) {
 
 void Note::render() {
     if (is_active) {
-        if(!is_hold)al_draw_filled_rectangle(x_shift + width / 4 * lane, y - length, x_shift + width / 4 * (lane + 1), y , *note_color);
+        if(!is_hold)al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - height_in_pixel, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), y , *note_color);
         else{
-            if (y-length+20 > 700 && y-length <= 700) {
-                al_draw_filled_rectangle(x_shift + width / 4 * lane, y - length, x_shift + width / 4 * (lane + 1), 700 , *note_color);
-            } else if (y-length+20 <= 700) {
-                al_draw_filled_rectangle(x_shift + width / 4 * lane, y - length, x_shift + width / 4 * (lane + 1), y - length + 20 , *note_color);
+            if (y - height_in_pixel + 20 > 700 && y - height_in_pixel <= 700) {
+                al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - height_in_pixel, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), 700 , *note_color);
+            } else if (y - height_in_pixel + 20 <= 700) {
+                al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - height_in_pixel, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), y - height_in_pixel + 20 , *note_color);
             }
 
 
-            if (y - 10 > 700 && y - length + 10 <= 700) {
-                al_draw_filled_rectangle(x_shift + width / 4 * lane, y - length + 10, x_shift + width / 4 * (lane + 1), 700, *note_color2);
+            if (y - 10 > 700 && y - height_in_pixel + 10 <= 700) {
+                al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - height_in_pixel + 10, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), 700, *hold_color);
             } else if (y - 10 <= 700) {
-                al_draw_filled_rectangle(x_shift + width / 4 * lane, y - length + 10, x_shift + width / 4 * (lane + 1), y - 10, *note_color2);
+                al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - height_in_pixel + 10, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), y - 10, *hold_color);
             }
 
             if (y > 700 && y - 20 <= 700) {
-                al_draw_filled_rectangle(x_shift + width / 4 * lane, y - 20, x_shift + width / 4 * (lane + 1), 700 , *note_color);
+                al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - 20, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), 700 , *note_color);
             } else if (y <= 700) {
-                al_draw_filled_rectangle(x_shift + width / 4 * lane, y - 20, x_shift + width / 4 * (lane + 1), y , *note_color);
+                al_draw_filled_rectangle(x_shift_in_pixel + width_in_pixel / 4 * lane, y - 20, x_shift_in_pixel + width_in_pixel / 4 * (lane + 1), y , *note_color);
             }
         }
     }

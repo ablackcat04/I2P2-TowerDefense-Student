@@ -234,8 +234,6 @@ void PlotScene::Draw() const {
                 al_draw_text(big_font, *current_text_color, 150, 200+64*lines, 0, str.c_str());
             }
         } else {
-            // name
-            //pName = new Engine::Label(&name, "BoutiqueBitmap7x7_1.7.ttf", 48, 150, 575, 220, 220, 255, 220, 0.5, 0.5);
             if (!name_color_map.contains(name)) {
                 al_draw_text(name_font, *default_name_color, 150, 575, 0.5, name.c_str());
             } else {

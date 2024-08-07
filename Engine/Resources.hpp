@@ -69,7 +69,7 @@ namespace Engine {
 		/// Get bitmap pointer by name, and resize it. The file should be put under "resource/images/".
 		/// </summary>
 		/// <param name="name">The filename of the image. (Including extension)</param>
-		/// <param name="width">The target width that we want the image to be resized to.</param>
+		/// <param name="width_in_pixel">The target width_in_pixel that we want the image to be resized to.</param>
 		/// <param name="height">The target height that we want the image to be resized to.</param>
 		/// <returns>The smart pointer of the bitmap.</returns>
 		std::shared_ptr<ALLEGRO_BITMAP> GetBitmap(const std::string& name, int width, int height);
