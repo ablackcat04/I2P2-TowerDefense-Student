@@ -102,7 +102,7 @@ void WinScene::ProceedOnClick(int stage) {
     PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
     scene->stage = MapId;
-    scene->GoToPlayNext = false;
+    //scene->GoToPlayNext = false;
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
 void WinScene::OnKeyDown(int keyCode) {

@@ -1,25 +1,18 @@
-//
-// Created by wuru8 on 2024/6/8.
-//
-
 #ifndef INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP
 #define INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP
 
-#include <allegro5/allegro_audio.h>
 #include <memory>
-#include "Engine/IScene.hpp"
-#include "UI/Component/Label.hpp"
-#include "UI/Component/Image.hpp"
 #include <queue>
 #include <vector>
 #include <unordered_map>
+#include <allegro5/allegro_audio.h>
+#include "Engine/GameEngine.hpp"
+#include "Engine/IScene.hpp"
+#include "UI/Component/Label.hpp"
+#include "UI/Component/Image.hpp"
 #include "UI/Component/RefImage.hpp"
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
-#include "Engine/GameEngine.hpp"
-#include "Scene/PlayScene.hpp"
-
-void UpdateText(std::queue<std::list<std::string>>& queue_of_text, std::string& text, std::string& name);
 
 class PlotScene final : public Engine::IScene {
 private:
@@ -106,17 +99,12 @@ public:
     void OnMouseScroll(int mx, int my, int delta);
     void OnKeyDown(int keyCode) override;
     void Draw() const override;
-
     void OnClickCallBack();
-
     void SetPlotPathTo(std::string path);
-
     void SetNextSceneTo(std::string scene_name);
-
-    bool GoToPlayNext = false;
-    int stage;
-
     void ChangeScene();
+
+    int stage;
 };
 
 
