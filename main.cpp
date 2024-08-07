@@ -19,7 +19,7 @@ int main() {
     game.AddNewScene("start", new StartScene());
     game.AddNewScene("stage-select", new StageSelectScene());
 	game.AddNewScene("settings", new SettingsScene());
-	game.AddNewScene("play", new PlayScene());
+	game.AddNewScene("play-scene", new PlayScene());
 	game.AddNewScene("lose", new LoseScene());
 	game.AddNewScene("win", new WinScene());
     game.AddNewScene("lose-scene", new LoseScene());
