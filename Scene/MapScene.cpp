@@ -73,10 +73,8 @@ void MapScene::PlayOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
 
-void MapScene::IncCount() {
-    if(maximum_opened_stage <= 3)maximum_opened_stage++;
-}
-
-int MapScene::GetCount() {
-    return maximum_opened_stage;
+void MapScene::UnlockStage(int map_id) {
+    if (map_id == maximum_opened_stage && maximum_opened_stage <= 3) {
+        ++maximum_opened_stage;
+    }
 }
