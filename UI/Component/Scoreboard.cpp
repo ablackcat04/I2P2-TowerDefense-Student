@@ -100,7 +100,7 @@ namespace Engine {
 
         bool flag = true;
 
-        for (int j = 0; j < get_num(); j++)
+        for (int j = 0; j < num_of_mem; j++)
         {
             if (points > scb[j].score && flag)
             {
@@ -125,33 +125,6 @@ namespace Engine {
         fclose(score);
     }
 
-    void Scoreboard::PtrInc() {
-        ++ptr;
-        if (ptr >= num_of_mem - 1) {
-            ptr = num_of_mem - 1;
-        }
-    }
-
-    void Scoreboard::NextPage() {
-        if (ptr + max_line < num_of_mem) {
-            ptr += max_line;
-        }
-    }
-
-    void Scoreboard::PtrDec() {
-        --ptr;
-        if (ptr < 0) {
-            ptr = 0;
-        }
-    }
-
-    void Scoreboard::PrevPage() {
-        ptr -= max_line;
-        if (ptr < 0) {
-            ptr = 0;
-        }
-    }
-
     void Scoreboard::OnMouseScroll(int mx, int my, int delta) {
         if (!show) {
             return;
@@ -162,8 +135,31 @@ namespace Engine {
         }
     }
 
-    int Scoreboard::get_num() const {
-        return num_of_mem;
+    void Scoreboard::PtrInc() {
+        ++ptr;
+        if (ptr >= num_of_mem - 1) {
+            ptr = num_of_mem - 1;
+        }
+    }
+
+    void Scoreboard::PtrDec() {
+        --ptr;
+        if (ptr < 0) {
+            ptr = 0;
+        }
+    }
+
+    void Scoreboard::NextPage() {
+        if (ptr + max_line < num_of_mem) {
+            ptr += max_line;
+        }
+    }
+
+    void Scoreboard::PrevPage() {
+        ptr -= max_line;
+        if (ptr < 0) {
+            ptr = 0;
+        }
     }
 
     void Scoreboard::MakeShow() {

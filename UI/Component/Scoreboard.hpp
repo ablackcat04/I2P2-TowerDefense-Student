@@ -154,19 +154,16 @@ namespace Engine {
 
         void AddNew(const std::string& username, int points);
 
+        void OnMouseScroll(int mx, int my, int delta) override;
+
         void PtrInc();
         void NextPage();
         void PtrDec();
         void PrevPage();
 
-        void OnMouseScroll(int mx, int my, int delta) override;
-
-        int get_num() const;
-
         void MakeShow();
         void MakeNotShow();
     };
 }
-
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_SCOREBOARD_HPP
