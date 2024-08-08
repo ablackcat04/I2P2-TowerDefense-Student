@@ -18,15 +18,14 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
 }
 
 void PlotScene::Initialize() {
+    CleanPlotInQue();
+
     big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
     font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);
     name_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
     default_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
     current_text_color = new ALLEGRO_COLOR (al_map_rgb(255,255,255));
 
-    while (!queue_of_text.empty()) {
-        queue_of_text.pop();
-    }
     text_sfx = al_load_sample("Resource/audios/slide.ogg");
     text_sfx_id = nullptr;
 
@@ -410,26 +409,34 @@ void PlotScene::Update(float deltaTime) {
 }
 
 void PlotScene::Terminate() {
+    CleanAudio();
+    CleanColor();
+    CleanPlotInQue();
+    IScene::Terminate();
+}
+
+void PlotScene::CleanPlotInQue() {
+    while (!queue_of_text.empty()) {
+        queue_of_text.pop();
+    }
+}
+
+void PlotScene::CleanColor() {
+    for (auto i : name_color_map) {
+         delete i.second;
+    }
+    name_color_map.clear();
+}
+
+void PlotScene::CleanAudio() {
     al_stop_samples();
     al_destroy_sample(text_sfx);
     for (auto i : music_map) {
         al_destroy_sample(i.second.sample);
     }
-
     music_map.clear();
 
-    for (auto i : name_color_map) {
-         delete i.second;
-    }
-
-    name_color_map.clear();
-
     bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
-    IScene::Terminate();
-
-    while (!queue_of_text.empty()) {
-        queue_of_text.pop();
-    }
 }
 
 void PlotScene::OnMouseScroll(int mx, int my, int delta) {
