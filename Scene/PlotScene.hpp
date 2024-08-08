@@ -17,7 +17,7 @@
 #include "WinScene.hpp"
 #include "Utility/UsefulConstants.hpp"
 
-#define LINES_OF_HISTORY_MODE 8
+#define MAX_LINE_SHOWN_HISTORY_MODE 8
 
 class PlotScene final : public Engine::IScene {
 private:
@@ -68,10 +68,10 @@ private:
 
     Engine::Label *history_label;
     Engine::RefImage *bg_history;
-    std::string history_name[LINES_OF_HISTORY_MODE];
-    Engine::Label *history_name_label[LINES_OF_HISTORY_MODE];
-    std::string history_text[LINES_OF_HISTORY_MODE];
-    Engine::Label *history_text_label[LINES_OF_HISTORY_MODE];
+    std::string history_name[MAX_LINE_SHOWN_HISTORY_MODE];
+    Engine::Label *history_name_label[MAX_LINE_SHOWN_HISTORY_MODE];
+    std::string history_text[MAX_LINE_SHOWN_HISTORY_MODE];
+    Engine::Label *history_text_label[MAX_LINE_SHOWN_HISTORY_MODE];
 
     std::vector<std::pair<std::string, std::string>> history_info;
     int history_ptr;

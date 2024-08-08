@@ -90,13 +90,13 @@ void PlotScene::Initialize() {
                 words[2].erase(0,1);
                 words[2].erase(words[2].size()-1, 1);
             }
-            std::string fullpath = "Resource/audios/";
-            fullpath += words[2];
-            auto sam = al_load_sample(fullpath.c_str());
-            if (sam == nullptr) {
+            std::string full_path = "Resource/audios/";
+            full_path += words[2];
+            auto sample_ptr = al_load_sample(full_path.c_str());
+            if (sample_ptr == nullptr) {
                 Engine::LOG(Engine::ERROR) << "Plot Audio Load Failed 111";
             }
-            audio_info a = {sam, 0};
+            audio_info a = {sample_ptr, 0};
             music_map.emplace(words[1], a);
         } else if (words[0] == "color" && words.size() == 5) {
             name_color_map.emplace(words[1], new ALLEGRO_COLOR (al_map_rgb(atoi(words[2].c_str()), atoi(words[3].c_str()), atoi(words[4].c_str()))));
@@ -208,7 +208,6 @@ void PlotScene::OnKeyDown(int keyCode) {
         OnClickCallBack();
     }
 }
-
 
 void PlotScene::Draw() const {
     IScene::Draw();
@@ -347,7 +346,7 @@ void PlotScene::OnClickCallBack() {
                     partial_target += middle_text[ptr++];
                 }
                 history_info.push_back({"", partial_target});
-                if (lines == 8) {
+                if (lines == MAX_LINE_SHOWN_HISTORY_MODE) {
                     Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
                 }
             }
@@ -369,7 +368,7 @@ void PlotScene::Update(float deltaTime) {
             history_title = "";
         } else {
             bg_history->ChangeImageTo(gray, 100, 100);
-            history_title = "is_history_mode_on:";
+            history_title = "History:";
         }
         was_history_mode_on = is_history_mode_on;
     }
