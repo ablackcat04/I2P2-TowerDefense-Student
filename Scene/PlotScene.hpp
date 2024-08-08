@@ -16,6 +16,8 @@
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
 
+#define LINES_OF_HISTORY_MODE 8
+
 class PlotScene final : public Engine::IScene {
 private:
     struct image_info {
@@ -24,7 +26,7 @@ private:
         int w;
         int h;
 
-        void SetDftImage(){
+        void SetDefaultImage() {
             img = std::make_shared<Engine::RefImage>("plot/transparent.png",0, 0, w, h, 0, 0);
         }
     };
@@ -56,19 +58,19 @@ private:
 
     float time;
 
-    bool history;
-    bool prev_history;
-    bool auto_mode = false;
+    bool is_history_mode_on;
+    bool was_history_mode_on;
+    bool is_auto_mode_on = false;
     float auto_timer;
 
     std::string history_title;
 
     Engine::Label *history_label;
     Engine::RefImage *bg_history;
-    std::string history_name[8];
-    Engine::Label *history_name_label[8];
-    std::string history_text[8];
-    Engine::Label *history_text_label[8];
+    std::string history_name[LINES_OF_HISTORY_MODE];
+    Engine::Label *history_name_label[LINES_OF_HISTORY_MODE];
+    std::string history_text[LINES_OF_HISTORY_MODE];
+    Engine::Label *history_text_label[LINES_OF_HISTORY_MODE];
 
     std::vector<std::pair<std::string, std::string>> history_info;
     int history_ptr;

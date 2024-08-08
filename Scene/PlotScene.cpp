@@ -33,8 +33,8 @@ void PlotScene::Initialize() {
     history_info.clear();
     history_ptr = 0;
 
-    history = false;
-    prev_history = false;
+    is_history_mode_on = false;
+    was_history_mode_on = false;
 
     music_map.clear();
     image_map.clear();
@@ -80,7 +80,7 @@ void PlotScene::Initialize() {
                 words[2].erase(words[2].size()-1, 1);
             }
             image_info i = {nullptr, words[2], atoi(words[4].c_str()), atoi(words[5].c_str())};
-            i.SetDftImage();
+            i.SetDefaultImage();
             image_map.emplace(words[1], i);
         } else if (words[0] == "audio" && words.size() == 3) {
             if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
@@ -193,7 +193,7 @@ void PlotScene::Initialize() {
         AddRefObject(*history_text_label[i]);
     }
 
-    auto* t = new Engine::ToggledTextButton("auto", &auto_mode, 1400, 9, al_map_rgb(255,255,255), al_map_rgb(180,180,220),
+    auto* t = new Engine::ToggledTextButton("auto", &is_auto_mode_on, 1400, 9, al_map_rgb(255, 255, 255), al_map_rgb(180, 180, 220),
                                             al_map_rgb(200,200,255));
     AddRefControlObject(*t);
 
@@ -212,7 +212,7 @@ void PlotScene::OnKeyDown(int keyCode) {
 
 void PlotScene::Draw() const {
     IScene::Draw();
-    if (!history) {
+    if (!is_history_mode_on) {
         if (partial_middle_text != "") {
 
             int ptr = 0;
@@ -263,7 +263,7 @@ void PlotScene::Draw() const {
 }
 
 void PlotScene::OnClickCallBack() {
-    if (history) {
+    if (is_history_mode_on) {
         return;
     }
 
@@ -363,15 +363,15 @@ void PlotScene::SetPlotPathTo(std::string path) {
 }
 
 void PlotScene::Update(float deltaTime) {
-    if (history != prev_history) {
-        if (!history) {
+    if (is_history_mode_on != was_history_mode_on) {
+        if (!is_history_mode_on) {
             bg_history->ChangeImageTo(transparent, 100, 100);
             history_title = "";
         } else {
             bg_history->ChangeImageTo(gray, 100, 100);
-            history_title = "history:";
+            history_title = "is_history_mode_on:";
         }
-        prev_history = history;
+        was_history_mode_on = is_history_mode_on;
     }
     time += deltaTime;
     if (time > 0.04) {
@@ -399,7 +399,7 @@ void PlotScene::Update(float deltaTime) {
                 partial_middle_text += ' ';
             }
         } else {
-            if (auto_mode) {
+            if (is_auto_mode_on) {
                 auto_timer += deltaTime;
                 if (auto_timer >= 1.0f) {
                     OnClickCallBack();
@@ -436,8 +436,8 @@ void PlotScene::Terminate() {
 void PlotScene::OnMouseScroll(int mx, int my, int delta) {
     if (delta > 0) {
         Engine::LOG(Engine::INFO) << "mouse scroll up, history_ptr=" << history_ptr;
-        if (!history) {
-            history = true;
+        if (!is_history_mode_on) {
+            is_history_mode_on = true;
             history_ptr = history_info.size() - 8;
             if (history_ptr < 0) {
                 history_ptr = 0;
@@ -458,9 +458,9 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
         }
     } else if (delta < 0) {
         Engine::LOG(Engine::INFO) << "mouse scroll down, history_ptr=" << history_ptr;
-        if (history) {
+        if (is_history_mode_on) {
             if (history_ptr + 8 >= history_info.size()) {
-                history = false;
+                is_history_mode_on = false;
                 for (int i = 0; i < 8; ++i) {
                     history_name[i] = "";
                     history_text[i] = "";
@@ -493,8 +493,10 @@ void PlotScene::ChangeScene() {
     if (next_scene == "play-scene") {
         PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play-scene"));
         scene->MapId = stage;
-        SetLastStage(stage);
-        next_scene = "map-scene";
+        //SetLastStage(stage);
+        WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
+        win_scene->SetLastStage(stage);
+        //next_scene = "map-scene";
         Engine::GameEngine::GetInstance().ChangeScene("play-scene");
     } else {
         Engine::GameEngine::GetInstance().ChangeScene(next_scene);
