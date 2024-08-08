@@ -77,7 +77,7 @@ private:
 
     std::string plot_path = "Resource/plot/plot3-e.txt";
 
-    std::string next_scene = "stage-select";
+    std::string next_scene = "stage-select-scene";
 
     ALLEGRO_SAMPLE* text_sfx;
     ALLEGRO_SAMPLE_ID* text_sfx_id;

@@ -31,5 +31,5 @@ void LoseScene::Terminate() {
 }
 
 void LoseScene::BackOnClick(int stage) {
-	Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+	Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
 }

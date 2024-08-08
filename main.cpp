@@ -17,7 +17,7 @@ int main() {
 	Engine::GameEngine& game = Engine::GameEngine::GetInstance();
 
     game.AddNewScene("start-scene", new StartScene());
-    game.AddNewScene("stage-select", new StageSelectScene());
+    game.AddNewScene("stage-select-scene", new StageSelectScene());
 	game.AddNewScene("settings-scene", new SettingsScene());
 	game.AddNewScene("play-scene", new PlayScene());
 	game.AddNewScene("win-scene", new WinScene());

@@ -169,7 +169,7 @@ void ScoreboardScene::Terminate() {
     IScene::Terminate();
 }
 void ScoreboardScene::BackOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+    Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
 }
 void ScoreboardScene::PrevOnClick() {
     Engine::LOG(Engine::INFO) << "Prev Button Clicked!";

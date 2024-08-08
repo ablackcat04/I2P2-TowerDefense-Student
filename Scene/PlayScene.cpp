@@ -137,7 +137,7 @@ void PlayScene::Initialize() {
 
     Engine::ImageButton* btn;
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", w - 100, 50, 50, 50);
-    btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene("stage-select");});
+    btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");});
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, w-100, 75, 0, 0, 0, 255, 0.5, 0.5));
 

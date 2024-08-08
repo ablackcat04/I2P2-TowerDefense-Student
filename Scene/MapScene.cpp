@@ -61,7 +61,7 @@ void MapScene::Terminate() {
 }
 
 void MapScene::BackOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+    Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
 }
 
 void MapScene::StageOnClick(int stage) {
