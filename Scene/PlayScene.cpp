@@ -27,6 +27,7 @@
 #include "WinScene.hpp"
 #include "PlayScene.hpp"
 #include "MapScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -137,7 +138,7 @@ void PlayScene::Initialize() {
 
     Engine::ImageButton* btn;
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", w - 100, 50, 50, 50);
-    btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");});
+    btn->SetOnClickCallback([] { Engine::GameEngine::GetInstance().ChangeScene(SceneNames::select);});
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 24, w-100, 75, 0, 0, 0, 255, 0.5, 0.5));
 
@@ -157,7 +158,7 @@ void PlayScene::Terminate() {
     delete judgement_label;
     delete fps_label;
 
-    WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
+    WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::win));
     win_scene->SetLastGameInfo(money, lives);
 
     al_resize_display(Engine::GameEngine::GetInstance().GetDisplay(), 1600, 832);
@@ -327,14 +328,14 @@ void PlayScene::Update(float deltaTime) {
                 delete EffectGroup;
                 delete UIGroup;
                 delete imgTarget;*/
-                WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
+                WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::win));
                 scene->MapId = MapId;
 
-                auto* m = reinterpret_cast<MapScene *>(Engine::GameEngine::GetInstance().GetScene("map-scene"));
+                auto* m = reinterpret_cast<MapScene *>(Engine::GameEngine::GetInstance().GetScene(SceneNames::map));
 
                 m->UnlockStage(MapId);
 
-                Engine::GameEngine::GetInstance().ChangeScene("win-scene");
+                Engine::GameEngine::GetInstance().ChangeScene(SceneNames::win);
             }
             continue;
         }
@@ -602,7 +603,7 @@ void PlayScene::Hit() {
     lives--;
     UILives->Text = std::string("Life ") + std::to_string(lives);
     if (lives <= 0) {
-        Engine::GameEngine::GetInstance().ChangeScene("lose-scene");
+        Engine::GameEngine::GetInstance().ChangeScene(SceneNames::lose);
     }
 }
 int PlayScene::GetMoney() const {

@@ -9,6 +9,7 @@
 #include "PlayScene.hpp"
 #include "UI/Component/Slider.hpp"
 #include "SettingsScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 void SettingsScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -46,7 +47,7 @@ void SettingsScene::Initialize() {
 }
 
 void SettingsScene::BackOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("start-scene");
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::start);
 }
 
 void SettingsScene::Terminate() {

@@ -5,16 +5,16 @@
 #include <allegro5/allegro_audio.h>
 #include "Engine/IScene.hpp"
 
-class StageSelectScene final : public Engine::IScene {
+class SelectScene final : public Engine::IScene {
 private:
 	std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 public:
-	explicit StageSelectScene() = default;
+	explicit SelectScene() = default;
 	void Initialize() override;
 	void Terminate() override;
+    void StoryModeOnClick();
     void ScoreboardOnClick();
-	void BackOnClick(int stage);
-	void TestMapOnClick();
+	void BackOnClick();
 };
 
 #endif // STAGESELECTSCENE_HPP

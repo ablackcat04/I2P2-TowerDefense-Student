@@ -15,6 +15,7 @@
 #include "UI/Component/RefImage.hpp"
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 #define LINES_OF_HISTORY_MODE 8
 
@@ -77,7 +78,7 @@ private:
 
     std::string plot_path = "Resource/plot/plot3-e.txt";
 
-    std::string next_scene = "stage-select-scene";
+    std::string next_scene = SceneNames::select;
 
     ALLEGRO_SAMPLE* text_sfx;
     ALLEGRO_SAMPLE_ID* text_sfx_id;

@@ -7,6 +7,7 @@
 #include "UI/Component/Label.hpp"
 #include "LoseScene.hpp"
 #include "PlayScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 void LoseScene::Initialize() {
 	int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -31,5 +32,5 @@ void LoseScene::Terminate() {
 }
 
 void LoseScene::BackOnClick(int stage) {
-	Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
+	Engine::GameEngine::GetInstance().ChangeScene(SceneNames::select);
 }

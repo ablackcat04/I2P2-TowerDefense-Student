@@ -490,14 +490,12 @@ void PlotScene::SetNextSceneTo(std::string scene_name) {
 }
 
 void PlotScene::ChangeScene() {
-    if (next_scene == "play-scene") {
-        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play-scene"));
+    if (next_scene == SceneNames::play) {
+        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::play));
         scene->MapId = stage;
-        //SetLastStage(stage);
-        WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
+        WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::win));
         win_scene->SetLastStage(stage);
-        //next_scene = "map-scene";
-        Engine::GameEngine::GetInstance().ChangeScene("play-scene");
+        Engine::GameEngine::GetInstance().ChangeScene(SceneNames::play);
     } else {
         Engine::GameEngine::GetInstance().ChangeScene(next_scene);
     }

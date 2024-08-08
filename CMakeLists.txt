@@ -78,8 +78,8 @@ add_executable(TowerDefense
         Enemy/SoldierEnemy.hpp
         Engine/Sprite.cpp
         Engine/Sprite.hpp
-        Scene/StageSelectScene.cpp
-        Scene/StageSelectScene.hpp
+        Scene/SelectScene.cpp
+        Scene/SelectScene.hpp
         Enemy/TankEnemy.cpp
         Enemy/TankEnemy.hpp
         Turret/Turret.cpp

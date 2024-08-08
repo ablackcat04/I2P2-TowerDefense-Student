@@ -13,6 +13,7 @@
 #include "Utility/InternetHelper.hpp"
 #include "PlayScene.hpp"
 #include "ScoreboardScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 const int max_scene = 3;
 
@@ -169,7 +170,7 @@ void ScoreboardScene::Terminate() {
     IScene::Terminate();
 }
 void ScoreboardScene::BackOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::select);
 }
 void ScoreboardScene::PrevOnClick() {
     Engine::LOG(Engine::INFO) << "Prev Button Clicked!";

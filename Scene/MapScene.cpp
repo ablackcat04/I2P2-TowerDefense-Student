@@ -11,6 +11,7 @@
 #include "MapScene.hpp"
 #include "WinScene.hpp"
 #include "PlotScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 void MapScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -61,19 +62,19 @@ void MapScene::Terminate() {
 }
 
 void MapScene::BackOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::select);
 }
 
 void MapScene::StageOnClick(int stage) {
-    WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
+    WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::win));
     win_scene->SetLastStage(stage);
 
-    PlotScene* plot_scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    PlotScene* plot_scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::plot));
     plot_scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
     plot_scene->stage = stage;
-    plot_scene->SetNextSceneTo("play-scene");
+    plot_scene->SetNextSceneTo(SceneNames::play);
 
-    Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::plot);
 }
 
 void MapScene::UnlockStage(int map_id) {

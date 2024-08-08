@@ -93,17 +93,17 @@ void WinScene::Terminate() {
 void WinScene::Update(float deltaTime) {
 	ticks += deltaTime;
 	if (ticks > 4 && ticks < 100 &&
-        dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play-scene"))->MapId == 2) {
+        dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::play))->MapId == 2) {
 		ticks = 100;
 		bgmId = AudioHelper::PlayBGM("happy.ogg");
 	}
 }
 void WinScene::ProceedOnClick(int stage) {
-    PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
+    PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::plot));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
     scene->stage = MapId;
-    scene->SetNextSceneTo("map-scene");
-    Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
+    scene->SetNextSceneTo(SceneNames::map);
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::plot);
 }
 void WinScene::OnKeyDown(int keyCode) {
     switch (keyCode) {

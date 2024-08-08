@@ -4,6 +4,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "StartScene.hpp"
+#include "Utility/UsefulConstants.hpp"
 
 void StartScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -28,8 +29,8 @@ void StartScene::Terminate() {
     IScene::Terminate();
 }
 void StartScene::PlayOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("stage-select-scene");
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::select);
 }
 void StartScene::SettingsOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("settings-scene");
+    Engine::GameEngine::GetInstance().ChangeScene(SceneNames::settings);
 }
