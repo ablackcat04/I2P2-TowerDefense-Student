@@ -17,11 +17,11 @@ Engine::Label *Lwin;
 
 static WinSceneInfo win_scene_info = {1, 0, 0};
 
-void SetLastStage(int stage) {
+void WinScene::SetLastStage(int stage) {
     win_scene_info.last_stage = stage;
 }
 
-void SetLastGameInfo(int money, int life) {
+void WinScene::SetLastGameInfo(int money, int life) {
     win_scene_info.money_left = money;
     win_scene_info.life_left = life;
 }
@@ -102,7 +102,7 @@ void WinScene::ProceedOnClick(int stage) {
     PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
     scene->stage = MapId;
-    //scene->GoToPlayNext = false;
+    scene->SetNextSceneTo("map-scene");
     Engine::GameEngine::GetInstance().ChangeScene("plot-scene");
 }
 void WinScene::OnKeyDown(int keyCode) {

@@ -157,7 +157,8 @@ void PlayScene::Terminate() {
     delete judgement_label;
     delete fps_label;
 
-    SetLastGameInfo(money, lives);
+    WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
+    win_scene->SetLastGameInfo(money, lives);
 
     al_resize_display(Engine::GameEngine::GetInstance().GetDisplay(), 1600, 832);
 
@@ -326,14 +327,14 @@ void PlayScene::Update(float deltaTime) {
                 delete EffectGroup;
                 delete UIGroup;
                 delete imgTarget;*/
-                WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
+                WinScene* scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win-scene"));
                 scene->MapId = MapId;
 
                 auto* m = reinterpret_cast<MapScene *>(Engine::GameEngine::GetInstance().GetScene("map-scene"));
 
                 m->UnlockStage(MapId);
 
-                Engine::GameEngine::GetInstance().ChangeScene("win");
+                Engine::GameEngine::GetInstance().ChangeScene("win-scene");
             }
             continue;
         }

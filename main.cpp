@@ -21,7 +21,7 @@ int main() {
 	game.AddNewScene("settings", new SettingsScene());
 	game.AddNewScene("play-scene", new PlayScene());
 	game.AddNewScene("lose", new LoseScene());
-	game.AddNewScene("win", new WinScene());
+	game.AddNewScene("win-scene", new WinScene());
     game.AddNewScene("lose-scene", new LoseScene());
     game.AddNewScene("scoreboard-scene", new ScoreboardScene());
     game.AddNewScene("plot-scene", new PlotScene());

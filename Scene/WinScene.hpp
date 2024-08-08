@@ -4,9 +4,6 @@
 #include <allegro5/allegro_audio.h>
 #include "Engine/IScene.hpp"
 
-void SetLastStage(int stage);
-void SetLastGameInfo(int money, int life);
-
 
 struct WinSceneInfo {
     int last_stage;
@@ -30,6 +27,9 @@ public:
 	void ProceedOnClick(int stage);
     void OnKeyDown(int keyCode) final override;
     void OnKeyUp(int keyCode) final override;
+
+    void SetLastStage(int stage);
+    void SetLastGameInfo(int money, int life);
 
     int MapId;
 };
