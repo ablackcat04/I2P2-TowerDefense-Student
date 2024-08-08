@@ -22,9 +22,9 @@ namespace Engine {
         int w;
         int h;
 
-        ALLEGRO_COLOR dft_color;
-        ALLEGRO_COLOR hvd_color;
-        ALLEGRO_COLOR psd_color;
+        ALLEGRO_COLOR default_color;
+        ALLEGRO_COLOR hovered_color;
+        ALLEGRO_COLOR pressed_color;
 
         ALLEGRO_FONT* font;
 
@@ -32,7 +32,6 @@ namespace Engine {
         float y;
 
     public:
-        // Whether the button can be pressed.
         bool Enabled = true;
         explicit ToggledTextButton(const std::string& text_input, bool *control, const float& x, const float& y, ALLEGRO_COLOR default_color, ALLEGRO_COLOR hovered_color, ALLEGRO_COLOR pressed_color);
         ~ToggledTextButton();

@@ -61,7 +61,6 @@ private:
     Engine::Label* judgement_label;
     std::string current_judgement;
 
-
     int combo;
     Engine::Label* combo_label;
     std::string combo_text;
@@ -85,10 +84,9 @@ private:
         perfect, good, missed
     };
     Judgement last_judgement[lanes];
-    bool allperfect;
-    bool fullcombo;
+    bool is_all_perfect;
+    bool is_full_combo;
     bool ap_fc_triggered;
-    float endtime;
 
     int lane_key[lanes] = {ALLEGRO_KEY_D, ALLEGRO_KEY_F, ALLEGRO_KEY_J, ALLEGRO_KEY_K};
 

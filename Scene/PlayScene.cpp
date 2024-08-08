@@ -100,8 +100,8 @@ void PlayScene::Initialize() {
     while (!frame_time.empty()) {
         frame_time.pop();
     }
-    allperfect = true;
-    fullcombo = true;
+    is_all_perfect = true;
+    is_full_combo = true;
 
     for (int i = 0; i < lanes; ++i) {
         last_note_is_hold[i] = false;
@@ -238,8 +238,8 @@ void PlayScene::Update(float deltaTime) {
         }
 
         if (t> 0.1) {
-            allperfect= false;
-            fullcombo = false;
+            is_all_perfect= false;
+            is_full_combo = false;
             last_judgement[n->lane] = Judgement::missed;
             n = notes.erase(n);
             current_judgement = "Missed";
@@ -249,11 +249,11 @@ void PlayScene::Update(float deltaTime) {
     }
     if(notes.empty()){
         if (!ap_fc_triggered) {
-            if(allperfect){
+            if(is_all_perfect){
                 AddNewObject(new Engine::Label("Allperfect", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
                 EffectGroup->AddNewObject(new Plane());
                 EarnMoney(10000);
-            } else if(fullcombo){
+            } else if(is_full_combo){
                 AddNewObject(new Engine::Label("Fullcombo", "pirulen.ttf", 100, 804, 400, 255, 0, 0, 255, 0.5, 0.5));
                 EffectGroup->AddNewObject(new Plane());
                 EarnMoney(5000);
@@ -261,8 +261,6 @@ void PlayScene::Update(float deltaTime) {
             ap_fc_triggered = true;
         }
     }
-    //if(conductor.song_position>=endtime) Engine::GameEngine::GetInstance().ChangeScene("stage-select");;
-
 
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
     // Reference: Bullet-Through-Paper
@@ -329,9 +327,7 @@ void PlayScene::Update(float deltaTime) {
 
                 auto* m = reinterpret_cast<MapScene *>(Engine::GameEngine::GetInstance().GetScene("map-scene"));
 
-                if (MapId == m->GetCount()) {
-                    m->IncCount();
-                }
+                m->UnlockStage(MapId);
 
                 Engine::GameEngine::GetInstance().ChangeScene("win");
             }
@@ -553,7 +549,7 @@ void PlayScene::OnKeyDown(int keyCode) {
                     tmpscore+=50;
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
-                    allperfect= false;
+                    is_all_perfect= false;
                     EarnMoney(2);
                     if(tmpscore>=1000){
                         tmpscore-=1000;
@@ -834,20 +830,18 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     return map;
 }
 
-void PlayScene::ReadNotes(int songID){
+void PlayScene::ReadNotes(int songID) {
     std::string filename = std::string("Resource/song") + std::to_string(songID);
-    float has_note[lanes];
+    float note_info[lanes];
     float start_time;
     std::ifstream fin(filename);
-    while (fin >> has_note[0] >> has_note[1] >> has_note[2] >> has_note[3] >> start_time) {
+    while (fin >> note_info[0] >> note_info[1] >> note_info[2] >> note_info[3] >> start_time) {
         for (int i = 0; i < lanes; i++){
-            if (has_note[i] > 0.95f && has_note[i] < 1.05f) {
-                endtime = start_time*conductor.length_per_beat_in_seconds + 5;
+            if (note_info[i] > 0.95f && note_info[i] < 1.05f) {
                 notes.emplace_back(Note(i, start_time, &red, &blue,false,10));
             }
-            else if (has_note[i] != 1.f && has_note[i] != 0.0f) {
-                endtime=start_time*conductor.length_per_beat_in_seconds + 5;
-                notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(has_note[i]-1)));
+            else if (note_info[i] != 1.f && note_info[i] != 0.0f) {
+                notes.emplace_back(Note(i, start_time, &red, &blue,true,100*(note_info[i] - 1)));
             }
         }
     }
@@ -881,7 +875,7 @@ void PlayScene::OnKeyUp(int keyCode) {
                     score += 50;
                     current_judgement = " Good";
                     last_judgement[lane] = Judgement::good;
-                    allperfect= false;
+                    is_all_perfect= false;
                     EarnMoney(2);
                 }
                 for (auto i : TowerGroup->GetObjects()) {
