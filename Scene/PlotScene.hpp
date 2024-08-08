@@ -104,7 +104,14 @@ public:
     void SetPlotPathTo(std::string path);
     void SetNextSceneTo(std::string scene_name);
     void ChangeScene();
-};
 
+    void CleanAudio();
+    void CleanColor();
+    void CleanPlotInQue();
+
+    void OnMouseScrollUp();
+    void OnMouseScrollDown();
+    void UpdateHistoryInfo();
+};
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP

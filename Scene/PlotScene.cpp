@@ -434,52 +434,53 @@ void PlotScene::Terminate() {
 
 void PlotScene::OnMouseScroll(int mx, int my, int delta) {
     if (delta > 0) {
-        Engine::LOG(Engine::INFO) << "mouse scroll up, history_ptr=" << history_ptr;
-        if (!is_history_mode_on) {
-            is_history_mode_on = true;
-            history_ptr = history_info.size() - 8;
-            if (history_ptr < 0) {
-                history_ptr = 0;
-            }
+        OnMouseScrollUp();
+    } else if (delta < 0) {
+        OnMouseScrollDown();
+    }
+    UpdateHistoryInfo();
+}
+
+void PlotScene::OnMouseScrollUp() {
+    if (!is_history_mode_on) {
+        is_history_mode_on = true;
+        history_ptr = history_info.size() - MAX_LINE_SHOWN_HISTORY_MODE;
+    } else {
+        --history_ptr;
+    }
+
+    if (history_ptr < 0) {
+        history_ptr = 0;
+    }
+}
+
+void PlotScene::OnMouseScrollDown() {
+    if (!is_history_mode_on) {
+        OnClickCallBack();
+    } else {
+        if (history_ptr + MAX_LINE_SHOWN_HISTORY_MODE >= history_info.size()) {
+            is_history_mode_on = false;
         } else {
-            if (history_ptr > 0) {
-                --history_ptr;
-            }
+            ++history_ptr;
         }
+    }
+}
+
+void PlotScene::UpdateHistoryInfo() {
+    if (!is_history_mode_on) {
+        for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
+            history_name[i] = "";
+            history_text[i] = "";
+        }
+    } else {
         int count = 0;
-        for (; history_ptr + count < history_info.size() && count < 8; ++count) {
+        for (; history_ptr + count < history_info.size() && count < MAX_LINE_SHOWN_HISTORY_MODE; ++count) {
             history_name[count] = history_info[history_ptr + count].first;
             history_text[count] = history_info[history_ptr + count].second;
         }
-        for (; count < 8; ++count) {
+        for (; count < MAX_LINE_SHOWN_HISTORY_MODE; ++count) {
             history_name[count] = "";
             history_text[count] = "";
-        }
-    } else if (delta < 0) {
-        Engine::LOG(Engine::INFO) << "mouse scroll down, history_ptr=" << history_ptr;
-        if (is_history_mode_on) {
-            if (history_ptr + 8 >= history_info.size()) {
-                is_history_mode_on = false;
-                for (int i = 0; i < 8; ++i) {
-                    history_name[i] = "";
-                    history_text[i] = "";
-                }
-            } else {
-                if (history_ptr < history_info.size()-1) {
-                    ++history_ptr;
-                }
-                int count = 0;
-                for (; history_ptr + count < history_info.size() && count < 8; ++count) {
-                    history_name[count] = history_info[history_ptr + count].first;
-                    history_text[count] = history_info[history_ptr + count].second;
-                }
-                for (; count < 8; ++count) {
-                    history_name[count] = "";
-                    history_text[count] = "";
-                }
-            }
-        } else {
-            OnClickCallBack();
         }
     }
 }
