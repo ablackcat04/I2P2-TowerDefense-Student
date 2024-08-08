@@ -101,7 +101,6 @@ void WinScene::Update(float deltaTime) {
 void WinScene::ProceedOnClick(int stage) {
     PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::plot));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(MapId) + "-e.txt");
-    scene->stage = MapId;
     scene->SetNextSceneTo(SceneNames::map);
     Engine::GameEngine::GetInstance().ChangeScene(SceneNames::plot);
 }

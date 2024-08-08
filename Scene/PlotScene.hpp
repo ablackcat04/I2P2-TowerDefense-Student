@@ -104,8 +104,6 @@ public:
     void SetPlotPathTo(std::string path);
     void SetNextSceneTo(std::string scene_name);
     void ChangeScene();
-
-    int stage;
 };
 
 

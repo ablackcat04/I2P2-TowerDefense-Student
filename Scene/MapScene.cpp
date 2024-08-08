@@ -69,9 +69,11 @@ void MapScene::StageOnClick(int stage) {
     WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::win));
     win_scene->SetLastStage(stage);
 
+    PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::play));
+    scene->MapId = stage;
+
     PlotScene* plot_scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::plot));
     plot_scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
-    plot_scene->stage = stage;
     plot_scene->SetNextSceneTo(SceneNames::play);
 
     Engine::GameEngine::GetInstance().ChangeScene(SceneNames::plot);
