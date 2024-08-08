@@ -111,15 +111,19 @@ void PlayScene::Initialize() {
     font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 40, 0);
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = (w - x_shift) / 2;
-    int halfH = h / 2;
-    if(MapId==1) bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", false, AudioHelper::BGMVolume);
-    else if(MapId==2) bgmInstance = AudioHelper::PlaySample("Monochrize.ogg", false, AudioHelper::BGMVolume);
-    else bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", false, AudioHelper::BGMVolume);
-    if(MapId==1)  conductor.init(152, 0);
-    else if(MapId==2)  conductor.init(160, 0);
-    else if(MapId==3) conductor.init(250, 0);
+    //int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    if (MapId == 1) {
+        bgmInstance = AudioHelper::PlaySample("Beyond_Apocalypse.ogg", false, AudioHelper::BGMVolume);
+    } else if (MapId == 2) {
+        bgmInstance = AudioHelper::PlaySample("Monochrize.ogg", false, AudioHelper::BGMVolume);
+    } else {
+        bgmInstance = AudioHelper::PlaySample("Salad_Savior_D1AB0Lic_DEV0Ti0N.ogg", false, AudioHelper::BGMVolume);
+    }
+
+    if (MapId == 1) conductor.init(152, 0);
+    else if (MapId == 2) conductor.init(160, 0);
+    else if (MapId == 3) conductor.init(250, 0);
+
     ReadNotes(MapId);
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift, 0, 255, 255, 255, 255);
