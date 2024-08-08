@@ -25,14 +25,14 @@ void MapScene::Initialize() {
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH*3 / 2, 0, 0, 0, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW/2 - 150, halfH/2 - 50, 200,200);
-    btn->SetOnClickCallback(std::bind(&MapScene::PlayOnClick, this, 1));
+    btn->SetOnClickCallback(std::bind(&MapScene::StageOnClick, this, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("1", "pirulen.ttf", 96, halfW/2 - 50, halfH/2 + 50, 0, 0, 0, 255, 0.5, 0.5));
 
     if (maximum_opened_stage >= 2) {
         btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW/2+300 , halfH / 2 -50, 200,
                                       200);
-        btn->SetOnClickCallback(std::bind(&MapScene::PlayOnClick, this, 2));
+        btn->SetOnClickCallback(std::bind(&MapScene::StageOnClick, this, 2));
         AddNewControlObject(btn);
         AddNewObject(new Engine::Label("2", "pirulen.ttf", 96, halfW/2 + 400, halfH/2 + 50, 0, 0, 0, 255, 0.5, 0.5));
     }
@@ -42,7 +42,7 @@ void MapScene::Initialize() {
 
     if (maximum_opened_stage >= 3) {
         btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW/2 + 750 , halfH/2 - 50, 200,200);
-        btn->SetOnClickCallback(std::bind(&MapScene::PlayOnClick, this, 3));
+        btn->SetOnClickCallback(std::bind(&MapScene::StageOnClick, this, 3));
         AddNewControlObject(btn);
         AddNewObject(new Engine::Label("3", "pirulen.ttf", 96, halfW/2 + 850, halfH/2 + 50 , 0, 0, 0, 255, 0.5, 0.5));
     }
@@ -64,7 +64,7 @@ void MapScene::BackOnClick() {
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 
-void MapScene::PlayOnClick(int stage) {
+void MapScene::StageOnClick(int stage) {
     PlotScene* scene = dynamic_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/plot" + std::to_string(stage) + ".txt");
     scene->stage = stage;

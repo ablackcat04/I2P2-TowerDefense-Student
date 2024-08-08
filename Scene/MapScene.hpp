@@ -13,7 +13,7 @@ public:
     explicit MapScene() = default;
     void Initialize() override;
     void Terminate() override;
-    void PlayOnClick(int stage);
+    void StageOnClick(int stage);
     void BackOnClick();
     void UnlockStage(int map_id);
 };
