@@ -46,7 +46,7 @@ void SettingsScene::Initialize() {
 }
 
 void SettingsScene::BackOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("start");
+    Engine::GameEngine::GetInstance().ChangeScene("start-scene");
 }
 
 void SettingsScene::Terminate() {

@@ -42,7 +42,7 @@ void StageSelectScene::Terminate() {
 }
 
 void StageSelectScene::BackOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("start");
+    Engine::GameEngine::GetInstance().ChangeScene("start-scene");
 }
 
 void StageSelectScene::ScoreboardOnClick() {

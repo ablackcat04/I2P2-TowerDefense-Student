@@ -16,9 +16,9 @@ int main() {
 	Engine::LOG::SetConfig(true);
 	Engine::GameEngine& game = Engine::GameEngine::GetInstance();
 
-    game.AddNewScene("start", new StartScene());
+    game.AddNewScene("start-scene", new StartScene());
     game.AddNewScene("stage-select", new StageSelectScene());
-	game.AddNewScene("settings", new SettingsScene());
+	game.AddNewScene("settings-scene", new SettingsScene());
 	game.AddNewScene("play-scene", new PlayScene());
 	game.AddNewScene("win-scene", new WinScene());
     game.AddNewScene("lose-scene", new LoseScene());
@@ -28,7 +28,7 @@ int main() {
 
     auto* scene = reinterpret_cast<PlotScene*>(Engine::GameEngine::GetInstance().GetScene("plot-scene"));
     scene->SetPlotPathTo("Resource/plot/prologue.txt");
-    scene->SetNextSceneTo("start");
+    scene->SetNextSceneTo("start-scene");
 
 	game.Start("plot-scene", 60, 1600, 832);
 	return 0;

@@ -31,5 +31,5 @@ void StartScene::PlayOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 void StartScene::SettingsOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("settings");
+    Engine::GameEngine::GetInstance().ChangeScene("settings-scene");
 }
