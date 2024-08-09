@@ -24,7 +24,7 @@ namespace Engine {
 		/// Construct a sprite object.
 		/// </summary>
 		/// <param name="img">The image path in 'resource/images/'</param>
-		/// <param name="lane">X-coordinate.</param>
+		/// <param name="x">X-coordinate.</param>
 		/// <param name="y">Y-coordinate.</param>
 		/// <param name="w">Width of the image, 0 indicates original size.</param>
 		/// <param name="h">Height of the image, 0 indicates original size.</param>
