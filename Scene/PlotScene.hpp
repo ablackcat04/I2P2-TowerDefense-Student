@@ -62,7 +62,7 @@ private:
 
     Timer char_proceed_timer;
 
-    bool is_history_mode_on;
+    bool history_mode_is_on;
     bool was_history_mode_on;
     bool is_auto_mode_on = false;
 
@@ -142,6 +142,16 @@ public:
     void ReplayTextSFX() const;
 
     void UpdateTimer(float deltaTime);
+
+    void ImageAudioPlotProceed();
+
+    void UpdateCurrentNameColor();
+
+    void GoToEndOfLine();
+
+    void LoadNextText();
+
+    void PushCurrentTextToHistory();
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP

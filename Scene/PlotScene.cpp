@@ -48,11 +48,10 @@ void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
         std::vector<std::string> words;
         splitLine(line, words);
 
-        // check syntex
+        // check syntax
         if (words[0] == "image" && words.size() == 6) {
             if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
-                Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 90";
-                ChangeScene();
+                Engine::LOG(Engine::ERROR) << "Plot_Engine Pre-Processing Syntax Error {image}, path not surround with \"\"";
             } else {
                 words[2].erase(0,1);
                 words[2].erase(words[2].size()-1, 1);
@@ -62,24 +61,23 @@ void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
             image_map.emplace(words[1], i);
         } else if (words[0] == "audio" && words.size() == 3) {
             if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
-                Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 101";
-                ChangeScene();
+                Engine::LOG(Engine::ERROR) << "Plot_Engine Pre-Processing Syntax Error {audio}, path not surround with \"\"";
             } else {
                 words[2].erase(0,1);
                 words[2].erase(words[2].size()-1, 1);
             }
             std::string full_path = "Resource/audios/";
             full_path += words[2];
-            auto sample_ptr = al_load_sample(full_path.c_str());
+            ALLEGRO_SAMPLE* sample_ptr = al_load_sample(full_path.c_str());
             if (sample_ptr == nullptr) {
-                Engine::LOG(Engine::ERROR) << "Plot Audio Load Failed 111";
+                Engine::LOG(Engine::ERROR) << "Plot_Engine: Failed to load audio";
             }
             audio_info a = {sample_ptr, 0};
             music_map.emplace(words[1], a);
         } else if (words[0] == "color" && words.size() == 5) {
             name_color_map.emplace(words[1], new ALLEGRO_COLOR (al_map_rgb(atoi(words[2].c_str()), atoi(words[3].c_str()), atoi(words[4].c_str()))));
         } else {
-            Engine::LOG(Engine::ERROR) << "Plot Pre-Processing Error: unsupported command";
+            Engine::LOG(Engine::ERROR) << "Plot_Engine Pre-Processing: Unsupported command";
         }
     }
 }
@@ -101,7 +99,7 @@ void PlotScene::ProcessScript(std::ifstream &plot_file_stream) {
         if (words[0] == "show") {
             if (words.size() != 5) {
                 Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error 135";
-            } else if (words.size() >= 3 && words[2] != "at") {
+            } else if (words[2] != "at") {
                 Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error 137";
             }
             for (auto i : words) {
@@ -175,7 +173,7 @@ void PlotScene::InitPartOfUI() {
                                       48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
     AddRefObject(*history_label);
 
-    for (int i = 0; i < 8; ++i) {
+    for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
         history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf",
                                                   48, 160, 200 + 65 * i, 180, 180, 200, 255, 0.0);
         AddRefObject(*history_name_label[i]);
@@ -204,7 +202,7 @@ void PlotScene::LoadResources() {
 
 void PlotScene::ResetVariables() {
     history_ptr = 0;
-    is_history_mode_on = false;
+    history_mode_is_on = false;
     was_history_mode_on = false;
 
     text_target = "";
@@ -239,7 +237,8 @@ void PlotScene::OnKeyDown(int keyCode) {
 
 void PlotScene::Draw() const {
     IScene::Draw();
-    if (!is_history_mode_on) {
+
+    if (!history_mode_is_on) {
         al_draw_text(name_font, *current_name_color, 150, 575, 0.5, name.c_str());
 
         int ptr = 0;
@@ -269,14 +268,76 @@ void PlotScene::Draw() const {
 }
 
 void PlotScene::AttemptPlotProceed() {
-    if (is_history_mode_on) {
+    if (history_mode_is_on) {
         return;
     } else if (!LineReachesEnd()) {
-        partial_text = text_target;
-        partial_middle_text = middle_text;
+        GoToEndOfLine();
         return;
     }
 
+    ImageAudioPlotProceed();
+    if (!queue_of_text.empty()) {
+        LoadNextText();
+        PushCurrentTextToHistory();
+        UpdateCurrentNameColor();
+    } else {
+        ChangeScene();
+    }
+}
+
+void PlotScene::PushCurrentTextToHistory() {
+    if (text_target != "") {
+        bool is_first_time = true;
+        for (int ptr = 0; ptr < text_target.size(); is_first_time = false) {
+            partial_target = "";
+            while (ptr < text_target.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
+                partial_target += text_target[ptr++];
+            }
+            history_info.push_back({is_first_time ? name : "", partial_target});
+        }
+    } else {
+        int ptr = 0;
+        while (ptr < middle_text.size()) {
+            partial_target = "";
+            while (ptr < middle_text.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
+                partial_target += middle_text[ptr++];
+            }
+            history_info.push_back({"", partial_target});
+        }
+    }
+}
+
+void PlotScene::LoadNextText() {
+    auto words = queue_of_text.front();
+    queue_of_text.pop();
+
+    if (words[0] != "middle") {
+        name = words[0];
+        text_target = words[1];
+        middle_text = "";
+    } else {
+        name = "";
+        text_target = "";
+        middle_text = words[1];
+    }
+    partial_text = "";
+    partial_middle_text = "";
+}
+
+void PlotScene::GoToEndOfLine() {
+    partial_text = text_target;
+    partial_middle_text = middle_text;
+}
+
+void PlotScene::UpdateCurrentNameColor() {
+    if (!name_color_map.contains(name)) {
+        current_name_color = default_name_color;
+    } else {
+        current_name_color = name_color_map.find(name)->second;
+    }
+}
+
+void PlotScene::ImageAudioPlotProceed() {
     while (!queue_of_text.empty()) {
         auto words = queue_of_text.front();
         if (words[0] == "show") {
@@ -284,7 +345,7 @@ void PlotScene::AttemptPlotProceed() {
         } else if (words[0] == "hide") {
             image_map[words[1]].img->ChangeImageTo(transparent, 0, 0);
         } else if (words[0] == "play") {
-            al_play_sample(music_map[words[1]].sample, 0.5f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
+            al_play_sample(music_map[words[1]].sample, 0.5f, 0.0f, 1.0f, ALLEGRO_PLAYMODE_ONCE, &music_map[words[1]].id);
         } else if (words[0] == "stop") {
             auto temp = music_map[words[1]].id;
             if (&temp != nullptr) {
@@ -294,76 +355,6 @@ void PlotScene::AttemptPlotProceed() {
             break;
         }
         queue_of_text.pop();
-    }
-    if (!queue_of_text.empty()) {
-        auto temp = queue_of_text.front();
-        if (temp[0] != "middle") {
-            name = temp[0];
-            text_target = temp[1];
-            middle_text = "";
-            partial_text = "";
-            partial_middle_text = "";
-            partial_target = "";
-
-            int ptr = 0;
-
-            while (ptr < text_target.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
-                partial_target += text_target[ptr++];
-            }
-            history_info.push_back({name, partial_target});
-
-            int lines = 1;
-
-            while (ptr < text_target.size()) {
-                partial_target = "";
-                ++lines;
-                while (ptr < text_target.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
-                    partial_target += text_target[ptr++];
-                }
-                history_info.push_back({"", partial_target});
-                if (lines == 4) {
-                    Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
-                }
-            }
-
-            if (!name_color_map.contains(name)) {
-                current_name_color = default_name_color;
-            } else {
-                current_name_color = name_color_map.find(name)->second;
-            }
-
-        } else {
-            name = "";
-            text_target = "";
-            middle_text = temp[1];
-            partial_text = "";
-            partial_middle_text = "";
-            partial_target = "";
-
-            int ptr = 0;
-
-            while (ptr < middle_text.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
-                partial_target += middle_text[ptr++];
-            }
-            history_info.push_back({"", partial_target});
-
-            int lines = 1;
-
-            while (ptr < middle_text.size()) {
-                partial_target = "";
-                ++lines;
-                while (ptr < middle_text.size() && al_get_text_width(font, partial_target.c_str()) <= 1000) {
-                    partial_target += middle_text[ptr++];
-                }
-                history_info.push_back({"", partial_target});
-                if (lines == MAX_LINE_SHOWN_HISTORY_MODE) {
-                    Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
-                }
-            }
-        }
-        queue_of_text.pop();
-    } else {
-        ChangeScene();
     }
 }
 
@@ -421,15 +412,15 @@ void PlotScene::AttemptCharProceed() {
 bool PlotScene::LineReachesEnd() const { return text_target == partial_text && middle_text == partial_middle_text; }
 
 void PlotScene::UpdateHistoryBackground() {
-    if (is_history_mode_on != was_history_mode_on) {
-        if (!is_history_mode_on) {
+    if (history_mode_is_on != was_history_mode_on) {
+        if (!history_mode_is_on) {
             bg_history->ChangeImageTo(transparent, 100, 100);
             history_title = "";
         } else {
             bg_history->ChangeImageTo(gray, 100, 100);
             history_title = "History:";
         }
-        was_history_mode_on = is_history_mode_on;
+        was_history_mode_on = history_mode_is_on;
     }
 }
 
@@ -485,8 +476,8 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
 }
 
 void PlotScene::OnMouseScrollUp() {
-    if (!is_history_mode_on) {
-        is_history_mode_on = true;
+    if (!history_mode_is_on) {
+        history_mode_is_on = true;
         history_ptr = history_info.size() - MAX_LINE_SHOWN_HISTORY_MODE;
     } else {
         --history_ptr;
@@ -498,11 +489,11 @@ void PlotScene::OnMouseScrollUp() {
 }
 
 void PlotScene::OnMouseScrollDown() {
-    if (!is_history_mode_on) {
+    if (!history_mode_is_on) {
         AttemptPlotProceed();
     } else {
         if (history_ptr + MAX_LINE_SHOWN_HISTORY_MODE >= history_info.size()) {
-            is_history_mode_on = false;
+            history_mode_is_on = false;
         } else {
             ++history_ptr;
         }
@@ -510,7 +501,7 @@ void PlotScene::OnMouseScrollDown() {
 }
 
 void PlotScene::UpdateHistoryInfo() {
-    if (!is_history_mode_on) {
+    if (!history_mode_is_on) {
         for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
             history_name[i] = "";
             history_text[i] = "";
