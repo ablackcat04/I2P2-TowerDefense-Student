@@ -13,17 +13,24 @@ void PlotScene::Initialize() {
     CleanPlotEngine();
     LoadResources();
     ResetVariables();
-    InitPartOfUI();
+    InitializePartOfUI();
+    InitializeTimers();
+    PreparePlot();
+    AttemptPlotProceed();
+}
 
-    char_proceed_timer.Initialize(CHAR_PROCEED_TIME);
-    auto_timer.Initialize(AUTO_MODE_PROCEED_TIME);
-
+void PlotScene::PreparePlot() {
     std::ifstream plot_file_stream(plot_path);
+
     PreProcessScriptAndLoadAssets(plot_file_stream);
     ProcessScript(plot_file_stream);
-    plot_file_stream.close();
 
-    AttemptPlotProceed();
+    plot_file_stream.close();
+}
+
+void PlotScene::InitializeTimers() {
+    char_proceed_timer.Initialize(CHAR_PROCEED_TIME);
+    auto_timer.Initialize(AUTO_MODE_PROCEED_TIME);
 }
 
 void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
@@ -154,7 +161,7 @@ void PlotScene::splitLine(const std::string& line, std::vector<std::string>& wor
     }
 }
 
-void PlotScene::InitPartOfUI() {
+void PlotScene::InitializePartOfUI() {
     Engine::ImageButton* btn;
 
     btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
