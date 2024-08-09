@@ -16,6 +16,8 @@ public:
     void StageOnClick(int stage);
     void BackOnClick();
     void UnlockStage(int map_id);
+
+    void OnKeyDown(int keyCode) override;
 };
 
 #endif // MAPSCENE_HPP

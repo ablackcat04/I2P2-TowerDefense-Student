@@ -80,7 +80,14 @@ void MapScene::StageOnClick(int stage) {
 }
 
 void MapScene::UnlockStage(int map_id) {
-    if (map_id == maximum_opened_stage && maximum_opened_stage <= 3) {
+    if (map_id == maximum_opened_stage && maximum_opened_stage < 3) {
         ++maximum_opened_stage;
+    }
+}
+
+void MapScene::OnKeyDown(int keyCode) {
+    if (keyCode == ALLEGRO_KEY_L) {
+        UnlockStage(1);
+        UnlockStage(2);
     }
 }
