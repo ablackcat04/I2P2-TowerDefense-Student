@@ -11,14 +11,19 @@
 
 void PlotScene::Initialize() {
     CleanPlotEngine();
-    ResetVariables();
     LoadResources();
+    ResetVariables();
     InitPartOfUI();
+
+    char_proceed_timer.Initialize(CHAR_PROCEED_TIME);
+    auto_timer.Initialize(AUTO_MODE_PROCEED_TIME);
 
     std::ifstream plot_file_stream(plot_path);
     PreProcessScriptAndLoadAssets(plot_file_stream);
     ProcessScript(plot_file_stream);
     plot_file_stream.close();
+
+    AttemptPlotProceed();
 }
 
 void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
@@ -75,7 +80,6 @@ void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
             name_color_map.emplace(words[1], new ALLEGRO_COLOR (al_map_rgb(atoi(words[2].c_str()), atoi(words[3].c_str()), atoi(words[4].c_str()))));
         } else {
             Engine::LOG(Engine::ERROR) << "Plot Pre-Processing Error: unsupported command";
-            ChangeScene();
         }
     }
 }
@@ -144,7 +148,6 @@ void PlotScene::ProcessScript(std::ifstream &plot_file_stream) {
     }
 }
 
-
 void PlotScene::splitLine(const std::string& line, std::vector<std::string>& words) {
     std::istringstream iss(line);
     std::string word;
@@ -157,7 +160,7 @@ void PlotScene::InitPartOfUI() {
     Engine::ImageButton* btn;
 
     btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
-    btn->SetOnClickCallback([this]{ OnClickCallBack(); });
+    btn->SetOnClickCallback([this]{ AttemptPlotProceed(); });
     AddNewControlObject(btn);
 
     btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png",
@@ -195,6 +198,7 @@ void PlotScene::LoadResources() {
     name_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
 
     default_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
+    current_name_color = default_name_color;
     current_text_color = new ALLEGRO_COLOR (al_map_rgb(255, 255, 255));
 }
 
@@ -216,9 +220,6 @@ void PlotScene::ResetVariables() {
         history_text[i] = "";
     }
 
-    time = 0.0f;
-    auto_timer = 0.0f;
-
     text_sfx_id = nullptr;
 }
 
@@ -232,71 +233,46 @@ void PlotScene::CleanPlotEngine() {
 
 void PlotScene::OnKeyDown(int keyCode) {
     if (keyCode == ALLEGRO_KEY_ENTER) {
-        OnClickCallBack();
+        AttemptPlotProceed();
     }
 }
 
 void PlotScene::Draw() const {
     IScene::Draw();
     if (!is_history_mode_on) {
-        if (partial_middle_text != "") {
+        al_draw_text(name_font, *current_name_color, 150, 575, 0.5, name.c_str());
 
-            int ptr = 0;
+        int ptr = 0;
+        int lines = 0;
+        while (ptr < partial_middle_text.size()) {
             std::string str = "";
-
             while (ptr < partial_middle_text.size() && al_get_text_width(big_font, str.c_str()) <= 1250) {
                 str += partial_middle_text[ptr++];
             }
-            al_draw_text(big_font, *current_text_color, 150, 200, 0, str.c_str());
+            al_draw_text(big_font, *current_text_color, 150, 200 + 64*lines, 0, str.c_str());
+            ++lines;
+        }
 
-            int lines = 0;
-
-            while (ptr < partial_middle_text.size()) {
-                str = "";
-                ++lines;
-                while (ptr < partial_middle_text.size() && al_get_text_width(big_font, str.c_str()) <= 1250) {
-                    str += partial_middle_text[ptr++];
-                }
-                al_draw_text(big_font, *current_text_color, 150, 200+64*lines, 0, str.c_str());
-            }
-        } else {
-            if (!name_color_map.contains(name)) {
-                al_draw_text(name_font, *default_name_color, 150, 575, 0.5, name.c_str());
-            } else {
-                al_draw_text(name_font, *(name_color_map.find(name)->second), 150, 575, 0.5, name.c_str());
-            }
-
-            int ptr = 0;
+        ptr = 0;
+        lines = 0;
+        while (ptr < partial_text.size()) {
             std::string str = "";
 
             while (ptr < partial_text.size() && al_get_text_width(font, str.c_str()) <= 1100) {
                 str += partial_text[ptr++];
             }
-            al_draw_text(font, *current_text_color, 250, 635, 0, str.c_str());
-
-            int lines = 0;
-
-            while (ptr < partial_text.size()) {
-                str = "";
-                ++lines;
-                while (ptr < partial_text.size() && al_get_text_width(font, str.c_str()) <= 1100) {
-                    str += partial_text[ptr++];
-                }
-                al_draw_text(font, *current_text_color, 250, 635+50*lines, 0, str.c_str());
-            }
+            al_draw_text(font, *current_text_color, 250, 635 + 50*lines, 0, str.c_str());
+            ++lines;
         }
     }
+    // we use different draw method between text and history mode, history mode is drawn in IScene::Draw
 }
 
-void PlotScene::OnClickCallBack() {
+void PlotScene::AttemptPlotProceed() {
     if (is_history_mode_on) {
         return;
-    }
-
-    if (partial_text != text_target) {
+    } else if (!LineReachesEnd()) {
         partial_text = text_target;
-        return;
-    } else if (partial_middle_text != middle_text) {
         partial_middle_text = middle_text;
         return;
     }
@@ -349,6 +325,13 @@ void PlotScene::OnClickCallBack() {
                     Engine::LOG(Engine::ERROR) << "Script maybe too long, cannot be fully presented";
                 }
             }
+
+            if (!name_color_map.contains(name)) {
+                current_name_color = default_name_color;
+            } else {
+                current_name_color = name_color_map.find(name)->second;
+            }
+
         } else {
             name = "";
             text_target = "";
@@ -389,6 +372,55 @@ void PlotScene::SetPlotPathTo(std::string path) {
 }
 
 void PlotScene::Update(float deltaTime) {
+    UpdateHistoryBackground();
+
+    UpdateTimer(deltaTime);
+
+    if (char_proceed_timer.ReachLimit()) {
+        char_proceed_timer.Reset();
+        AttemptCharProceed();
+        ReplayTextSFX();
+    } else if (auto_timer.ReachLimit()) {
+        auto_timer.Reset();
+        AttemptPlotProceed();
+    }
+}
+
+void PlotScene::UpdateTimer(float deltaTime) {
+    if (!LineReachesEnd()) {
+        auto_timer.Reset();
+        char_proceed_timer.Proceed(deltaTime);
+    } else {
+        if (is_auto_mode_on) {
+            auto_timer.Proceed(deltaTime);
+        }
+    }
+}
+
+void PlotScene::ReplayTextSFX() const {
+    if (text_sfx_id != nullptr) {
+        al_stop_sample(text_sfx_id);
+    }
+    al_play_sample(text_sfx, 0.3f, 0.0f, 1.0f, ALLEGRO_PLAYMODE_ONCE, text_sfx_id);
+}
+
+void PlotScene::AttemptCharProceed() {
+    if (text_target != partial_text) {
+        partial_text += text_target[partial_text.size()];
+        while (text_target[partial_text.size()] == ' ') {
+            partial_text += ' ';
+        }
+    } else if (middle_text != partial_middle_text) {
+        partial_middle_text += middle_text[partial_middle_text.size()];
+        while (middle_text[partial_middle_text.size()] == ' ') {
+            partial_middle_text += ' ';
+        }
+    }
+}
+
+bool PlotScene::LineReachesEnd() const { return text_target == partial_text && middle_text == partial_middle_text; }
+
+void PlotScene::UpdateHistoryBackground() {
     if (is_history_mode_on != was_history_mode_on) {
         if (!is_history_mode_on) {
             bg_history->ChangeImageTo(transparent, 100, 100);
@@ -398,41 +430,6 @@ void PlotScene::Update(float deltaTime) {
             history_title = "History:";
         }
         was_history_mode_on = is_history_mode_on;
-    }
-    time += deltaTime;
-    if (time > 0.04) {
-        time -= 0.04;
-        if (text_target == "" && middle_text == "") {
-            OnClickCallBack();
-            return;
-        }
-        if (text_target != partial_text) {
-            if (text_sfx_id != nullptr) {
-                al_stop_sample(text_sfx_id);
-            }
-            al_play_sample(text_sfx, 0.3f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, text_sfx_id);
-            partial_text += text_target[partial_text.size()];
-            while (text_target[partial_text.size()] == ' ') {
-                partial_text += ' ';
-            }
-        } else if (middle_text != partial_middle_text) {
-            if (text_sfx_id != nullptr) {
-                al_stop_sample(text_sfx_id);
-            }
-            al_play_sample(text_sfx, 0.3f, 0.0f, 1.0f, ALLEGRO_PLAYMODE::ALLEGRO_PLAYMODE_ONCE, text_sfx_id);
-            partial_middle_text += middle_text[partial_middle_text.size()];
-            if (middle_text[partial_middle_text.size()] == ' ') {
-                partial_middle_text += ' ';
-            }
-        } else {
-            if (is_auto_mode_on) {
-                auto_timer += deltaTime;
-                if (auto_timer >= 1.0f) {
-                    OnClickCallBack();
-                    auto_timer = 0.0f;
-                }
-            }
-        }
     }
 }
 
@@ -502,7 +499,7 @@ void PlotScene::OnMouseScrollUp() {
 
 void PlotScene::OnMouseScrollDown() {
     if (!is_history_mode_on) {
-        OnClickCallBack();
+        AttemptPlotProceed();
     } else {
         if (history_ptr + MAX_LINE_SHOWN_HISTORY_MODE >= history_info.size()) {
             is_history_mode_on = false;

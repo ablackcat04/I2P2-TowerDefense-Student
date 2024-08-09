@@ -125,6 +125,8 @@ add_executable(TowerDefense
         Enemy/BossEnemy.cpp
         Enemy/BossEnemy.hpp
         Utility/UsefulConstants.hpp
+        Utility/Timer.cpp
+        Utility/Timer.hpp
 )
 
 IF (WIN32)

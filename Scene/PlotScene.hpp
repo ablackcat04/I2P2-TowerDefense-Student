@@ -16,8 +16,11 @@
 #include "PlayScene.hpp"
 #include "WinScene.hpp"
 #include "Utility/UsefulConstants.hpp"
+#include "Utility/Timer.hpp"
 
 #define MAX_LINE_SHOWN_HISTORY_MODE 8
+#define CHAR_PROCEED_TIME 0.025
+#define AUTO_MODE_PROCEED_TIME 2.0
 
 class PlotScene final : public Engine::IScene {
 private:
@@ -57,12 +60,13 @@ private:
     const std::string transparent = "plot/transparent.png";
     const std::string gray = "plot/gray.png";
 
-    float time;
+    Timer char_proceed_timer;
 
     bool is_history_mode_on;
     bool was_history_mode_on;
     bool is_auto_mode_on = false;
-    float auto_timer;
+
+    Timer auto_timer;
 
     std::string history_title;
 
@@ -85,6 +89,7 @@ private:
 
     ALLEGRO_FONT* name_font;
     ALLEGRO_COLOR* default_name_color;
+    ALLEGRO_COLOR* current_name_color;
     ALLEGRO_FONT* font;
     ALLEGRO_FONT* big_font;
     ALLEGRO_COLOR* current_text_color;
@@ -100,7 +105,7 @@ public:
     void OnMouseScroll(int mx, int my, int delta);
     void OnKeyDown(int keyCode) override;
     void Draw() const override;
-    void OnClickCallBack();
+    void AttemptPlotProceed();
     void SetPlotPathTo(std::string path);
     void SetNextSceneTo(std::string scene_name);
     void ChangeScene();
@@ -127,6 +132,16 @@ public:
     void ProcessScript(std::ifstream &plot_file_stream);
 
     void splitLine(const std::string& line, std::vector<std::string>& words);
+
+    void UpdateHistoryBackground();
+
+    bool LineReachesEnd() const;
+
+    void AttemptCharProceed();
+
+    void ReplayTextSFX() const;
+
+    void UpdateTimer(float deltaTime);
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP
