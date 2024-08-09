@@ -112,6 +112,15 @@ public:
     void OnMouseScrollUp();
     void OnMouseScrollDown();
     void UpdateHistoryInfo();
+
+    void CleanPlotEngine();
+
+    void ResetConstants();
+
+    void LoadResources();
+    void FreeResources();
+
+    void PlotPreProcessAndLoadAssets(std::string &line, std::ifstream &plot_file_stream);
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP

@@ -18,92 +18,16 @@ void splitLine(const std::string& line, std::vector<std::string>& words) {
 }
 
 void PlotScene::Initialize() {
-    CleanPlotInQue();
-
-    big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
-    font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);
-    name_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
-    default_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
-    current_text_color = new ALLEGRO_COLOR (al_map_rgb(255,255,255));
-
-    text_sfx = al_load_sample("Resource/audios/slide.ogg");
-    text_sfx_id = nullptr;
-
-    history_info.clear();
-    history_ptr = 0;
-
-    is_history_mode_on = false;
-    was_history_mode_on = false;
-
-    music_map.clear();
-    image_map.clear();
-    name_color_map.clear();
-
-    text_target = "";
-    name = "";
-    middle_text = "";
-    partial_text = "";
-    partial_middle_text = "";
-
-    Engine::ImageButton* btn;
-
-    btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
-    btn->SetOnClickCallback([this]{OnClickCallBack();});
-    AddNewControlObject(btn);
+    CleanPlotEngine();
+    ResetConstants();
+    LoadResources();
 
     // Read plot from file
     std::string line;
     std::ifstream plot_file_stream(plot_path);
 
-    // Pre Processing
-    while (std::getline(plot_file_stream, line)) {
-        Engine::LOG(Engine::INFO) << "Plot: " << line;
+    PlotPreProcessAndLoadAssets(line, plot_file_stream);
 
-        if (line == "Plot_Start:") {
-            break;
-        } else if (line == "") {
-            continue;
-        }
-
-        std::vector<std::string> words;
-        splitLine(line, words);
-
-
-        // check syntex
-        if (words[0] == "image" && words.size() == 6) {
-            if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
-                Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 90";
-                ChangeScene();
-            } else {
-                words[2].erase(0,1);
-                words[2].erase(words[2].size()-1, 1);
-            }
-            image_info i = {nullptr, words[2], atoi(words[4].c_str()), atoi(words[5].c_str())};
-            i.SetDefaultImage();
-            image_map.emplace(words[1], i);
-        } else if (words[0] == "audio" && words.size() == 3) {
-            if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
-                Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 101";
-                ChangeScene();
-            } else {
-                words[2].erase(0,1);
-                words[2].erase(words[2].size()-1, 1);
-            }
-            std::string full_path = "Resource/audios/";
-            full_path += words[2];
-            auto sample_ptr = al_load_sample(full_path.c_str());
-            if (sample_ptr == nullptr) {
-                Engine::LOG(Engine::ERROR) << "Plot Audio Load Failed 111";
-            }
-            audio_info a = {sample_ptr, 0};
-            music_map.emplace(words[1], a);
-        } else if (words[0] == "color" && words.size() == 5) {
-            name_color_map.emplace(words[1], new ALLEGRO_COLOR (al_map_rgb(atoi(words[2].c_str()), atoi(words[3].c_str()), atoi(words[4].c_str()))));
-        } else {
-            Engine::LOG(Engine::ERROR) << "Plot Pre-Processing Syntax Error 116";
-            ChangeScene();
-        }
-    }
     // Reading Script
     while (std::getline(plot_file_stream, line)) {
         Engine::LOG(Engine::INFO) << "Plot: " << line;
@@ -165,11 +89,16 @@ void PlotScene::Initialize() {
         }
         queue_of_text.emplace(out);
     }
-    OnClickCallBack();
 
     for (auto i : image_map) {
         AddRefObject(*i.second.img);
     }
+
+    Engine::ImageButton* btn;
+
+    btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
+    btn->SetOnClickCallback([this]{ OnClickCallBack(); });
+    AddNewControlObject(btn);
 
     btn = new Engine::ImageButton("stage-select/arrow_left.png", "stage-select/arrow_left_hovered.png", 1500, 9, 32, 32);
 
@@ -198,8 +127,97 @@ void PlotScene::Initialize() {
 
     plot_file_stream.close();
 
+    //OnClickCallBack();  // to prevent a bug which the plot won't automatically start
+}
+
+void PlotScene::PlotPreProcessAndLoadAssets(std::string &line, std::ifstream &plot_file_stream) {
+    // Pre Processing
+    while (std::getline(plot_file_stream, line)) {
+        Engine::LOG(Engine::INFO) << "Plot: " << line;
+
+        if (line == "Plot_Start:") {
+            break;
+        } else if (line == "") {
+            continue;
+        }
+
+        std::vector<std::string> words;
+        splitLine(line, words);
+
+
+        // check syntex
+        if (words[0] == "image" && words.size() == 6) {
+            if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
+                Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 90";
+                ChangeScene();
+            } else {
+                words[2].erase(0,1);
+                words[2].erase(words[2].size()-1, 1);
+            }
+            image_info i = {nullptr, words[2], atoi(words[4].c_str()), atoi(words[5].c_str())};
+            i.SetDefaultImage();
+            image_map.emplace(words[1], i);
+        } else if (words[0] == "audio" && words.size() == 3) {
+            if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
+                Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error at 101";
+                ChangeScene();
+            } else {
+                words[2].erase(0,1);
+                words[2].erase(words[2].size()-1, 1);
+            }
+            std::string full_path = "Resource/audios/";
+            full_path += words[2];
+            auto sample_ptr = al_load_sample(full_path.c_str());
+            if (sample_ptr == nullptr) {
+                Engine::LOG(Engine::ERROR) << "Plot Audio Load Failed 111";
+            }
+            audio_info a = {sample_ptr, 0};
+            music_map.emplace(words[1], a);
+        } else if (words[0] == "color" && words.size() == 5) {
+            name_color_map.emplace(words[1], new ALLEGRO_COLOR (al_map_rgb(atoi(words[2].c_str()), atoi(words[3].c_str()), atoi(words[4].c_str()))));
+        } else {
+            Engine::LOG(Engine::ERROR) << "Plot Pre-Processing Syntax Error 116";
+            ChangeScene();
+        }
+    }
+
+    Engine::LOG(Engine::INFO) << "Plot Preprocess done";
+}
+
+void PlotScene::LoadResources() {
+    text_sfx = al_load_sample("Resource/audios/slide.ogg");
+
+    big_font = al_load_font("Resource/fonts/Cubic11.ttf", 60, 0);
+    font = al_load_font("Resource/fonts/Cubic11.ttf", 44, 0);
+    name_font = al_load_font("Resource/fonts/BoutiqueBitmap7x7_1.7.ttf", 48, 0);
+
+    default_name_color = new ALLEGRO_COLOR (al_map_rgb(220, 220, 255));
+    current_text_color = new ALLEGRO_COLOR (al_map_rgb(255, 255, 255));
+}
+
+void PlotScene::ResetConstants() {
+    history_ptr = 0;
+    is_history_mode_on = false;
+    was_history_mode_on = false;
+
+    text_target = "";
+    name = "";
+    middle_text = "";
+    partial_text = "";
+    partial_middle_text = "";
+
     time = 0.0f;
     auto_timer = 0.0f;
+
+    text_sfx_id = nullptr;
+}
+
+void PlotScene::CleanPlotEngine() {
+    CleanAudio();
+    CleanColor();
+    CleanPlotInQue();
+    image_map.clear();
+    history_info.clear();
 }
 
 void PlotScene::OnKeyDown(int keyCode) {
@@ -412,7 +430,19 @@ void PlotScene::Terminate() {
     CleanAudio();
     CleanColor();
     CleanPlotInQue();
+    FreeResources();
     IScene::Terminate();
+}
+
+void PlotScene::FreeResources() {
+    al_destroy_sample(text_sfx);
+
+    al_destroy_font(big_font);
+    al_destroy_font(font);
+    al_destroy_font(name_font);
+
+    delete default_name_color;
+    delete current_text_color;
 }
 
 void PlotScene::CleanPlotInQue() {
@@ -430,7 +460,7 @@ void PlotScene::CleanColor() {
 
 void PlotScene::CleanAudio() {
     al_stop_samples();
-    al_destroy_sample(text_sfx);
+    //al_destroy_sample(text_sfx);
     for (auto i : music_map) {
         al_destroy_sample(i.second.sample);
     }
