@@ -21,14 +21,18 @@ void PlotScene::Initialize() {
     CleanPlotEngine();
     ResetConstants();
     LoadResources();
+    InitPartOfUI();
 
-    // Read plot from file
-    std::string line;
     std::ifstream plot_file_stream(plot_path);
+    PreProcessScriptAndLoadAssets(plot_file_stream);
+    ProcessScript(plot_file_stream);
+    plot_file_stream.close();
 
-    PlotPreProcessAndLoadAssets(line, plot_file_stream);
+    //OnClickCallBack();  // to prevent a bug which the plot won't automatically start
+}
 
-    // Reading Script
+void PlotScene::ProcessScript(std::ifstream &plot_file_stream) {
+    std::string line;
     while (std::getline(plot_file_stream, line)) {
         Engine::LOG(Engine::INFO) << "Plot: " << line;
         if (line == "") {
@@ -89,11 +93,9 @@ void PlotScene::Initialize() {
         }
         queue_of_text.emplace(out);
     }
+}
 
-    for (auto i : image_map) {
-        AddRefObject(*i.second.img);
-    }
-
+void PlotScene::InitPartOfUI() {
     Engine::ImageButton* btn;
 
     btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
@@ -115,8 +117,8 @@ void PlotScene::Initialize() {
     for (int i = 0; i < 8; ++i) {
         history_name[i] = "";
         history_text[i] = "";
-        history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf", 48, 160, 200+65*i, 180, 180, 200, 255, 0.0);
-        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf", 44, 400, 200+65*i - 2, 180, 180, 180, 255, 0.0);
+        history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf", 48, 160, 200 + 65 * i, 180, 180, 200, 255, 0.0);
+        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf", 44, 400, 200 + 65 * i - 2, 180, 180, 180, 255, 0.0);
         AddRefObject(*history_name_label[i]);
         AddRefObject(*history_text_label[i]);
     }
@@ -124,19 +126,21 @@ void PlotScene::Initialize() {
     auto* t = new Engine::ToggledTextButton("auto", &is_auto_mode_on, 1400, 9, al_map_rgb(255, 255, 255), al_map_rgb(180, 180, 220),
                                             al_map_rgb(200,200,255));
     AddRefControlObject(*t);
-
-    plot_file_stream.close();
-
-    //OnClickCallBack();  // to prevent a bug which the plot won't automatically start
 }
 
-void PlotScene::PlotPreProcessAndLoadAssets(std::string &line, std::ifstream &plot_file_stream) {
+void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
     // Pre Processing
+    std::string line;
+
     while (std::getline(plot_file_stream, line)) {
         Engine::LOG(Engine::INFO) << "Plot: " << line;
 
         if (line == "Plot_Start:") {
-            break;
+            for (auto i : image_map) {
+                AddRefObject(*i.second.img);
+            }
+            Engine::LOG(Engine::INFO) << "Plot Preprocess done";
+            return;
         } else if (line == "") {
             continue;
         }
@@ -180,8 +184,6 @@ void PlotScene::PlotPreProcessAndLoadAssets(std::string &line, std::ifstream &pl
             ChangeScene();
         }
     }
-
-    Engine::LOG(Engine::INFO) << "Plot Preprocess done";
 }
 
 void PlotScene::LoadResources() {

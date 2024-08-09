@@ -1,9 +1,8 @@
 #include <memory>
 #include <allegro5/allegro.h>
 #include "Engine/Resources.hpp"
-#include "Engine/IObject.hpp"
-#include "Image.hpp"
 #include "RefImage.hpp"
+
 
 namespace Engine {
     RefImage::RefImage(std::string img, float x, float y, float w, float h, float anchorX, float anchorY) :
