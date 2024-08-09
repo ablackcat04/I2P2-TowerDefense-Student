@@ -115,7 +115,7 @@ public:
 
     void CleanPlotEngine();
 
-    void ResetConstants();
+    void ResetVariables();
 
     void LoadResources();
     void FreeResources();
@@ -125,6 +125,8 @@ public:
     void InitPartOfUI();
 
     void ProcessScript(std::ifstream &plot_file_stream);
+
+    void splitLine(const std::string& line, std::vector<std::string>& words);
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP
