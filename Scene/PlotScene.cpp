@@ -10,22 +10,28 @@
 #include "PlotScene.hpp"
 
 void PlotScene::Initialize() {
-    CleanPlotEngine();
     LoadResources();
-    ResetVariables();
+    InitializeVariables();
     InitializePartOfUI();
     InitializeTimers();
-    PreparePlot();
-    AttemptPlotProceed();
+    InitializePlotEngine();
 }
 
-void PlotScene::PreparePlot() {
+void PlotScene::InitializePlotEngine() {
+    CleanAudio();
+    CleanColor();
+    CleanPlotInQue();
+    image_map.clear();
+    history_info.clear();
+
     std::ifstream plot_file_stream(plot_path);
 
     PreProcessScriptAndLoadAssets(plot_file_stream);
     ProcessScript(plot_file_stream);
 
     plot_file_stream.close();
+
+    AttemptPlotProceed();
 }
 
 void PlotScene::InitializeTimers() {
@@ -41,7 +47,6 @@ void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
         if (line == "") {
             continue;
         }
-
         Engine::LOG(Engine::INFO) << "Pre-Process: " << line;
 
         if (line == "Plot_Start:") {
@@ -55,7 +60,6 @@ void PlotScene::PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
         std::vector<std::string> words;
         splitLine(line, words);
 
-        // check syntax
         if (words[0] == "image" && words.size() == 6) {
             if (words[2][0] != '"' || words[2][words[2].size()-1] != '"') {
                 Engine::LOG(Engine::ERROR) << "Plot_Engine Pre-Processing Syntax Error {image}, path not surround with \"\"";
@@ -136,17 +140,16 @@ void PlotScene::ProcessScript(std::ifstream &plot_file_stream) {
         } else {
             line.erase(0, words[0].size() + 1);
 
-            if (words[0] == "NULL") {
-                words[0] = "";
-            }
-            out.push_back(words[0]);
-
             if (line[0] != '"' || line[line.size() - 1] != '"') {
                 Engine::LOG(Engine::ERROR) << "Plot Script Syntax Error 172";
             } else {
                 line.erase(0, 1);
                 line.erase(line.size() - 1, 1);
             }
+            if (words[0] == "NULL") {
+                words[0] = "";
+            }
+            out.push_back(words[0]);
             out.push_back(line);
         }
         queue_of_text.emplace(out);
@@ -190,7 +193,9 @@ void PlotScene::InitializePartOfUI() {
         AddRefObject(*history_text_label[i]);
     }
 
-    auto* t = new Engine::ToggledTextButton("auto", &is_auto_mode_on, 1400, 9, al_map_rgb(255, 255, 255), al_map_rgb(180, 180, 220),
+    auto* t = new Engine::ToggledTextButton("auto", &auto_mode_is_on, 1400, 9,
+                                            al_map_rgb(255, 255, 255),
+                                            al_map_rgb(180, 180, 220),
                                             al_map_rgb(200,200,255));
     AddRefControlObject(*t);
 }
@@ -207,7 +212,7 @@ void PlotScene::LoadResources() {
     current_text_color = new ALLEGRO_COLOR (al_map_rgb(255, 255, 255));
 }
 
-void PlotScene::ResetVariables() {
+void PlotScene::InitializeVariables() {
     history_ptr = 0;
     history_mode_is_on = false;
     was_history_mode_on = false;
@@ -228,13 +233,7 @@ void PlotScene::ResetVariables() {
     text_sfx_id = nullptr;
 }
 
-void PlotScene::CleanPlotEngine() {
-    CleanAudio();
-    CleanColor();
-    CleanPlotInQue();
-    image_map.clear();
-    history_info.clear();
-}
+
 
 void PlotScene::OnKeyDown(int keyCode) {
     if (keyCode == ALLEGRO_KEY_ENTER) {
@@ -377,7 +376,7 @@ void PlotScene::Update(float deltaTime) {
     if (char_proceed_timer.ReachLimit()) {
         char_proceed_timer.Reset();
         AttemptCharProceed();
-        ReplayTextSFX();
+        PlayTextSFX();
     } else if (auto_timer.ReachLimit()) {
         auto_timer.Reset();
         AttemptPlotProceed();
@@ -388,14 +387,12 @@ void PlotScene::UpdateTimer(float deltaTime) {
     if (!LineReachesEnd()) {
         auto_timer.Reset();
         char_proceed_timer.Proceed(deltaTime);
-    } else {
-        if (is_auto_mode_on) {
-            auto_timer.Proceed(deltaTime);
-        }
+    } else if (auto_mode_is_on) {
+        auto_timer.Proceed(deltaTime);
     }
 }
 
-void PlotScene::ReplayTextSFX() const {
+void PlotScene::PlayTextSFX() const {
     if (text_sfx_id != nullptr) {
         al_stop_sample(text_sfx_id);
     }
