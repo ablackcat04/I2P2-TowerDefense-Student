@@ -127,7 +127,7 @@ public:
 
     void PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
 
-    void InitializePartOfUI();
+    void InitializeUI();
 
     void ProcessScript(std::ifstream &plot_file_stream);
 
@@ -160,6 +160,8 @@ public:
     void InitializeVariables();
 
     void InitializePlotEngine();
+
+    void InitializeHistoryUI();
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP

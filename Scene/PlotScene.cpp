@@ -12,7 +12,7 @@
 void PlotScene::Initialize() {
     LoadResources();
     InitializeVariables();
-    InitializePartOfUI();
+    InitializeUI();
     InitializeTimers();
     InitializePlotEngine();
 }
@@ -31,7 +31,27 @@ void PlotScene::InitializePlotEngine() {
 
     plot_file_stream.close();
 
+    InitializeHistoryUI();
     AttemptPlotProceed();
+}
+
+void PlotScene::InitializeHistoryUI() {
+    bg_history = new Engine::RefImage(transparent, 100, 100, 1400, 632, 0.0, 0.0);
+    AddRefObject(*bg_history);
+
+    history_label = new Engine::Label(&history_title, "BoutiqueBitmap7x7_1.7.ttf",
+                                      48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
+    AddRefObject(*history_label);
+
+    for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
+        history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf",
+                                                  48, 160, 200 + 65 * i, 180, 180, 200, 255, 0.0);
+        AddRefObject(*history_name_label[i]);
+
+        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf",
+                                                  44, 400, 200 + 65 * i - 2, 180, 180, 180, 255, 0.0);
+        AddRefObject(*history_text_label[i]);
+    }
 }
 
 void PlotScene::InitializeTimers() {
@@ -164,7 +184,7 @@ void PlotScene::splitLine(const std::string& line, std::vector<std::string>& wor
     }
 }
 
-void PlotScene::InitializePartOfUI() {
+void PlotScene::InitializeUI() {
     Engine::ImageButton* btn;
 
     btn = new Engine::ImageButton("plot/plot-bg.png", "plot/plot-bg.png", 0, 0, 1600, 832);
@@ -175,23 +195,6 @@ void PlotScene::InitializePartOfUI() {
                                   1500, 9, 32, 32);
     btn->SetOnClickCallback([this] { ChangeScene(); });
     AddNewControlObject(btn);
-
-    bg_history = new Engine::RefImage(transparent, 100, 100, 1400, 632, 0.0, 0.0);
-    AddRefObject(*bg_history);
-
-    history_label = new Engine::Label(&history_title, "BoutiqueBitmap7x7_1.7.ttf",
-                                      48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
-    AddRefObject(*history_label);
-
-    for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
-        history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf",
-                                                  48, 160, 200 + 65 * i, 180, 180, 200, 255, 0.0);
-        AddRefObject(*history_name_label[i]);
-
-        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf",
-                                                  44, 400, 200 + 65 * i - 2, 180, 180, 180, 255, 0.0);
-        AddRefObject(*history_text_label[i]);
-    }
 
     auto* t = new Engine::ToggledTextButton("auto", &auto_mode_is_on, 1400, 9,
                                             al_map_rgb(255, 255, 255),
