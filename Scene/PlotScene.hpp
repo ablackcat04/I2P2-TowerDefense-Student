@@ -96,72 +96,54 @@ private:
 
     std::unordered_map<std::string, ALLEGRO_COLOR*> name_color_map;
 
-public:
-    explicit PlotScene() = default;
-    void Initialize() override;
-    void Terminate() override;
-    static void BackOnClick(int stage);
-    void Update(float deltaTime) override;
-    void OnMouseScroll(int mx, int my, int delta);
-    void OnKeyDown(int keyCode) override;
-    void Draw() const override;
-    void AttemptPlotProceed();
-    void SetPlotPathTo(std::string path);
-    void SetNextSceneTo(std::string scene_name);
-    void ChangeScene();
+    void splitLine(const std::string& line, std::vector<std::string>& words);
+
+    void LoadResources();
+    void InitializeVariables();
+    void InitializeUI();
+    void InitializeTimers();
+    void InitializePlotEngine();
 
     void CleanAudio();
     void CleanColor();
     void CleanPlotInQue();
+    void PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
+    void ProcessScript(std::ifstream &plot_file_stream);
+    void InitializeHistoryUI();
+
+    void AttemptPlotProceed();
+
+    bool LineReachesEnd() const;
+    void GoToEndOfLine();
+    void ImageAudioPlotProceed();
+    void LoadNextText();
+    void PushCurrentTextToHistory();
+    void UpdateCurrentNameColor();
+
+    void UpdateHistoryBackground();
+    void UpdateTimer(float deltaTime);
+    void AttemptCharProceed();
+    void PlayTextSFX() const;
 
     void OnMouseScrollUp();
     void OnMouseScrollDown();
     void UpdateHistoryInfo();
 
-    void CleanPlotEngine();
+    void ChangeScene();
 
-    void ResetVariables();
-
-    void LoadResources();
     void FreeResources();
 
-    void PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
+public:
+    explicit PlotScene() = default;
+    void Initialize() override;
+    void Terminate() override;
+    void Update(float deltaTime) override;
+    void OnMouseScroll(int mx, int my, int delta);
+    void OnKeyDown(int keyCode) override;
+    void Draw() const override;
 
-    void InitializeUI();
-
-    void ProcessScript(std::ifstream &plot_file_stream);
-
-    void splitLine(const std::string& line, std::vector<std::string>& words);
-
-    void UpdateHistoryBackground();
-
-    bool LineReachesEnd() const;
-
-    void AttemptCharProceed();
-
-    void PlayTextSFX() const;
-
-    void UpdateTimer(float deltaTime);
-
-    void ImageAudioPlotProceed();
-
-    void UpdateCurrentNameColor();
-
-    void GoToEndOfLine();
-
-    void LoadNextText();
-
-    void PushCurrentTextToHistory();
-
-    void InitializeTimers();
-
-    void PreparePlot();
-
-    void InitializeVariables();
-
-    void InitializePlotEngine();
-
-    void InitializeHistoryUI();
+    void SetPlotPathTo(std::string path);
+    void SetNextSceneTo(std::string scene_name);
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP
