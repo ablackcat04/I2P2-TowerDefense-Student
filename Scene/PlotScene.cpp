@@ -432,9 +432,6 @@ void PlotScene::UpdateHistoryBackground() {
 }
 
 void PlotScene::Terminate() {
-    CleanAudio();
-    CleanColor();
-    CleanPlotInQue();
     FreeResources();
     IScene::Terminate();
 }
