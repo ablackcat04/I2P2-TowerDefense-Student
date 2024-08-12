@@ -42,13 +42,11 @@ private:
 
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     std::string text_target;
-    std::string partial_target;
-    std::string text1;
-    std::string middle_text;
+    std::string middle_text_target;
     std::string name;
 
-    std::string partial_text;
-    std::string partial_middle_text;
+    std::string text;
+    std::string middle_text;
 
     std::vector<std::string> whole_words;
 
@@ -63,7 +61,6 @@ private:
     Timer char_proceed_timer;
 
     bool history_mode_is_on;
-    bool was_history_mode_on;
     bool auto_mode_is_on = false;
 
     Timer auto_timer;
@@ -98,41 +95,24 @@ private:
 
     void splitLine(const std::string& line, std::vector<std::string>& words);
 
-    void LoadResources();
-    void InitializeVariables();
     void InitializeUI();
-    void InitializeTimers();
     void InitializePlotEngine();
-
-    void CleanAudio();
-    void CleanColor();
-    void CleanPlotInQue();
-    void PreProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
-    void ProcessScript(std::ifstream &plot_file_stream);
     void InitializeHistoryUI();
+
+    void ProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
+    void ProcessRemainingScript(std::ifstream &plot_file_stream);
 
     void AttemptPlotProceed();
 
     bool LineReachesEnd() const;
-    void GoToEndOfLine();
     void ImageAudioPlotProceed();
     void LoadNextText();
-    void PushCurrentTextToHistory();
+    void PushInfoToHistory(std::string text, std::string name);
     void UpdateCurrentNameColor();
 
-    void UpdateHistoryBackground();
-    void UpdateTimer(float deltaTime);
-    void AttemptCharProceed();
-    void PlayTextSFX() const;
-
-    void OnMouseScrollUp();
-    void OnMouseScrollDown();
     void UpdateHistoryInfo();
 
     void ChangeScene();
-
-    void FreeResources();
-
 public:
     explicit PlotScene() = default;
     void Initialize() override;
