@@ -5,6 +5,7 @@
 #include "UI/Component/Label.hpp"
 #include "StartScene.hpp"
 #include "Utility/UsefulConstants.hpp"
+#include "UI/Component/FPSLabel.hpp"
 
 void StartScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;

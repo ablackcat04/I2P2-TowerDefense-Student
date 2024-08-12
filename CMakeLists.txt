@@ -127,6 +127,8 @@ add_executable(TowerDefense
         Utility/UsefulConstants.hpp
         Utility/Timer.cpp
         Utility/Timer.hpp
+        UI/Component/FPSLabel.cpp
+        UI/Component/FPSLabel.hpp
 )
 
 IF (WIN32)

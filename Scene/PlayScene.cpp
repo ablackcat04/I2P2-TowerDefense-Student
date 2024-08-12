@@ -28,6 +28,7 @@
 #include "PlayScene.hpp"
 #include "MapScene.hpp"
 #include "Utility/UsefulConstants.hpp"
+#include "UI/Component/FPSLabel.hpp"
 
 bool PlayScene::DebugMode = false;
 const std::vector<Engine::Point> PlayScene::directions = {Engine::Point(-1, 0), Engine::Point(0, -1), Engine::Point(1, 0), Engine::Point(0, 1) };
@@ -49,10 +50,6 @@ PlayScene::PlayScene() : backgroundMusic(nullptr), bgmInstance(nullptr) , conduc
     yellow = al_map_rgb(220, 220, 0);
     red = al_map_rgb(255, 0, 0);
     blue = al_map_rgb(0,0,255);
-    last_note_is_hold[0] = false;
-    last_note_is_hold[1] = false;
-    last_note_is_hold[2] = false;
-    last_note_is_hold[3] = false;
 }
 
 void PlayScene::Initialize() {
@@ -98,9 +95,6 @@ void PlayScene::Initialize() {
     combo = 0;
     current_judgement = "";
     notes.clear();
-    while (!frame_time.empty()) {
-        frame_time.pop();
-    }
     is_all_perfect = true;
     is_full_combo = true;
 
@@ -129,8 +123,6 @@ void PlayScene::Initialize() {
 
     score_label = new Engine::Label(&score_text, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift, 0, 255, 255, 255, 255);
     AddRefObject(*score_label);
-    fps_label = new Engine::Label(&fps, "BoutiqueBitmap7x7_1.7.ttf", 40, x_shift + wid - 50, 0, 255, 255, 255, 255);
-    AddRefObject(*fps_label);
     judgement_label = new Engine::Label(&current_judgement, "BoutiqueBitmap7x7_1.7.ttf", 64, x_shift + 45, 490, 255, 255, 255, 255, 1, 1);
     AddRefObject(*judgement_label);
     combo_label = new Engine::Label(&combo_text, "BoutiqueBitmap7x7_1.7.ttf", 64, x_shift + 121, 400, 255, 255, 255, 255, 1, 1);
@@ -148,6 +140,9 @@ void PlayScene::Initialize() {
     AddRefControlObject(*cheat_btn);
 
     ap_fc_triggered = false;
+
+    Engine::FPSLabel* fps = new Engine::FPSLabel("BoutiqueBitmap7x7_1.7.ttf", 40, x_shift + wid - 50, 0, 255, 255, 255, 255, 0, 0);
+    AddRefObject(*fps);
 }
 void PlayScene::Terminate() {
     AudioHelper::StopSample(bgmInstance);
@@ -156,7 +151,6 @@ void PlayScene::Terminate() {
     delete score_label;
     delete combo_label;
     delete judgement_label;
-    delete fps_label;
 
     WinScene* win_scene = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene(SceneNames::win));
     win_scene->SetLastGameInfo(money, lives);
@@ -390,12 +384,6 @@ void PlayScene::Draw() const {
             }
         }
     }
-
-    frame_time.emplace(conductor.song_position);
-    while (frame_time.front() <= conductor.song_position - 1) {
-        frame_time.pop();
-    }
-    fps = std::to_string(frame_time.size());
 
     IScene::Draw();
 

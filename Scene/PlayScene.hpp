@@ -55,9 +55,6 @@ private:
     Engine::Label* score_label;
     std::string score_text;
 
-    Engine::Label* fps_label;
-    mutable std::string fps;
-
     Engine::Label* judgement_label;
     std::string current_judgement;
 
@@ -72,8 +69,6 @@ private:
     ALLEGRO_COLOR yellow;
     ALLEGRO_COLOR red;
     ALLEGRO_COLOR blue;
-
-    mutable std::queue<float> frame_time;
 
     bool last_note_is_hold[lanes];
 
