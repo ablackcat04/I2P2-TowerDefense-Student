@@ -41,14 +41,13 @@ private:
     };
 
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
+
     std::string text_target;
     std::string middle_text_target;
     std::string name;
 
     std::string text;
     std::string middle_text;
-
-    std::vector<std::string> whole_words;
 
     std::unordered_map<std::string, image_info> image_map;
     std::unordered_map<std::string, audio_info> music_map;
@@ -58,17 +57,16 @@ private:
     const std::string transparent = "plot/transparent.png";
     const std::string gray = "plot/gray.png";
 
-    Timer char_proceed_timer;
-
     bool history_mode_is_on;
-    bool auto_mode_is_on = false;
+    bool auto_mode_is_on;
 
     Timer auto_timer;
+    Timer char_proceed_timer;
 
     std::string history_title;
 
     Engine::Label *history_label;
-    Engine::RefImage *bg_history;
+    Engine::RefImage *history_background;
     std::string history_name[MAX_LINE_SHOWN_HISTORY_MODE];
     Engine::Label *history_name_label[MAX_LINE_SHOWN_HISTORY_MODE];
     std::string history_text[MAX_LINE_SHOWN_HISTORY_MODE];
@@ -77,7 +75,7 @@ private:
     std::vector<std::pair<std::string, std::string>> history_info;
     int history_ptr;
 
-    std::string plot_path = "Resource/plot/plot3-e.txt";
+    std::string plot_path = "Resource/plot/Please-Set-Path-Before-Changing-To-Plot-Scene";
 
     std::string next_scene = SceneNames::select;
 
@@ -87,6 +85,7 @@ private:
     ALLEGRO_FONT* name_font;
     ALLEGRO_COLOR* default_name_color;
     ALLEGRO_COLOR* current_name_color;
+
     ALLEGRO_FONT* font;
     ALLEGRO_FONT* big_font;
     ALLEGRO_COLOR* current_text_color;
@@ -98,8 +97,6 @@ private:
     void InitializeUI();
     void InitializePlotEngine();
     void InitializeHistoryUI();
-
-    void ProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
 
     void AttemptPlotProceed();
 
@@ -120,6 +117,8 @@ public:
 
     void SetPlotPathTo(std::string path);
     void SetNextSceneTo(std::string scene_name);
+
+    void CleanPlotEngine();
 };
 
 #endif //INC_2024_I2P2_TOWERDEFENSE_PLOTSCENE_HPP

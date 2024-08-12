@@ -21,6 +21,7 @@ void PlotScene::Initialize() {
 
     history_ptr = 0;
     history_mode_is_on = false;
+    auto_mode_is_on = false;
 
     text_target = "";
     name = "";
@@ -66,52 +67,8 @@ void PlotScene::InitializeUI() {
 }
 
 void PlotScene::InitializePlotEngine() {
-    al_stop_samples();
-    for (auto i : music_map) {
-        al_destroy_sample(i.second.sample);
-    }
-    music_map.clear();
-    bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
-
-    for (auto i : name_color_map) {
-        delete i.second;
-    }
-    name_color_map.clear();
-
-    while (!queue_of_text.empty()) {
-        queue_of_text.pop();
-    }
-
-    image_map.clear();
-    history_info.clear();
-
     std::ifstream plot_file_stream(plot_path);
 
-    ProcessScriptAndLoadAssets(plot_file_stream);
-
-    plot_file_stream.close();
-}
-
-void PlotScene::InitializeHistoryUI() {
-    bg_history = new Engine::RefImage(transparent, 100, 100, 1400, 632, 0.0, 0.0);
-    AddRefObject(*bg_history);
-
-    history_label = new Engine::Label(&history_title, "BoutiqueBitmap7x7_1.7.ttf",
-                                      48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
-    AddRefObject(*history_label);
-
-    for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
-        history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf",
-                                                  48, 160, 200 + 65 * i, 180, 180, 200, 255, 0.0);
-        AddRefObject(*history_name_label[i]);
-
-        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf",
-                                                  44, 400, 200 + 65 * i - 2, 180, 180, 180, 255, 0.0);
-        AddRefObject(*history_text_label[i]);
-    }
-}
-
-void PlotScene::ProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
     // Pre Processing
     std::string line;
 
@@ -223,6 +180,27 @@ void PlotScene::ProcessScriptAndLoadAssets(std::ifstream &plot_file_stream) {
             out.push_back(line);
         }
         queue_of_text.emplace(out);
+    }
+
+    plot_file_stream.close();
+}
+
+void PlotScene::InitializeHistoryUI() {
+    history_background = new Engine::RefImage(transparent, 100, 100, 1400, 632, 0.0, 0.0);
+    AddRefObject(*history_background);
+
+    history_label = new Engine::Label(&history_title, "BoutiqueBitmap7x7_1.7.ttf",
+                                      48, 120, 120, 255, 255, 255, 255, 0.0, 0.0);
+    AddRefObject(*history_label);
+
+    for (int i = 0; i < MAX_LINE_SHOWN_HISTORY_MODE; ++i) {
+        history_name_label[i] = new Engine::Label(&history_name[i], "BoutiqueBitmap7x7_1.7.ttf",
+                                                  48, 160, 200 + 65 * i, 180, 180, 200, 255, 0.0);
+        AddRefObject(*history_name_label[i]);
+
+        history_text_label[i] = new Engine::Label(&history_text[i], "Cubic11.ttf",
+                                                  44, 400, 200 + 65 * i - 2, 180, 180, 180, 255, 0.0);
+        AddRefObject(*history_text_label[i]);
     }
 }
 
@@ -380,15 +358,39 @@ void PlotScene::Update(float deltaTime) {
 }
 
 void PlotScene::Terminate() {
-    al_destroy_sample(text_sfx);
+    CleanPlotEngine();
 
-    al_destroy_font(big_font);
-    al_destroy_font(font);
+    bgmInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
+
     al_destroy_font(name_font);
-
     delete default_name_color;
     delete current_text_color;
+
+    al_destroy_font(font);
+    al_destroy_font(big_font);
+
     IScene::Terminate();
+}
+
+void PlotScene::CleanPlotEngine() {
+    al_stop_samples();
+    for (auto i : music_map) {
+        al_destroy_sample(i.second.sample);
+    }
+    music_map.clear();
+    al_destroy_sample(text_sfx);
+
+    for (auto i : name_color_map) {
+        delete i.second;
+    }
+    name_color_map.clear();
+
+    while (!queue_of_text.empty()) {
+        queue_of_text.pop();
+    }
+
+    image_map.clear();
+    history_info.clear();
 }
 
 void PlotScene::OnMouseScroll(int mx, int my, int delta) {
@@ -397,7 +399,7 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
             history_mode_is_on = true;
             history_ptr = history_info.size() - MAX_LINE_SHOWN_HISTORY_MODE;
 
-            bg_history->ChangeImageTo(gray, 100, 100);
+            history_background->ChangeImageTo(gray, 100, 100);
             history_title = "History:";
         } else {
             --history_ptr;
@@ -413,7 +415,7 @@ void PlotScene::OnMouseScroll(int mx, int my, int delta) {
             if (history_ptr + MAX_LINE_SHOWN_HISTORY_MODE >= history_info.size()) {
                 history_mode_is_on = false;
 
-                bg_history->ChangeImageTo(transparent, 100, 100);
+                history_background->ChangeImageTo(transparent, 100, 100);
                 history_title = "";
             } else {
                 ++history_ptr;
