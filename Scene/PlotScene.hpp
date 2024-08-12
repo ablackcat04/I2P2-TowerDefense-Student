@@ -100,15 +100,11 @@ private:
     void InitializeHistoryUI();
 
     void ProcessScriptAndLoadAssets(std::ifstream &plot_file_stream);
-    void ProcessRemainingScript(std::ifstream &plot_file_stream);
 
     void AttemptPlotProceed();
 
     bool LineReachesEnd() const;
-    void ImageAudioPlotProceed();
-    void LoadNextText();
     void PushInfoToHistory(std::string text, std::string name);
-    void UpdateCurrentNameColor();
 
     void UpdateHistoryInfo();
 
