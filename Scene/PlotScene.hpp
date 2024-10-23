@@ -111,7 +111,7 @@ public:
     void Initialize() override;
     void Terminate() override;
     void Update(float deltaTime) override;
-    void OnMouseScroll(int mx, int my, int delta);
+    void OnMouseScroll(int mx, int my, int delta) override;
     void OnKeyDown(int keyCode) override;
     void Draw() const override;
 

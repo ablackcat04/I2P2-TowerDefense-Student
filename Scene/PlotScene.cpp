@@ -278,7 +278,9 @@ void PlotScene::AttemptPlotProceed() {
         queue_of_text.pop();
     }
 
-    if (!queue_of_text.empty()) {
+    if (queue_of_text.empty()) {
+        ChangeScene();
+    } else {
         auto words = queue_of_text.front();
         queue_of_text.pop();
 
@@ -303,13 +305,11 @@ void PlotScene::AttemptPlotProceed() {
         }
 
         PushInfoToHistory(text_target != "" ? text_target : middle_text_target, name);
-    } else {
-        ChangeScene();
     }
 }
 
 void PlotScene::PushInfoToHistory(std::string text, std::string name) {
-    std::string partial_text = "";
+    std::string partial_text;
     bool is_first_time = true;
     for (int ptr = 0; ptr < text.size(); is_first_time = false) {
         partial_text = "";
