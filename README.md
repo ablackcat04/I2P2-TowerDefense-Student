@@ -3,6 +3,9 @@
 ## Team Member
 112060033 廖昱瑋、112060028 吳彥儒、112060040 劉奐均
 
+## Demo Video
+https://www.youtube.com/watch?v=jgEXER4UfvA
+
 ## Game Overview
 This game is a two-player cooperative game, 
 with one player in charge of the rhythm game part and the other mainly in charge of the Tower defense part.
